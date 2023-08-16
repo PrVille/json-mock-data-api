@@ -2,15 +2,16 @@ import { useEffect, useState } from "react"
 import reactLogo from "./assets/react.svg"
 import viteLogo from "/vite.svg"
 import "./App.css"
-import test from "./services/test"
+import test from "./services/userService"
 
 function App() {
   const [count, setCount] = useState(10)
-  const [person, setPerson] = useState<{ name: string } | null>(null)
+  const [users, setUsers] = useState<string | null>(null)
 
   const fetchUsers = async () => {
     const data = await test.getAll()
-    setPerson(data)
+    console.log(JSON.stringify(data))
+    setUsers(JSON.stringify(data, null, 2))
   }
 
   useEffect(() => {
@@ -28,7 +29,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      {person && <h1>{person.name}</h1>}
+      {users && <p>{users}</p>}
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
