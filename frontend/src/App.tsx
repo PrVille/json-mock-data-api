@@ -1,10 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react"
+import reactLogo from "./assets/react.svg"
+import viteLogo from "/vite.svg"
+import "./App.css"
+import test from "./services/test"
 
 function App() {
   const [count, setCount] = useState(10)
+  const [person, setPerson] = useState<{ name: string } | null>(null)
+
+  const fetchUsers = async () => {
+    const data = await test.getAll()
+    setPerson(data)
+  }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
 
   return (
     <>
@@ -17,6 +28,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      {person && <h1>{person.name}</h1>}
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
