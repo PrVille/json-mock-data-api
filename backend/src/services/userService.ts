@@ -1,7 +1,13 @@
 import prisma from "../client"
 
 const getAllUsers = async () => {
-  return await prisma.user.findMany()
+  const users = await prisma.user.findMany()
+  return users
 }
 
-export default { getAllUsers }
+const getUserById = async (id: string) => {
+  const user = await prisma.user.findUnique({ where: { id } })
+  return user
+}
+
+export default { getAllUsers, getUserById }

@@ -6,4 +6,9 @@ const getAllUsers = async (_req: Request, res: Response) => {
   res.json(users)
 }
 
-export default { getAllUsers }
+const getUserById = async (req: Request, res: Response) => {
+  const user = await userService.getUserById(req.params.id)
+  res.json(user)
+}
+
+export default { getAllUsers, getUserById }
