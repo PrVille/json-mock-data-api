@@ -6,14 +6,17 @@
   "scripts": {
     "test:frontend": "cd frontend && npm run test",
     "test:backend": "cd backend && npm run test && npm run make-badges",
+    "make-badges:backend": "cd backend && npm run make-badges",
     "build:frontend": "cd frontend && npm run build",
     "build:backend": "cd backend && npm run build",
     "build": "npm run build:backend && npm run build:frontend",
     "test": "npm run test:backend && npm run test:frontend",
+    "make-badges": "npm run make-badges:backend",
     "deploy": "vercel --prod"
   },
   "pre-commit": [
     "test",
+    "make-badges",
     "build",
     "deploy"
   ],
