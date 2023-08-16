@@ -1,13 +1,36 @@
 import { Request, Response } from "express"
 import userService from "../services/userService"
+import { matchedData } from "express-validator"
+import { GetAllUsersQuery, GetUserByIdQuery } from "../typings/queryTypes"
+import { SortOrder, SortUsersBy } from "../typings/enums"
+import { IdParams } from "../typings/paramsTypes"
 
-const getAllUsers = async (_req: Request, res: Response) => {
-  const users = await userService.getAllUsers()
+const getAllUsers = async (req: Request, res: Response) => {
+  const {
+    skip = 0,
+    take = 10,
+    sortBy = SortUsersBy.USERNAME,
+    sortOrder = SortOrder.ASC,
+    include,
+  } = matchedData(req) as GetAllUsersQuery
+
+  const users = await userService.getAllUsers(
+    skip,
+    take,
+    sortBy,
+    sortOrder,
+    include
+  )
+
   res.json(users)
 }
 
 const getUserById = async (req: Request, res: Response) => {
-  const user = await userService.getUserById(req.params.id)
+  const { id } = matchedData(req) as IdParams
+  const { include } = matchedData(req) as GetUserByIdQuery
+
+  const user = await userService.getUserById(id, include)
+
   res.json(user)
 }
 

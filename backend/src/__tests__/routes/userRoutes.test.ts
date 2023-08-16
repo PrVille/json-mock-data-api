@@ -1,6 +1,7 @@
 import supertest from "supertest"
 import app from "../../index"
 import { createTestUser, deleteTestUser } from "../../utils/testHelpers"
+import { IncludeInUser, SortOrder, SortUsersBy } from "../../typings/enums"
 
 const api = supertest(app)
 
@@ -10,6 +11,102 @@ describe("GET /api/users", function () {
 
     expect(response.headers["content-type"]).toMatch(/application\/json/)
     expect(response.status).toBe(200)
+  })
+
+  it("should return users with default parameters", async () => {
+    const response = await api.get("/api/users")
+    const expectedProperties = {
+      id: expect.any(String),
+      username: expect.any(String),
+      email: expect.any(String),
+      firstName: expect.any(String),
+      lastName: expect.any(String),
+    }
+
+    const notExpectedProperties = {
+      posts: expect.any(Object),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+    expect(response.body.data).not.toContainEqual(
+      expect.objectContaining(notExpectedProperties)
+    )
+  })
+
+  it("should return users with valid query parameters", async () => {
+    const response = await api.get("/api/users").query({
+      skip: 2,
+      take: 5,
+      sortOrder: SortOrder.ASC,
+      sortBy: SortUsersBy.USERNAME,
+      include: IncludeInUser.POSTS,
+    })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toHaveLength(5)
+    expect(response.body.data[0]).toHaveProperty("id")
+    expect(response.body.data[0]).toHaveProperty("username")
+    expect(response.body.data[0]).toHaveProperty("email")
+    expect(response.body.data[0].posts).toBeDefined()
+    expect(response.body.data[0].posts[0]).toHaveProperty("title")
+  })
+
+  it("should return error 400 with invalid properties", async () => {
+    const response = await api.get("/api/users").query({
+      skip: "invalidSkip",
+      take: "invalidTake",
+      sortOrder: "invalidSortOrder",
+      sortBy: "invalidSortBy",
+      include: "invalidInclude",
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "invalidSkip",
+          msg: "The 'skip' field must be an integer greater than or equal to 0.",
+          path: "skip",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidTake",
+          msg: "The 'take' field must be an integer greater than or equal to 0.",
+          path: "take",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortBy",
+          msg: "The 'sortBy' field must be one of 'id', 'username', or 'lastName'.",
+          path: "sortBy",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortOrder",
+          msg: "The 'sortOrder' field must be either 'asc' or 'desc'.",
+          path: "sortOrder",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidInclude",
+          msg: "The 'include' field must be one or more of 'posts', '', or ''.",
+          path: "include",
+          location: "query",
+        },
+      ],
+    })
   })
 })
 

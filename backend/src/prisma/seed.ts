@@ -1,14 +1,24 @@
 import prisma from "../client"
-import seedData from "../data/seedData"
+import {
+  generateFakePostsWithoutUser,
+  generateFakeUsers,
+} from "../data/generators"
 
 const main = async () => {
   await prisma.user.deleteMany()
 
-  const users = await prisma.user.createMany({
-    data: seedData.users,
-  })
+  for (const fakeUser of generateFakeUsers(10)) {
+    await prisma.user.create({
+      data: {
+        ...fakeUser,
+        posts: {
+          create: generateFakePostsWithoutUser(10),
+        },
+      },
+    })
+  }
 
-  console.log(`Seeded ${users.count} users.`)
+  console.log(`Seeded db.`)
 }
 
 main()
