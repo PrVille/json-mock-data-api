@@ -1,5 +1,3 @@
-import React from 'react'
-
 const GetUser = () => {
   return (
     <div>GetUser</div>
