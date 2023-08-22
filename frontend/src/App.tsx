@@ -1,46 +1,51 @@
-import { useEffect, useState } from "react"
-import reactLogo from "./assets/react.svg"
-import viteLogo from "/vite.svg"
-import "./App.css"
-import test from "./services/userService"
+import { Route, Routes, useLocation } from "react-router-dom"
+import routes from "./routes"
+import Sidebar from "./components/Sidebar"
+import Home from "./pages/Home"
+import Topbar from "./components/Topbar"
+import DocsHome from "./pages/DocsHome"
 
-function App() {
-  const [count, setCount] = useState(10)
-  const [users, setUsers] = useState<string | null>(null)
-
-  const fetchUsers = async () => {
-    const data = await test.getAll()
-    console.log(JSON.stringify(data))
-    setUsers(JSON.stringify(data, null, 2))
-  }
-
-  useEffect(() => {
-    fetchUsers()
-  }, [])
+const App = () => {
+  const location = useLocation()
+  const onHomePage = location.pathname === "/"
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="min-h-screen flex">
+        {!onHomePage && <Sidebar />}
+
+        <div className="relative flex-1 overflow-y-auto h-screen">
+          {/* Content */}
+          <Topbar showLogo={onHomePage} />
+
+          <Routes>
+            <Route path="/" Component={Home} />
+            <Route path="/docs">
+              <Route index Component={DocsHome} />
+              {routes.general.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  Component={route.component}
+                />
+              ))}
+
+              {routes.api.map((route, index) => (
+                <Route key={index} path={route.path}>
+                  <Route index Component={route.component} />
+                  {route.routes.map((route, index) => (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      Component={route.component}
+                    />
+                  ))}
+                </Route>
+              ))}
+            </Route>
+          </Routes>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      {users && <p>{users}</p>}
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
