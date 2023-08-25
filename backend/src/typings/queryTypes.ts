@@ -1,4 +1,4 @@
-import { IncludeInUser, SortOrder, SortUsersBy } from "./enums"
+import { SortOrder, SortUsersBy } from "./enums"
 
 export interface GetAllBaseQuery {
   skip?: number
@@ -8,9 +8,4 @@ export interface GetAllBaseQuery {
 
 export interface GetAllUsersQuery extends GetAllBaseQuery {
   sortBy?: SortUsersBy
-  include: IncludeInUser[]
-}
-
-export interface GetUserByIdQuery {
-  include: IncludeInUser[]
 }

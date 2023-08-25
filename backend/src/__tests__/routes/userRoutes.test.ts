@@ -1,7 +1,7 @@
 import supertest from "supertest"
 import app from "../../index"
 import { createTestUser, deleteTestUser } from "../../utils/testHelpers"
-import { IncludeInUser, SortOrder, SortUsersBy } from "../../typings/enums"
+import { SortOrder, SortUsersBy } from "../../typings/enums"
 
 const api = supertest(app)
 
@@ -23,18 +23,11 @@ describe("GET /api/users", function () {
       lastName: expect.any(String),
     }
 
-    const notExpectedProperties = {
-      posts: expect.any(Object),
-    }
-
     expect(response.status).toBe(200)
     expect(response.body).toBeDefined()
     expect(response.body.data).toBeDefined()
     expect(response.body.data).toContainEqual(
       expect.objectContaining(expectedProperties)
-    )
-    expect(response.body.data).not.toContainEqual(
-      expect.objectContaining(notExpectedProperties)
     )
   })
 
@@ -44,7 +37,6 @@ describe("GET /api/users", function () {
       take: 5,
       sortOrder: SortOrder.ASC,
       sortBy: SortUsersBy.USERNAME,
-      include: IncludeInUser.POSTS,
     })
 
     expect(response.status).toBe(200)
@@ -53,8 +45,6 @@ describe("GET /api/users", function () {
     expect(response.body.data[0]).toHaveProperty("id")
     expect(response.body.data[0]).toHaveProperty("username")
     expect(response.body.data[0]).toHaveProperty("email")
-    expect(response.body.data[0].posts).toBeDefined()
-    expect(response.body.data[0].posts[0]).toHaveProperty("title")
   })
 
   it("should return error 400 with invalid properties", async () => {
@@ -96,13 +86,6 @@ describe("GET /api/users", function () {
           value: "invalidSortOrder",
           msg: "The 'sortOrder' field must be either 'asc' or 'desc'.",
           path: "sortOrder",
-          location: "query",
-        },
-        {
-          type: "field",
-          value: "invalidInclude",
-          msg: "The 'include' field must be one or more of 'posts', '', or ''.",
-          path: "include",
           location: "query",
         },
       ],

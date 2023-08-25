@@ -8,7 +8,3 @@ export enum SortUsersBy {
   USERNAME = "username",
   LASTNAME = "lastName",
 }
-
-export enum IncludeInUser {
-  POSTS = "posts",
-}

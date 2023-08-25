@@ -1,8 +1,5 @@
 import { Schema } from "express-validator"
-import {
-  checkIfUserExists,
-  validateIncludeInUser,
-} from "../utils/customValidators"
+import { checkIfUserExists } from "../utils/customValidators"
 import { SortOrder, SortUsersBy } from "../typings/enums"
 
 const getAllUsersSchema: Schema = {
@@ -39,12 +36,6 @@ const getAllUsersSchema: Schema = {
       errorMessage: "The 'sortOrder' field must be either 'asc' or 'desc'.",
     },
   },
-  include: {
-    custom: {
-      options: validateIncludeInUser,
-    },
-    toArray: true,
-  },
 }
 
 const getUserByIdSchema: Schema = {
@@ -57,12 +48,6 @@ const getUserByIdSchema: Schema = {
       options: checkIfUserExists,
       bail: true,
     },
-  },
-  include: {
-    custom: {
-      options: validateIncludeInUser,
-    },
-    toArray: true,
   },
 }
 
