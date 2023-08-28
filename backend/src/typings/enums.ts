@@ -6,5 +6,10 @@ export enum SortOrder {
 export enum SortUsersBy {
   ID = "id",
   USERNAME = "username",
-  LASTNAME = "lastName",
+  EMAIL = "email",
+  FIRST_NAME = "firstName",
+  LAST_NAME = "lastName",
+  AGE = "age",
+  UPDATED_AT = "updatedAt",
+  CREATED_AT = "createdAt",
 }

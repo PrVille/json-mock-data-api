@@ -3,3 +3,4 @@ dist
 .env
 coverage
 jest-stare
+json-mock-data-api-diagram.drawio
