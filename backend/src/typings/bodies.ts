@@ -11,3 +11,8 @@ export type CreateUserBody = Pick<
 >
 
 export type UpdateUserBody = Partial<CreateUserBody>
+
+export type CreatePostBody = Pick<
+  Prisma.PostUncheckedCreateInput,
+  "title" | "content" | "userId"
+>

@@ -22,13 +22,13 @@ router.get(
   postController.getPostById
 )
 
-// // Create a new user.
-// router.post(
-//   "/",
-//   checkSchema(userValidationSchemas.createUserSchema),
-//   validate,
-//   userController.createUser
-// )
+// Create a new post.
+router.post(
+  "/",
+  checkSchema(postValidationSchemas.createPostSchema),
+  validate,
+  postController.createPost
+)
 
 // // Update user's information.
 // router.put(

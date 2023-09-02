@@ -2,7 +2,7 @@ import { Schema } from "express-validator"
 import commonValidationSchemas from "./commonValidationSchemas"
 import { SortOrder, SortPostsBy } from "../typings/enums"
 import commonValidationFields from "./commonValidationFields"
-import { checkIfPostExists } from "../utils/customValidators"
+import { checkIfPostExists, checkIfUserExists } from "../utils/customValidators"
 
 const getAllPostsSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
@@ -32,7 +32,6 @@ const getAllPostsSchema: Schema = {
   },
 }
 
-
 const postByIdSchema: Schema = {
   id: {
     in: "params",
@@ -43,7 +42,53 @@ const postByIdSchema: Schema = {
   },
 }
 
+const createPostSchema: Schema = {
+  title: {
+    exists: {
+      errorMessage: "The 'title' field is a required field.",
+      bail: true,
+    },
+    isString: {
+      errorMessage: "The 'title' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'title' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+  content: {
+    exists: {
+      errorMessage: "The 'content' field is a required field.",
+      bail: true,
+    },
+    isString: {
+      errorMessage: "The 'content' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'content' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+  userId: {
+    exists: {
+      errorMessage: "The 'userId' field is a required field.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'userId' field must be a non-empty string.",
+      bail: true,
+    },
+    custom: {
+      options: checkIfUserExists,
+      errorMessage: "The specified user for the 'userId' field does not exist.",
+    },
+  },
+}
+
 export default {
   getAllPostsSchema,
-  postByIdSchema
+  postByIdSchema,
+  createPostSchema,
 }
