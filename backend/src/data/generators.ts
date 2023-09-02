@@ -46,3 +46,11 @@ export const generateFakePostsWithoutUser = (
 ): Omit<Prisma.PostCreateInput, "user" | "apiUser">[] => {
   return Array.from({ length: amount }, generateFakePostWithoutUser)
 }
+
+export const generateFakeComment = (postId: string, userId: string, apiUserId: string): Prisma.CommentUncheckedCreateInput => {
+  const content = faker.lorem.sentence({ min: 1, max: 5 })
+
+  const fakeComment = { content, postId, userId, apiUserId }
+
+  return fakeComment
+}

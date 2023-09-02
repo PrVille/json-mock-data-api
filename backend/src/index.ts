@@ -7,6 +7,7 @@ import { PORT } from "./utils/config"
 import authRouter from "./routes/authRoutes"
 import usersRouter from "./routes/userRoutes"
 import postsRouter from "./routes/postRoutes"
+import commentsRouter from "./routes/commentRoutes"
 
 import errorHandler from "./middlewares/errorHandler"
 import authApiUser from "./middlewares/authApiUser"
@@ -19,6 +20,7 @@ app.use("/api/auth", authRouter)
 
 app.use("/api/users", authApiUser, usersRouter)
 app.use("/api/posts", authApiUser, postsRouter)
+app.use("/api/comments", authApiUser, commentsRouter)
 
 app.use(errorHandler)
 

@@ -20,3 +20,9 @@ export enum SortPostsBy {
   UPDATED_AT = "updatedAt",
   CREATED_AT = "createdAt",
 }
+
+export enum SortCommentsBy {
+  ID = "id",
+  UPDATED_AT = "updatedAt",
+  CREATED_AT = "createdAt",
+}

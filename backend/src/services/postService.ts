@@ -3,7 +3,6 @@ import prisma from "../client"
 import { CreatePostBody, UpdatePostBody } from "../typings/bodies"
 import { GetAllPostsProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
-import { Post } from "@prisma/client"
 
 const getAllPosts = async (postsMeta: GetAllPostsProps, apiUserId: string) => {
   const { skip, take, sortBy, sortOrder } = postsMeta
