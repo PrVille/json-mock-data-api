@@ -22,6 +22,14 @@ router.get(
   userController.getUserById
 )
 
+// Retrieve a list of all posts for user.
+router.get(
+  "/:id/posts",
+  checkSchema(userValidationSchemas.getAllUserPostsSchema),
+  validate,
+  userController.getAllUserPosts
+)
+
 // Create a new user.
 router.post(
   "/",

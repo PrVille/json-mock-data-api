@@ -1,6 +1,6 @@
 import prisma from "../client"
 import { CreateUserBody, UpdateUserBody } from "../typings/bodies"
-import { GetAllUsersProps } from "../typings/props"
+import { GetAllPostsProps, GetAllUsersProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 import { faker } from "@faker-js/faker"
 
@@ -41,6 +41,40 @@ const getUserById = async (id: string, apiUserId: string) => {
   })
 
   return user
+}
+
+const getAllUserPosts = async (
+  userId: string,
+  postsMeta: GetAllPostsProps,
+  apiUserId: string
+) => {
+  const { skip, take, sortBy, sortOrder } = postsMeta
+
+  const posts = await prisma.post.findMany({
+    where: {
+      userId,
+      apiUserId,
+    },
+    skip,
+    take,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+  })
+
+  const total = await prisma.post.count({
+    where: {
+      userId,
+      apiUserId,
+    },
+  })
+
+  return {
+    data: posts,
+    total,
+    skip,
+    take,
+  }
 }
 
 const createUser = async (userToCreate: CreateUserBody, apiUserId: string) => {
@@ -129,6 +163,7 @@ const deleteUserById = async (id: string, apiUserId: string) => {
 export default {
   getAllUsers,
   getUserById,
+  getAllUserPosts,
   createUser,
   updateUserById,
   deleteUserById,

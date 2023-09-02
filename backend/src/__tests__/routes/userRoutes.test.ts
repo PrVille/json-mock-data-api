@@ -2,12 +2,14 @@ import supertest from "supertest"
 import app, { server } from "../../index"
 import {
   createTestApiUser,
+  createTestPost,
   createTestTokenForApiUser,
   createTestUser,
   deleteTestApiUser,
+  deleteTestPost,
   deleteTestUser,
 } from "../../utils/testHelpers"
-import { SortOrder, SortUsersBy } from "../../typings/enums"
+import { SortOrder, SortPostsBy, SortUsersBy } from "../../typings/enums"
 import { CreateUserBody, UpdateUserBody } from "../../typings/bodies"
 import { faker } from "@faker-js/faker"
 
@@ -176,6 +178,167 @@ describe("GET /api/users/:id", function () {
         },
       ],
     })
+  })
+})
+
+describe("GET /api/users/:id/posts", function () {
+  it("should respond with json", async () => {
+    const testUser = await createTestUser()
+    const response = await api.get(`/api/users/${testUser.id}/posts`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return error 400 when the user doesn't exist", async () => {
+    const response = await api.get("/api/users/nonExistingUserId/posts")
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingUserId",
+          msg: "The specified user for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
+
+  it("should return posts for user with default parameters", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const response = await api.get(`/api/users/${testUser.id}/posts`)
+    const expectedProperties = {
+      id: expect.any(String),
+      title: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return meta data with posts for user", async () => {
+    const testUser = await createTestUser()
+    const response = await api.get(`/api/users/${testUser.id}/posts`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.skip).toBeDefined()
+    expect(response.body.take).toBeDefined()
+    expect(response.body.total).toBeDefined()
+
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return posts for user for an authenticated user", async () => {
+    const testApiUser = await createTestApiUser()
+    const testUser = await createTestUser(testApiUser.id)
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const response = await api
+      .get(`/api/users/${testUser.id}/posts`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toHaveLength(0)
+    expect(response.body.data).toEqual([])
+
+    await deleteTestUser(testUser.id)
+    await deleteTestApiUser(testApiUser.id)
+  })
+
+  it("should return posts with valid query parameters", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const response = await api.get(`/api/users/${testUser.id}/posts`).query({
+      skip: 0,
+      take: 5,
+      sortOrder: SortOrder.ASC,
+      sortBy: SortPostsBy.TITLE,
+    })
+
+    const expectedProperties = {
+      id: expect.any(String),
+      title: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toHaveLength(1)
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return error 400 with invalid properties", async () => {
+    const testUser = await createTestUser()
+
+    const response = await api.get(`/api/users/${testUser.id}/posts`).query({
+      skip: "invalidSkip",
+      take: "invalidTake",
+      sortOrder: "invalidSortOrder",
+      sortBy: "invalidSortBy",
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "invalidSkip",
+          msg: "The 'skip' field must be an integer greater than or equal to 0.",
+          path: "skip",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidTake",
+          msg: "The 'take' field must be an integer greater than or equal to 0.",
+          path: "take",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortBy",
+          msg: "The 'sortBy' field must be one of 'id', 'title', 'updatedAt' or 'createdAt'.",
+          path: "sortBy",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortOrder",
+          msg: "The 'sortOrder' field must be either 'asc' or 'desc'.",
+          path: "sortOrder",
+          location: "query",
+        },
+      ],
+    })
+
+    await deleteTestUser(testUser.id)
   })
 })
 
