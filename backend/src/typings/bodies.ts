@@ -16,3 +16,5 @@ export type CreatePostBody = Pick<
   Prisma.PostUncheckedCreateInput,
   "title" | "content" | "userId"
 >
+
+export type UpdatePostBody = Partial<Omit<CreatePostBody, "userId">>

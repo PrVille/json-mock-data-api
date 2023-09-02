@@ -30,13 +30,13 @@ router.post(
   postController.createPost
 )
 
-// // Update user's information.
-// router.put(
-//   "/:id",
-//   checkSchema(userValidationSchemas.updateUserByIdSchema),
-//   validate,
-//   userController.updateUserById
-// )
+// Update post information.
+router.put(
+  "/:id",
+  checkSchema(postValidationSchemas.updatePostByIdSchema),
+  validate,
+  postController.updatePostById
+)
 
 // // Delete a user.
 // router.delete(

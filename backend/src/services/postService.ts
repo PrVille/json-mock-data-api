@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker"
 import prisma from "../client"
-import { CreatePostBody } from "../typings/bodies"
+import { CreatePostBody, UpdatePostBody } from "../typings/bodies"
 import { GetAllPostsProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 import { Post } from "@prisma/client"
@@ -68,8 +68,47 @@ const createPost = async (postToCreate: CreatePostBody, apiUserId: string) => {
   return post
 }
 
+const updatePostById = async (
+  id: string,
+  postToUpdate: UpdatePostBody,
+  apiUserId: string
+) => {
+  if (apiUserId === DEFAULT_API_USER_ID) {
+    const existingPost = await prisma.post.findUniqueOrThrow({
+      where: {
+        id,
+        apiUserId,
+      },
+    })
+
+    const mockPost = {
+      id: existingPost.id,
+      title: postToUpdate.title || existingPost.title,
+      content: postToUpdate.content || existingPost.content,
+      userId: existingPost.userId,
+      createdAt: existingPost.createdAt,
+      updatedAt: new Date(),
+    }
+
+    return mockPost
+  }
+
+  const post = await prisma.post.update({
+    where: {
+      id,
+      apiUserId,
+    },
+    data: {
+      ...postToUpdate,
+    },
+  })
+
+  return post
+}
+
 export default {
   getAllPosts,
   getPostById,
-  createPost
+  createPost,
+  updatePostById,
 }

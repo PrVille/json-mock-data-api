@@ -87,8 +87,35 @@ const createPostSchema: Schema = {
   },
 }
 
+const updatePostByIdSchema: Schema = {
+  ...postByIdSchema,
+  title: {
+    optional: true,
+    isString: {
+      errorMessage: "The 'title' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'title' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+  content: {
+    optional: true,
+    isString: {
+      errorMessage: "The 'content' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'content' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+}
+
 export default {
   getAllPostsSchema,
   postByIdSchema,
   createPostSchema,
+  updatePostByIdSchema
 }

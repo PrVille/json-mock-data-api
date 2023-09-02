@@ -10,7 +10,7 @@ import {
   deleteTestUser,
 } from "../../utils/testHelpers"
 import { SortOrder, SortPostsBy } from "../../typings/enums"
-import { CreatePostBody } from "../../typings/bodies"
+import { CreatePostBody, UpdatePostBody } from "../../typings/bodies"
 
 const api = supertest(app)
 
@@ -353,5 +353,199 @@ describe("POST /api/posts", function () {
         },
       ],
     })
+  })
+})
+
+describe("PUT /api/posts/:id", function () {
+  it("should respond with json", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const updatedPostData: UpdatePostBody = {
+      title: "UpdatedTitle",
+      content: "UpdatedContent",
+    }
+
+    const response = await api
+      .put(`/api/posts/${testPost.id}`)
+      .send(updatedPostData)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return error 400 when the post doesn't exist", async () => {
+    const nonExistingPostId = "nonExistingUserId"
+    const updatedPostData: UpdatePostBody = {
+      title: "UpdatedTitle",
+      content: "UpdatedContent",
+    }
+
+    const response = await api
+      .put(`/api/posts/${nonExistingPostId}`)
+      .send(updatedPostData)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: nonExistingPostId,
+          msg: "The specified post for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
+
+  it("should return updated post with valid request body", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const updatedPostData: UpdatePostBody = {
+      title: "UpdatedTitle",
+      content: "UpdatedContent",
+    }
+
+    const response = await api
+      .put(`/api/posts/${testPost.id}`)
+      .send(updatedPostData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        id: testPost.id,
+        title: updatedPostData.title,
+        content: updatedPostData.content,
+        userId: testUser.id,
+      })
+    )
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should mock updating post when not authenticated", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const updatedPostData: UpdatePostBody = {
+      title: "UpdatedTitle",
+      content: "UpdatedContent",
+    }
+
+    const response = await api
+      .put(`/api/posts/${testPost.id}`)
+      .send(updatedPostData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("title")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    expect(response.body.id).toBe(testPost.id)
+    expect(response.body.title).toBe(updatedPostData.title)
+    expect(response.body.content).toBe(updatedPostData.content)
+
+    const testPostAfter = await api.get(`/api/posts/${testPost.id}`)
+
+    expect(testPostAfter.status).toBe(200)
+    expect(testPostAfter.body).toBeDefined()
+    expect(testPostAfter.body.id).toBe(testPost.id)
+    expect(testPostAfter.body.title).toBe(testPost.title)
+    expect(testPostAfter.body.content).toBe(testPost.content)
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should save updated post when authenticated", async () => {
+    const testApiUser = await createTestApiUser()
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const testUser = await createTestUser(testApiUser.id)
+    const testPost = await createTestPost(testUser.id, testApiUser.id)
+    const updatedPostData: UpdatePostBody = {
+      title: "UpdatedTitle",
+      content: "UpdatedContent",
+    }
+
+    const response = await api
+      .put(`/api/posts/${testPost.id}`)
+      .send(updatedPostData)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("title")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    expect(response.body.id).toBe(testPost.id)
+    expect(response.body.title).toBe(updatedPostData.title)
+    expect(response.body.content).toBe(updatedPostData.content)
+
+    const testPostAfter = await api
+      .get(`/api/posts/${testPost.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(testPostAfter.status).toBe(200)
+    expect(testPostAfter.body).toBeDefined()
+    expect(testPostAfter.body.id).toBe(testPost.id)
+    expect(testPostAfter.body.title).toBe(updatedPostData.title)
+    expect(testPostAfter.body.content).toBe(updatedPostData.content)
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+    await deleteTestApiUser(testApiUser.id)
+  })
+
+  it("should return error 400 with invalid request body", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const updatedPostData: UpdatePostBody = {
+      title: "",
+      content: "",
+    }
+
+    const response = await api
+      .put(`/api/posts/${testPost.id}`)
+      .send(updatedPostData)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "",
+          msg: "The 'title' field must be a non-empty string.",
+          path: "title",
+          location: "body",
+        },
+        {
+          type: "field",
+          value: "",
+          msg: "The 'content' field must be a non-empty string.",
+          path: "content",
+          location: "body",
+        },
+      ],
+    })
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
   })
 })

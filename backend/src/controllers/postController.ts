@@ -4,7 +4,7 @@ import { matchedData } from "express-validator"
 import { GetAllPostsQuery } from "../typings/queries"
 import { SortOrder, SortPostsBy } from "../typings/enums"
 import { IdParams } from "../typings/params"
-import { CreatePostBody } from "../typings/bodies"
+import { CreatePostBody, UpdatePostBody } from "../typings/bodies"
 
 const getAllPosts = async (req: Request, res: Response) => {
   const {
@@ -36,8 +36,17 @@ const createPost = async (req: Request, res: Response) => {
   res.json(post)
 }
 
+const updatePostById = async (req: Request, res: Response) => {
+  const { id, ...postToUpdate } = matchedData(req) as IdParams & UpdatePostBody
+
+  const post = await postService.updatePostById(id, postToUpdate, req.apiUserId)
+
+  res.json(post)
+}
+
 export default {
   getAllPosts,
   getPostById,
-  createPost
+  createPost,
+  updatePostById
 }
