@@ -106,9 +106,25 @@ const updatePostById = async (
   return post
 }
 
+const deletePostById = async (id: string, apiUserId: string) => {
+  if (apiUserId === DEFAULT_API_USER_ID) {
+    return await getPostById(id, apiUserId)
+  }
+
+  const post = await prisma.post.delete({
+    where: {
+      id,
+      apiUserId,
+    },
+  })
+
+  return post
+}
+
 export default {
   getAllPosts,
   getPostById,
   createPost,
   updatePostById,
+  deletePostById
 }

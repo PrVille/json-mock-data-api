@@ -549,3 +549,102 @@ describe("PUT /api/posts/:id", function () {
     await deleteTestUser(testUser.id)
   })
 })
+
+describe("DELETE /api/posts/:id", function () {
+  it("should respond with json", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const response = await api.delete(`/api/posts/${testPost.id}`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return error 400 when the post doesn't exist", async () => {
+    const response = await api.delete("/api/posts/nonExistingPostId")
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingPostId",
+          msg: "The specified post for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
+
+  it("should mock deleting post when not authenticated", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+
+    const postsBefore = await api.get("/api/posts")
+    const response = await api.delete(`/api/posts/${testPost.id}`)
+
+    expect(postsBefore.status).toBe(200)
+    expect(postsBefore.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("title")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    const postsAfter = await api.get("/api/posts")
+
+    expect(postsAfter.status).toBe(200)
+    expect(postsAfter.body.total).toBeDefined()
+    expect(postsAfter.body.total).toBe(postsBefore.body.total)
+
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should delete post when authenticated", async () => {
+    const testApiUser = await createTestApiUser()
+    const token = createTestTokenForApiUser(testApiUser.id)
+    const testUser = await createTestUser(testApiUser.id)
+    const testPost = await createTestPost(testUser.id, testApiUser.id)
+
+    const postsBefore = await api
+      .get("/api/posts")
+      .set("Authorization", `Bearer ${token}`)
+
+    const response = await api
+      .delete(`/api/posts/${testPost.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(postsBefore.status).toBe(200)
+    expect(postsBefore.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+   
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("title")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    const postsAfter = await api
+      .get("/api/posts")
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(postsAfter.status).toBe(200)
+    expect(postsAfter.body.total).toBeDefined()
+    expect(postsAfter.body.total).toBe(postsBefore.body.total - 1)
+
+    await deleteTestUser(testUser.id)
+    await deleteTestApiUser(testApiUser.id)
+  })
+})

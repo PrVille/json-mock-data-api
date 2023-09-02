@@ -44,9 +44,18 @@ const updatePostById = async (req: Request, res: Response) => {
   res.json(post)
 }
 
+const deletePostById = async (req: Request, res: Response) => {
+  const { id } = matchedData(req) as IdParams
+
+  const post = await postService.deletePostById(id, req.apiUserId)
+
+  res.json(post)
+}
+
 export default {
   getAllPosts,
   getPostById,
   createPost,
-  updatePostById
+  updatePostById,
+  deletePostById
 }

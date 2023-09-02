@@ -38,12 +38,12 @@ router.put(
   postController.updatePostById
 )
 
-// // Delete a user.
-// router.delete(
-//   "/:id",
-//   checkSchema(userValidationSchemas.userByIdSchema),
-//   validate,
-//   userController.deleteUserById
-// )
+// Delete a post.
+router.delete(
+  "/:id",
+  checkSchema(postValidationSchemas.postByIdSchema),
+  validate,
+  postController.deletePostById
+)
 
 export default router
