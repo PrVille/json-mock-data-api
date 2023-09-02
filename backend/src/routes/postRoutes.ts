@@ -14,13 +14,13 @@ router.get(
   postController.getAllPosts
 )
 
-// // Retrieve a specific user by their ID.
-// router.get(
-//   "/:id",
-//   checkSchema(userValidationSchemas.userByIdSchema),
-//   validate,
-//   userController.getUserById
-// )
+// Retrieve a specific post by their ID.
+router.get(
+  "/:id",
+  checkSchema(postValidationSchemas.postByIdSchema),
+  validate,
+  postController.getPostById
+)
 
 // // Create a new user.
 // router.post(

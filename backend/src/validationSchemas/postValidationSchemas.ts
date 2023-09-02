@@ -1,6 +1,8 @@
 import { Schema } from "express-validator"
 import commonValidationSchemas from "./commonValidationSchemas"
 import { SortOrder, SortPostsBy } from "../typings/enums"
+import commonValidationFields from "./commonValidationFields"
+import { checkIfPostExists } from "../utils/customValidators"
 
 const getAllPostsSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
@@ -30,6 +32,18 @@ const getAllPostsSchema: Schema = {
   },
 }
 
+
+const postByIdSchema: Schema = {
+  id: {
+    in: "params",
+    ...commonValidationFields.idFields,
+    custom: {
+      options: checkIfPostExists,
+    },
+  },
+}
+
 export default {
   getAllPostsSchema,
+  postByIdSchema
 }

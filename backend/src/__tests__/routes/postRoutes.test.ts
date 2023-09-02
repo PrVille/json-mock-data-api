@@ -2,8 +2,12 @@ import supertest from "supertest"
 import app, { server } from "../../index"
 import {
   createTestApiUser,
+  createTestPost,
   createTestTokenForApiUser,
+  createTestUser,
   deleteTestApiUser,
+  deleteTestPost,
+  deleteTestUser,
 } from "../../utils/testHelpers"
 import { SortOrder, SortPostsBy } from "../../typings/enums"
 
@@ -99,7 +103,6 @@ describe("GET /api/posts", function () {
 
     expect(response.status).toBe(400)
     expect(response.body).toBeDefined()
-    console.log(response.body)
     expect(response.body).toEqual({
       errors: [
         {
@@ -129,6 +132,58 @@ describe("GET /api/posts", function () {
           msg: "The 'sortOrder' field must be either 'asc' or 'desc'.",
           path: "sortOrder",
           location: "query",
+        },
+      ],
+    })
+  })
+})
+
+describe("GET /api/posts/:id", function () {
+  it("should respond with json", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+
+    const response = await api.get(`/api/posts/${testPost.id}`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return post for an authenticated user", async () => {
+    const testApiUser = await createTestApiUser()
+    const testUser = await createTestUser(testApiUser.id)
+    const testPost = await createTestPost(testUser.id, testApiUser.id)
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const response = await api
+      .get(`/api/posts/${testPost.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.id).toBe(testPost.id)
+
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+    await deleteTestApiUser(testApiUser.id)
+  })
+
+  it("should return error 400 when the post doesn't exist", async () => {
+    const response = await api.get("/api/posts/nonExistingPostId")
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingPostId",
+          msg: "The specified post for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
         },
       ],
     })

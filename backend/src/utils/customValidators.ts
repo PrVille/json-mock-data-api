@@ -19,6 +19,24 @@ export const checkIfUserExists = async (
   return true
 }
 
+export const checkIfPostExists = async (
+  value: string,
+  { req }: { req: Request }
+) => {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: value,
+      apiUserId: req.apiUserId,
+    },
+  })
+
+  if (!post) {
+    throw new Error("The specified post for the 'id' field does not exist.")
+  }
+
+  return true
+}
+
 export const checkEmailNotInUse = async (
   value: string,
   { req }: { req: Request }

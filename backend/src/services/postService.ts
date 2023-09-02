@@ -29,6 +29,18 @@ const getAllPosts = async (postsMeta: GetAllPostsProps, apiUserId: string) => {
   }
 }
 
+const getPostById = async (id: string, apiUserId: string) => {
+  const post = await prisma.post.findUnique({
+    where: {
+      id,
+      apiUserId,
+    },
+  })
+
+  return post
+}
+
 export default {
   getAllPosts,
+  getPostById,
 }

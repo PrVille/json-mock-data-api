@@ -3,6 +3,7 @@ import postService from "../services/postService"
 import { matchedData } from "express-validator"
 import { GetAllPostsQuery } from "../typings/queries"
 import { SortOrder, SortPostsBy } from "../typings/enums"
+import { IdParams } from "../typings/params"
 
 const getAllPosts = async (req: Request, res: Response) => {
   const {
@@ -18,6 +19,14 @@ const getAllPosts = async (req: Request, res: Response) => {
   res.json(posts)
 }
 
+const getPostById = async (req: Request, res: Response) => {
+    const { id } = matchedData(req) as IdParams
+  
+    const post = await postService.getPostById(id, req.apiUserId)
+  
+    res.json(post)
+  }
+
 export default {
-  getAllPosts,
+  getAllPosts,getPostById
 }
