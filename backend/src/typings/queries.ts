@@ -1,4 +1,4 @@
-import { SortOrder, SortUsersBy } from "./enums"
+import { SortOrder, SortPostsBy, SortUsersBy } from "./enums"
 
 export interface GetAllBaseQuery {
   skip?: number
@@ -8,4 +8,8 @@ export interface GetAllBaseQuery {
 
 export interface GetAllUsersQuery extends GetAllBaseQuery {
   sortBy?: SortUsersBy
+}
+
+export interface GetAllPostsQuery extends GetAllBaseQuery {
+  sortBy?: SortPostsBy
 }

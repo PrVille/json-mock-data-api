@@ -28,7 +28,7 @@ model User {
   age       Int?
   imageUrl  String?
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime  @default(now()) @updatedAt
   apiUser   ApiUser   @relation(fields: [apiUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   apiUserId String
   posts     Post[]
@@ -42,6 +42,8 @@ model Post {
   id        String    @id @default(uuid())
   title     String
   content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
   apiUser   ApiUser   @relation(fields: [apiUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   apiUserId String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)

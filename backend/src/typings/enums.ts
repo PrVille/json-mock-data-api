@@ -13,3 +13,10 @@ export enum SortUsersBy {
   UPDATED_AT = "updatedAt",
   CREATED_AT = "createdAt",
 }
+
+export enum SortPostsBy {
+  ID = "id",
+  TITLE = "title",
+  UPDATED_AT = "updatedAt",
+  CREATED_AT = "createdAt",
+}

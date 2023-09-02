@@ -11,8 +11,6 @@ const authApiUser = async (req: Request, res: Response, next: NextFunction) => {
       const decodedToken = verify(tokenBearer, SECRET)
       const { id } = decodedToken as { id: string }
 
-      console.log(decodedToken)
-
       await prisma.apiUser.findUniqueOrThrow({
         where: {
           id,

@@ -4,8 +4,9 @@ import "express-async-errors"
 
 import { PORT } from "./utils/config"
 
-import usersRouter from "./routes/userRoutes"
 import authRouter from "./routes/authRoutes"
+import usersRouter from "./routes/userRoutes"
+import postsRouter from "./routes/postRoutes"
 
 import errorHandler from "./middlewares/errorHandler"
 import authApiUser from "./middlewares/authApiUser"
@@ -15,7 +16,9 @@ app.use(express.json())
 app.use(cors())
 
 app.use("/api/auth", authRouter)
+
 app.use("/api/users", authApiUser, usersRouter)
+app.use("/api/posts", authApiUser, postsRouter)
 
 app.use(errorHandler)
 
