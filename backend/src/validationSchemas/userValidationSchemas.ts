@@ -34,6 +34,7 @@ const getAllUsersSchema: Schema = {
 
 const userByIdSchema: Schema = {
   id: {
+    in: "params",
     ...commonValidationFields.idFields,
     custom: {
       options: checkIfUserExists,
@@ -63,7 +64,7 @@ const updateUserByIdSchema: Schema = {
   ...commonValidationSchemas.imageUrlSchema,
 }
 
-const createUserchema: Schema = {
+const createUserSchema: Schema = {
   email: {
     exists: {
       errorMessage: "The 'email' field is a required field.",
@@ -100,5 +101,5 @@ export default {
   getAllUsersSchema,
   userByIdSchema,
   updateUserByIdSchema,
-  createUserchema,
+  createUserSchema,
 }

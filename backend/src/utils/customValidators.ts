@@ -1,9 +1,14 @@
+import { Request } from "express-validator/src/base"
 import prisma from "../client"
 
-export const checkIfUserExists = async (value: string) => {
+export const checkIfUserExists = async (
+  value: string,
+  { req }: { req: Request }
+) => {
   const user = await prisma.user.findUnique({
     where: {
       id: value,
+      apiUserId: req.apiUserId,
     },
   })
 
@@ -14,30 +19,64 @@ export const checkIfUserExists = async (value: string) => {
   return true
 }
 
-export const checkEmailNotInUse  = async (value: string) => {
+export const checkEmailNotInUse = async (
+  value: string,
+  { req }: { req: Request }
+) => {
   const user = await prisma.user.findUnique({
+    where: {
+      email_apiUserId: {
+        email: value,
+        apiUserId: req.apiUserId,
+      },
+    },
+  })
+
+  if (user) {
+    throw new Error(
+      "The specified email for the 'email' field is already in use."
+    )
+  }
+
+  return true
+}
+
+export const checkUsernameNotInUse = async (
+  value: string,
+  { req }: { req: Request }
+) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username_apiUserId: {
+        username: value,
+        apiUserId: req.apiUserId,
+      },
+    },
+  })
+
+  if (user) {
+    throw new Error(
+      "The specified username for the 'username' field is already in use."
+    )
+  }
+
+  return true
+}
+
+export const checkApiUserEmailNotInUse = async (value: string) => {
+  const user = await prisma.apiUser.findUnique({
     where: {
       email: value,
     },
   })
 
   if (user) {
-    throw new Error("The specified email for the 'email' field is already in use.")
+    throw new Error(
+      "The specified email for the 'email' field is already in use."
+    )
   }
 
   return true
 }
 
-export const checkUsernameNotInUse  = async (value: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      username: value,
-    },
-  })
-
-  if (user) {
-    throw new Error("The specified username for the 'username' field is already in use.")
-  }
-
-  return true
-}
+// TODO: Add pw confirmation for apiUser

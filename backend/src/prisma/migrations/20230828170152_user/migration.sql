@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Comment" ADD COLUMN     "hasApiKey" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "apiKeyId" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Post" ADD COLUMN     "hasApiKey" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "apiKeyId" DROP NOT NULL;

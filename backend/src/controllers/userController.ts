@@ -15,7 +15,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   } = matchedData(req) as GetAllUsersQuery
 
   const usersMeta = { skip, take, sortBy, sortOrder }
-  const users = await userService.getAllUsers(usersMeta)
+  const users = await userService.getAllUsers(usersMeta, req.apiUserId)
 
   res.json(users)
 }
@@ -23,7 +23,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getUserById = async (req: Request, res: Response) => {
   const { id } = matchedData(req) as IdParams
 
-  const user = await userService.getUserById(id)
+  const user = await userService.getUserById(id, req.apiUserId)
 
   res.json(user)
 }
@@ -31,7 +31,7 @@ const getUserById = async (req: Request, res: Response) => {
 const createUser = async (req: Request, res: Response) => {
   const userToCreate = matchedData(req) as CreateUserBody
 
-  const user = await userService.createUser(userToCreate)
+  const user = await userService.createUser(userToCreate, req.apiUserId)
 
   res.json(user)
 }
@@ -39,7 +39,7 @@ const createUser = async (req: Request, res: Response) => {
 const updateUserById = async (req: Request, res: Response) => {
   const { id, ...userToUpdate } = matchedData(req) as IdParams & UpdateUserBody
 
-  const user = await userService.updateUserById(id, userToUpdate)
+  const user = await userService.updateUserById(id, userToUpdate, req.apiUserId)
 
   res.json(user)
 }
@@ -47,7 +47,7 @@ const updateUserById = async (req: Request, res: Response) => {
 const deleteUserById = async (req: Request, res: Response) => {
   const { id } = matchedData(req) as IdParams
 
-  const user = await userService.deleteUserById(id)
+  const user = await userService.deleteUserById(id, req.apiUserId)
 
   res.json(user)
 }

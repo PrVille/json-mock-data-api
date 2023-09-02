@@ -1,9 +1,57 @@
+import { faker } from "@faker-js/faker"
 import prisma from "../client"
-import { generateFakeUser } from "../data/generators"
+import { DEFAULT_API_USER_ID } from "./config"
+import jwt from "jsonwebtoken"
+import { SECRET } from "../utils/config"
 
-export const createTestUser = async () => {
+const uuid = () => {
+  return faker.string.uuid()
+}
+
+export const createTestUser = async (apiUserId = DEFAULT_API_USER_ID) => {
   return await prisma.user.create({
-    data: generateFakeUser(),
+    data: {
+      username: uuid(),
+      email: uuid() + "@test.com",
+      firstName: uuid(),
+      lastName: uuid(),
+      age: faker.number.int({ min: 0, max: 100 }),
+      imageUrl: faker.image.avatarGitHub(),
+      apiUserId,
+    },
+  })
+}
+
+export const createTestApiUser = async () => {
+  return await prisma.apiUser.create({
+    data: {
+      email: uuid() + "@test.com",
+      passwordHash: faker.internet.password(),
+    },
+  })
+}
+
+export const createTestTokenForApiUser = (id: string) => {
+  const token = jwt.sign({ id }, SECRET, {
+    expiresIn: 60 * 60 * 24 * 365,
+  })
+
+  return token
+}
+
+export const getAllUsers = async (apiUserId = DEFAULT_API_USER_ID) => {
+  return await prisma.user.findMany({
+    where: {
+      apiUserId,
+    },
+  })
+}
+
+export const deleteTestApiUser = async (id: string) => {
+  return await prisma.apiUser.delete({
+    where: {
+      id,
+    },
   })
 }
 

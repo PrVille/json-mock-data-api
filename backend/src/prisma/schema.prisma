@@ -10,34 +10,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model ApiUser {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  User         User[]
+  Post         Post[]
+  Comment      Comment[]
+}
+
 model User {
   id        String    @id @default(uuid())
-  username  String    @unique
-  email     String    @unique
+  username  String
+  email     String
   firstName String
   lastName  String
   age       Int?
   imageUrl  String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  apiUser   ApiUser   @relation(fields: [apiUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  apiUserId String
   posts     Post[]
   comments  Comment[]
+
+  @@unique([username, apiUserId])
+  @@unique([email, apiUserId])
 }
 
 model Post {
-  id       String    @id @default(uuid())
-  title    String
-  content  String
-  user     User      @relation(fields: [userId], references: [id])
-  userId   String
-  comments Comment[]
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  apiUser   ApiUser   @relation(fields: [apiUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  apiUserId String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
+  comments  Comment[]
 }
 
 model Comment {
-  id      String @id @default(uuid())
-  content String
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
-  post    Post   @relation(fields: [postId], references: [id])
-  postId  String
+  id        String  @id @default(uuid())
+  content   String
+  apiUser   ApiUser @relation(fields: [apiUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  apiUserId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
+  post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String
 }

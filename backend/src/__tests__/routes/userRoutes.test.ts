@@ -1,11 +1,21 @@
 import supertest from "supertest"
-import app from "../../index"
-import { createTestUser, deleteTestUser } from "../../utils/testHelpers"
+import app, { server } from "../../index"
+import {
+  createTestApiUser,
+  createTestTokenForApiUser,
+  createTestUser,
+  deleteTestApiUser,
+  deleteTestUser,
+} from "../../utils/testHelpers"
 import { SortOrder, SortUsersBy } from "../../typings/enums"
 import { CreateUserBody, UpdateUserBody } from "../../typings/bodies"
 import { faker } from "@faker-js/faker"
 
 const api = supertest(app)
+
+afterAll(() => {
+  server.close()
+})
 
 describe("GET /api/users", function () {
   it("should respond with json", async () => {
@@ -33,6 +43,34 @@ describe("GET /api/users", function () {
     )
   })
 
+  it("should return meta data with users", async () => {
+    const response = await api.get("/api/users")
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.skip).toBeDefined()
+    expect(response.body.take).toBeDefined()
+    expect(response.body.total).toBeDefined()
+  })
+
+  it("should return users for an authenticated user", async () => {
+    const testApiUser = await createTestApiUser()
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const response = await api
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toHaveLength(0)
+    expect(response.body.data).toEqual([])
+
+    await deleteTestApiUser(testApiUser.id)
+  })
+
   it("should return users with valid query parameters", async () => {
     const response = await api.get("/api/users").query({
       skip: 2,
@@ -55,7 +93,6 @@ describe("GET /api/users", function () {
       take: "invalidTake",
       sortOrder: "invalidSortOrder",
       sortBy: "invalidSortBy",
-      include: "invalidInclude",
     })
 
     expect(response.status).toBe(400)
@@ -106,6 +143,23 @@ describe("GET /api/users/:id", function () {
     await deleteTestUser(testUser.id)
   })
 
+  it("should return user for an authenticated user", async () => {
+    const testApiUser = await createTestApiUser()
+    const testUser = await createTestUser(testApiUser.id)
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const response = await api
+      .get(`/api/users/${testUser.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.id).toBe(testUser.id)
+
+    await deleteTestUser(testUser.id)
+    await deleteTestApiUser(testApiUser.id)
+  })
+
   it("should return error 400 when the user doesn't exist", async () => {
     const response = await api.get("/api/users/nonExistingUserId")
 
@@ -145,7 +199,6 @@ describe("POST /api/users", function () {
 
     expect(response.status).toBe(200)
     expect(response.body).toBeDefined()
-
     expect(response.body).toEqual(
       expect.objectContaining({
         id: expect.any(String),
@@ -155,8 +208,76 @@ describe("POST /api/users", function () {
         lastName: expect.any(String),
       })
     )
+  })
 
-    await deleteTestUser(response.body.id)
+  it("should mock creating user when not authenticated", async () => {
+    const userToCreate: CreateUserBody = {
+      email: faker.string.uuid() + "@email.com",
+      username: faker.string.uuid(),
+      firstName: "firstName",
+      lastName: "lastName",
+    }
+
+    const usersBefore = await api.get("/api/users")
+    const response = await api.post("/api/users").send(userToCreate)
+
+    expect(usersBefore.status).toBe(200)
+    expect(usersBefore.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("username")
+    expect(response.body).toHaveProperty("email")
+    expect(response.body).toHaveProperty("firstName")
+    expect(response.body).toHaveProperty("lastName")
+    expect(response.body).toHaveProperty("age")
+    expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    const usersAfter = await api.get("/api/users")
+
+    expect(usersAfter.status).toBe(200)
+    expect(usersAfter.body.total).toBeDefined()
+    expect(usersAfter.body.total).toBe(usersBefore.body.total)
+  })
+
+  it("should save user when authenticated", async () => {
+    const testApiUser = await createTestApiUser()
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const userToCreate: CreateUserBody = {
+      email: faker.string.uuid() + "@email.com",
+      username: faker.string.uuid(),
+      firstName: "firstName",
+      lastName: "lastName",
+    }
+
+    const usersBefore = await api
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`)
+    const response = await api
+      .post("/api/users")
+      .send(userToCreate)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(usersBefore.status).toBe(200)
+    expect(usersBefore.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    const usersAfter = await api
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(usersAfter.status).toBe(200)
+    expect(usersAfter.body.total).toBeDefined()
+    expect(usersAfter.body.total).toBe(usersBefore.body.total + 1)
+
+    await deleteTestApiUser(testApiUser.id)
   })
 
   it("should return error 400 with invalid request body", async () => {
@@ -350,6 +471,91 @@ describe("PUT /api/users/:id", function () {
     await deleteTestUser(testUser.id)
   })
 
+  it("should mock updating user when not authenticated", async () => {
+    const testUser = await createTestUser()
+    const updatedUserData: UpdateUserBody = {
+      firstName: "UpdatedFirstName",
+      lastName: "UpdatedLastName",
+    }
+
+    const response = await api
+      .put(`/api/users/${testUser.id}`)
+      .send(updatedUserData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("username")
+    expect(response.body).toHaveProperty("email")
+    expect(response.body).toHaveProperty("firstName")
+    expect(response.body).toHaveProperty("lastName")
+    expect(response.body).toHaveProperty("age")
+    expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    expect(response.body.id).toBe(testUser.id)
+    expect(response.body.firstName).toBe(updatedUserData.firstName)
+    expect(response.body.lastName).toBe(updatedUserData.lastName)
+
+    const testUserAfter = await api.get(`/api/users/${testUser.id}`)
+
+    expect(testUserAfter.status).toBe(200)
+    expect(testUserAfter.body).toBeDefined()
+    expect(testUserAfter.body.id).toBe(testUser.id)
+    expect(testUserAfter.body.firstName).toBe(testUser.firstName)
+    expect(testUserAfter.body.lastName).toBe(testUser.lastName)
+
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should save updated user when authenticated", async () => {
+    const testApiUser = await createTestApiUser()
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const testUser = await createTestUser(testApiUser.id)
+    const updatedUserData: UpdateUserBody = {
+      firstName: "UpdatedFirstName",
+      lastName: "UpdatedLastName",
+    }
+
+    const response = await api
+      .put(`/api/users/${testUser.id}`)
+      .send(updatedUserData)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("username")
+    expect(response.body).toHaveProperty("email")
+    expect(response.body).toHaveProperty("firstName")
+    expect(response.body).toHaveProperty("lastName")
+    expect(response.body).toHaveProperty("age")
+    expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    expect(response.body.id).toBe(testUser.id)
+    expect(response.body.firstName).toBe(updatedUserData.firstName)
+    expect(response.body.lastName).toBe(updatedUserData.lastName)
+
+    const testUserAfter = await api
+      .get(`/api/users/${testUser.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(testUserAfter.status).toBe(200)
+    expect(testUserAfter.body).toBeDefined()
+    expect(testUserAfter.body.id).toBe(testUser.id)
+    expect(testUserAfter.body.firstName).toBe(updatedUserData.firstName)
+    expect(testUserAfter.body.lastName).toBe(updatedUserData.lastName)
+
+    await deleteTestUser(testUser.id)
+    await deleteTestApiUser(testApiUser.id)
+  })
+
   it("should return error 400 with invalid request body", async () => {
     const testUser = await createTestUser()
     const updatedUserData: UpdateUserBody = {
@@ -503,5 +709,76 @@ describe("DELETE /api/users/:id", function () {
         },
       ],
     })
+  })
+
+  it("should mock deleting user when not authenticated", async () => {
+    const testUser = await createTestUser()
+
+    const usersBefore = await api.get("/api/users")
+    const response = await api.delete(`/api/users/${testUser.id}`)
+
+    expect(usersBefore.status).toBe(200)
+    expect(usersBefore.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("username")
+    expect(response.body).toHaveProperty("email")
+    expect(response.body).toHaveProperty("firstName")
+    expect(response.body).toHaveProperty("lastName")
+    expect(response.body).toHaveProperty("age")
+    expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    const usersAfter = await api.get("/api/users")
+
+    expect(usersAfter.status).toBe(200)
+    expect(usersAfter.body.total).toBeDefined()
+    expect(usersAfter.body.total).toBe(usersBefore.body.total)
+
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should delete user when authenticated", async () => {
+    const testApiUser = await createTestApiUser()
+    const token = createTestTokenForApiUser(testApiUser.id)
+    const testUser = await createTestUser(testApiUser.id)
+
+    const usersBefore = await api
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`)
+
+    const response = await api
+      .delete(`/api/users/${testUser.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(usersBefore.status).toBe(200)
+    expect(usersBefore.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("username")
+    expect(response.body).toHaveProperty("email")
+    expect(response.body).toHaveProperty("firstName")
+    expect(response.body).toHaveProperty("lastName")
+    expect(response.body).toHaveProperty("age")
+    expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    const usersAfter = await api
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(usersAfter.status).toBe(200)
+    expect(usersAfter.body.total).toBeDefined()
+    expect(usersAfter.body.total).toBe(usersBefore.body.total - 1)
+
+    await deleteTestApiUser(testApiUser.id)
   })
 })
