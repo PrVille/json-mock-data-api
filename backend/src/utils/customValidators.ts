@@ -37,6 +37,24 @@ export const checkIfPostExists = async (
   return true
 }
 
+export const checkIfCommentExists = async (
+  value: string,
+  { req }: { req: Request }
+) => {
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: value,
+      apiUserId: req.apiUserId,
+    },
+  })
+
+  if (!comment) {
+    throw new Error("The specified comment for the 'id' field does not exist.")
+  }
+
+  return true
+}
+
 export const checkEmailNotInUse = async (
   value: string,
   { req }: { req: Request }

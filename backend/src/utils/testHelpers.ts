@@ -84,3 +84,26 @@ export const deleteTestPost = async (id: string) => {
     },
   })
 }
+
+export const createTestComment = async (
+  userId: string,
+  postId: string,
+  apiUserId = DEFAULT_API_USER_ID
+) => {
+  return await prisma.comment.create({
+    data: {
+      content: "content",
+      userId,
+      postId,
+      apiUserId,
+    },
+  })
+}
+
+export const deleteTestComment = async (id: string) => {
+  return await prisma.comment.delete({
+    where: {
+      id,
+    },
+  })
+}

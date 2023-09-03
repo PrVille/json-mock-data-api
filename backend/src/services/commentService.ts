@@ -29,16 +29,16 @@ const getAllComments = async (commentsMeta: GetAllCommentsProps, apiUserId: stri
   }
 }
 
-// const getPostById = async (id: string, apiUserId: string) => {
-//   const post = await prisma.post.findUnique({
-//     where: {
-//       id,
-//       apiUserId,
-//     },
-//   })
+const getCommentById = async (id: string, apiUserId: string) => {
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id,
+      apiUserId,
+    },
+  })
 
-//   return post
-// }
+  return comment
+}
 
 // const createPost = async (postToCreate: CreatePostBody, apiUserId: string) => {
 //   if (apiUserId === DEFAULT_API_USER_ID) {
@@ -119,7 +119,7 @@ const getAllComments = async (commentsMeta: GetAllCommentsProps, apiUserId: stri
 
 export default {
   getAllComments,
-//   getPostById,
+  getCommentById,
 //   createPost,
 //   updatePostById,
 //   deletePostById

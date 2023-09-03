@@ -14,13 +14,13 @@ router.get(
   commentController.getAllComments
 )
 
-// // Retrieve a specific post by their ID.
-// router.get(
-//   "/:id",
-//   checkSchema(postValidationSchemas.postByIdSchema),
-//   validate,
-//   postController.getPostById
-// )
+// Retrieve a specific comment by their ID.
+router.get(
+  "/:id",
+  checkSchema(commentValidationSchemas.commentByIdSchema),
+  validate,
+  commentController.getCommentById
+)
 
 // // Create a new post.
 // router.post(

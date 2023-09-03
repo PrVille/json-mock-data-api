@@ -1,6 +1,8 @@
 import { Schema } from "express-validator"
 import commonValidationSchemas from "./commonValidationSchemas"
 import { SortCommentsBy, SortOrder } from "../typings/enums"
+import commonValidationFields from "./commonValidationFields"
+import { checkIfCommentExists } from "../utils/customValidators"
 
 const getAllCommentsSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
@@ -30,6 +32,17 @@ const getAllCommentsSchema: Schema = {
   },
 }
 
+const commentByIdSchema: Schema = {
+  id: {
+    in: "params",
+    ...commonValidationFields.idFields,
+    custom: {
+      options: checkIfCommentExists,
+    },
+  },
+}
+
 export default {
   getAllCommentsSchema,
+  commentByIdSchema
 }

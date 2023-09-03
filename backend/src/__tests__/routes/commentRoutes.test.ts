@@ -2,10 +2,12 @@ import supertest from "supertest"
 import app, { server } from "../../index"
 import {
   createTestApiUser,
+  createTestComment,
   createTestPost,
   createTestTokenForApiUser,
   createTestUser,
   deleteTestApiUser,
+  deleteTestComment,
   deleteTestPost,
   deleteTestUser,
 } from "../../utils/testHelpers"
@@ -137,4 +139,60 @@ describe("GET /api/comments", function () {
         ],
       })
     })
+})
+
+describe("GET /api/comments/:id", function () {
+  it("should respond with json", async () => {
+    const testUser = await createTestUser()
+    const testPost = await createTestPost(testUser.id)
+    const testComment = await createTestComment(testUser.id, testPost.id)
+
+    const response = await api.get(`/api/comments/${testComment.id}`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await deleteTestComment(testComment.id)
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+  })
+
+  it("should return comment for an authenticated user", async () => {
+    const testApiUser = await createTestApiUser()
+    const testUser = await createTestUser(testApiUser.id)
+    const testPost = await createTestPost(testUser.id, testApiUser.id)
+    const testComment = await createTestComment(testUser.id, testPost.id, testApiUser.id)
+    const token = createTestTokenForApiUser(testApiUser.id)
+
+    const response = await api
+      .get(`/api/comments/${testComment.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.id).toBe(testComment.id)
+
+    await deleteTestComment(testComment.id)
+    await deleteTestPost(testPost.id)
+    await deleteTestUser(testUser.id)
+    await deleteTestApiUser(testApiUser.id)
+  })
+
+  it("should return error 400 when the comment doesn't exist", async () => {
+    const response = await api.get("/api/comments/nonExistingCommentId")
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingCommentId",
+          msg: "The specified comment for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
 })
