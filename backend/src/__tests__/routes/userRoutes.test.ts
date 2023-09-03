@@ -19,6 +19,7 @@ afterAll(() => {
   server.close()
 })
 
+//TODO: Refactor
 describe("GET /api/users", function () {
   it("should respond with json", async () => {
     const response = await api.get("/api/users")
@@ -134,6 +135,7 @@ describe("GET /api/users", function () {
   })
 })
 
+//TODO: Refactor
 describe("GET /api/users/:id", function () {
   it("should respond with json", async () => {
     const testUser = await createTestUser()
@@ -181,6 +183,7 @@ describe("GET /api/users/:id", function () {
   })
 })
 
+//TODO: Refactor
 describe("GET /api/users/:id/posts", function () {
   it("should respond with json", async () => {
     const testUser = await createTestUser()
@@ -342,6 +345,7 @@ describe("GET /api/users/:id/posts", function () {
   })
 })
 
+//TODO: Refactor
 describe("POST /api/users", function () {
   it("should respond with json", async () => {
     const response = await api.post("/api/users").send({})
@@ -564,6 +568,7 @@ describe("POST /api/users", function () {
   })
 })
 
+//TODO: Refactor
 describe("PUT /api/users/:id", function () {
   it("should respond with json", async () => {
     const testUser = await createTestUser()
@@ -847,6 +852,7 @@ describe("PUT /api/users/:id", function () {
   })
 })
 
+//TODO: Refactor
 describe("DELETE /api/users/:id", function () {
   it("should respond with json", async () => {
     const testUser = await createTestUser()

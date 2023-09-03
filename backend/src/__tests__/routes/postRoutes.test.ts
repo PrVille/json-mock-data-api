@@ -2,6 +2,8 @@ import supertest from "supertest"
 import app, { server } from "../../index"
 import {
   createTestApiUser,
+  createTestAuth,
+  createTestDb,
   createTestPost,
   createTestTokenForApiUser,
   createTestUser,
@@ -13,21 +15,22 @@ import { SortOrder, SortPostsBy } from "../../typings/enums"
 import { CreatePostBody, UpdatePostBody } from "../../typings/bodies"
 
 const api = supertest(app)
+const baseUrl = "/api/posts"
 
 afterAll(() => {
   server.close()
 })
 
-describe("GET /api/posts", function () {
+describe(`GET ${baseUrl}`, function () {
   it("should respond with json", async () => {
-    const response = await api.get("/api/posts")
+    const response = await api.get(baseUrl)
 
     expect(response.headers["content-type"]).toMatch(/application\/json/)
     expect(response.status).toBe(200)
   })
 
   it("should return posts with default parameters", async () => {
-    const response = await api.get("/api/posts")
+    const response = await api.get(baseUrl)
     const expectedProperties = {
       id: expect.any(String),
       title: expect.any(String),
@@ -44,7 +47,7 @@ describe("GET /api/posts", function () {
   })
 
   it("should return meta data with posts", async () => {
-    const response = await api.get("/api/posts")
+    const response = await api.get(baseUrl)
 
     expect(response.status).toBe(200)
     expect(response.body).toBeDefined()
@@ -55,11 +58,10 @@ describe("GET /api/posts", function () {
   })
 
   it("should return posts for an authenticated user", async () => {
-    const testApiUser = await createTestApiUser()
-    const token = createTestTokenForApiUser(testApiUser.id)
+    const { token, removeTestAuth } = await createTestAuth()
 
     const response = await api
-      .get("/api/posts")
+      .get(baseUrl)
       .set("Authorization", `Bearer ${token}`)
 
     expect(response.status).toBe(200)
@@ -68,11 +70,11 @@ describe("GET /api/posts", function () {
     expect(response.body.data).toHaveLength(0)
     expect(response.body.data).toEqual([])
 
-    await deleteTestApiUser(testApiUser.id)
+    await removeTestAuth()
   })
 
   it("should return posts with valid query parameters", async () => {
-    const response = await api.get("/api/posts").query({
+    const response = await api.get(baseUrl).query({
       skip: 2,
       take: 5,
       sortOrder: SortOrder.ASC,
@@ -95,7 +97,7 @@ describe("GET /api/posts", function () {
   })
 
   it("should return error 400 with invalid properties", async () => {
-    const response = await api.get("/api/posts").query({
+    const response = await api.get(baseUrl).query({
       skip: "invalidSkip",
       take: "invalidTake",
       sortOrder: "invalidSortOrder",
@@ -139,42 +141,37 @@ describe("GET /api/posts", function () {
   })
 })
 
-describe("GET /api/posts/:id", function () {
+describe(`GET ${baseUrl}/:id`, function () {
   it("should respond with json", async () => {
-    const testUser = await createTestUser()
-    const testPost = await createTestPost(testUser.id)
+    const { post, removeTestDb } = await createTestDb()
 
-    const response = await api.get(`/api/posts/${testPost.id}`)
+    const response = await api.get(`${baseUrl}/${post.id}`)
 
     expect(response.headers["content-type"]).toMatch(/application\/json/)
     expect(response.status).toBe(200)
 
-    await deleteTestPost(testPost.id)
-    await deleteTestUser(testUser.id)
+    await removeTestDb()
   })
 
   it("should return post for an authenticated user", async () => {
-    const testApiUser = await createTestApiUser()
-    const testUser = await createTestUser(testApiUser.id)
-    const testPost = await createTestPost(testUser.id, testApiUser.id)
-    const token = createTestTokenForApiUser(testApiUser.id)
-
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+    const { post, removeTestDb } = await createTestDb(apiUser.id)
+   
     const response = await api
-      .get(`/api/posts/${testPost.id}`)
+      .get(`${baseUrl}/${post.id}`)
       .set("Authorization", `Bearer ${token}`)
 
     expect(response.status).toBe(200)
     expect(response.body).toBeDefined()
-    expect(response.body.id).toBe(testPost.id)
+    expect(response.body.id).toBe(post.id)
 
-    await deleteTestPost(testPost.id)
-    await deleteTestUser(testUser.id)
-    await deleteTestApiUser(testApiUser.id)
+    await removeTestDb()
+    await removeTestAuth()
   })
 
   it("should return error 400 when the post doesn't exist", async () => {
-    const response = await api.get("/api/posts/nonExistingPostId")
-
+    const response = await api.get(`${baseUrl}/nonExistingPostId`)
+    
     expect(response.status).toBe(400)
     expect(response.body).toBeDefined()
     expect(response.body).toEqual({
@@ -191,9 +188,10 @@ describe("GET /api/posts/:id", function () {
   })
 })
 
+// TODO: Refactor
 describe("POST /api/posts", function () {
   it("should respond with json", async () => {
-    const response = await api.post("/api/posts").send({})
+    const response = await api.post(baseUrl).send({})
 
     expect(response.headers["content-type"]).toMatch(/application\/json/)
     expect(response.status).toBe(400)
@@ -207,7 +205,7 @@ describe("POST /api/posts", function () {
       userId: testUser.id,
     }
 
-    const response = await api.post("/api/posts").send(postToCreate)
+    const response = await api.post(baseUrl).send(postToCreate)
 
     expect(response.status).toBe(200)
     expect(response.body).toBeDefined()
@@ -231,8 +229,8 @@ describe("POST /api/posts", function () {
       userId: testUser.id,
     }
 
-    const postsBefore = await api.get("/api/posts")
-    const response = await api.post("/api/posts").send(postToCreate)
+    const postsBefore = await api.get(baseUrl)
+    const response = await api.post(baseUrl).send(postToCreate)
 
     expect(postsBefore.status).toBe(200)
     expect(postsBefore.body.total).toBeDefined()
@@ -247,7 +245,7 @@ describe("POST /api/posts", function () {
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 
-    const postsAfter = await api.get("/api/posts")
+    const postsAfter = await api.get(baseUrl)
 
     expect(postsAfter.status).toBe(200)
     expect(postsAfter.body.total).toBeDefined()
@@ -268,10 +266,10 @@ describe("POST /api/posts", function () {
     }
 
     const postsBefore = await api
-      .get("/api/posts")
+      .get(baseUrl)
       .set("Authorization", `Bearer ${token}`)
     const response = await api
-      .post("/api/posts")
+      .post(baseUrl)
       .send(postToCreate)
       .set("Authorization", `Bearer ${token}`)
 
@@ -282,7 +280,7 @@ describe("POST /api/posts", function () {
     expect(response.body).toBeDefined()
 
     const postsAfter = await api
-      .get("/api/posts")
+      .get(baseUrl)
       .set("Authorization", `Bearer ${token}`)
 
     expect(postsAfter.status).toBe(200)
@@ -300,7 +298,7 @@ describe("POST /api/posts", function () {
       userId: "",
     }
 
-    const response = await api.post("/api/posts").send(postToCreate)
+    const response = await api.post(baseUrl).send(postToCreate)
 
     expect(response.status).toBe(400)
     expect(response.body).toBeDefined()
@@ -338,7 +336,7 @@ describe("POST /api/posts", function () {
       userId: "nonExistingUser",
     }
 
-    const response = await api.post("/api/posts").send(postToCreate)
+    const response = await api.post(baseUrl).send(postToCreate)
 
     expect(response.status).toBe(400)
     expect(response.body).toBeDefined()
@@ -356,6 +354,7 @@ describe("POST /api/posts", function () {
   })
 })
 
+//TODO: Refactor
 describe("PUT /api/posts/:id", function () {
   it("should respond with json", async () => {
     const testUser = await createTestUser()
@@ -550,6 +549,7 @@ describe("PUT /api/posts/:id", function () {
   })
 })
 
+//TODO: Refactor
 describe("DELETE /api/posts/:id", function () {
   it("should respond with json", async () => {
     const testUser = await createTestUser()
@@ -584,7 +584,7 @@ describe("DELETE /api/posts/:id", function () {
     const testUser = await createTestUser()
     const testPost = await createTestPost(testUser.id)
 
-    const postsBefore = await api.get("/api/posts")
+    const postsBefore = await api.get(baseUrl)
     const response = await api.delete(`/api/posts/${testPost.id}`)
 
     expect(postsBefore.status).toBe(200)
@@ -600,7 +600,7 @@ describe("DELETE /api/posts/:id", function () {
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 
-    const postsAfter = await api.get("/api/posts")
+    const postsAfter = await api.get(baseUrl)
 
     expect(postsAfter.status).toBe(200)
     expect(postsAfter.body.total).toBeDefined()
@@ -616,7 +616,7 @@ describe("DELETE /api/posts/:id", function () {
     const testPost = await createTestPost(testUser.id, testApiUser.id)
 
     const postsBefore = await api
-      .get("/api/posts")
+      .get(baseUrl)
       .set("Authorization", `Bearer ${token}`)
 
     const response = await api
@@ -637,7 +637,7 @@ describe("DELETE /api/posts/:id", function () {
     expect(response.body).toHaveProperty("updatedAt")
 
     const postsAfter = await api
-      .get("/api/posts")
+      .get(baseUrl)
       .set("Authorization", `Bearer ${token}`)
 
     expect(postsAfter.status).toBe(200)
