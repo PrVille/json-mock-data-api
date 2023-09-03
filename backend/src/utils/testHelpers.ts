@@ -41,6 +41,81 @@ export const getAllUsers = async (apiUserId = DEFAULT_API_USER_ID) => {
   })
 }
 
+export const createTestDb = async (apiUserId = DEFAULT_API_USER_ID) => {
+  const user = await prisma.user.create({
+    data: {
+      username: uuid(),
+      email: uuid() + "@test.com",
+      firstName: uuid(),
+      lastName: uuid(),
+      age: faker.number.int({ min: 0, max: 100 }),
+      imageUrl: faker.image.avatarGitHub(),
+      apiUserId,
+    },
+  })
+
+  const post = await prisma.post.create({
+    data: {
+      title: "title",
+      content: "content",
+      userId: user.id,
+      apiUserId,
+    },
+  })
+
+  const comment = await prisma.comment.create({
+    data: {
+      content: "content",
+      userId: user.id,
+      postId: post.id,
+      apiUserId,
+    },
+  })
+
+  const removeTestDb = async () => {
+    await prisma.comment.delete({
+      where: {
+        id: comment.id,
+      },
+    })
+    await prisma.post.delete({
+      where: {
+        id: post.id,
+      },
+    })
+    await prisma.user.delete({
+      where: {
+        id: user.id,
+      },
+    })
+  }
+
+  return { user, post, comment, removeTestDb }
+}
+
+export const createTestAuth = async () => {
+  const apiUser = await prisma.apiUser.create({
+    data: {
+      email: uuid() + "@test.com",
+      passwordHash: faker.internet.password(),
+    },
+  })
+
+  const token = jwt.sign({ id: apiUser.id }, SECRET, {
+    expiresIn: 60 * 60 * 24 * 365,
+  })
+
+  const removeTestAuth = async () => {
+    await prisma.apiUser.delete({
+      where: {
+        id: apiUser.id,
+      },
+    })
+  }
+
+  return { apiUser, token, removeTestAuth }
+}
+
 export const createTestUser = async (apiUserId = DEFAULT_API_USER_ID) => {
   return await prisma.user.create({
     data: {

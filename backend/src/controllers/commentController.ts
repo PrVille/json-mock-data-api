@@ -4,6 +4,7 @@ import { matchedData } from "express-validator"
 import { GetAllCommentsQuery } from "../typings/queries"
 import { SortCommentsBy, SortOrder } from "../typings/enums"
 import { IdParams } from "../typings/params"
+import { CreateCommentBody } from "../typings/bodies"
 
 const getAllComments = async (req: Request, res: Response) => {
   const {
@@ -27,13 +28,13 @@ const getCommentById = async (req: Request, res: Response) => {
   res.json(comment)
 }
 
-// const createPost = async (req: Request, res: Response) => {
-//   const postToCreate = matchedData(req) as CreatePostBody
+const createComment = async (req: Request, res: Response) => {
+  const commentToCreate = matchedData(req) as CreateCommentBody
 
-//   const post = await postService.createPost(postToCreate, req.apiUserId)
+  const comment = await commentService.createComment(commentToCreate, req.apiUserId)
 
-//   res.json(post)
-// }
+  res.json(comment)
+}
 
 // const updatePostById = async (req: Request, res: Response) => {
 //   const { id, ...postToUpdate } = matchedData(req) as IdParams & UpdatePostBody
@@ -54,7 +55,6 @@ const getCommentById = async (req: Request, res: Response) => {
 export default {
   getAllComments,
   getCommentById,
-//   createPost,
-//   updatePostById,
-//   deletePostById
+  createComment
+
 }

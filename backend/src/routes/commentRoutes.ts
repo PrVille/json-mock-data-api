@@ -22,13 +22,13 @@ router.get(
   commentController.getCommentById
 )
 
-// // Create a new post.
-// router.post(
-//   "/",
-//   checkSchema(postValidationSchemas.createPostSchema),
-//   validate,
-//   postController.createPost
-// )
+// Create a new comment.
+router.post(
+  "/",
+  checkSchema(commentValidationSchemas.createCommentSchema),
+  validate,
+  commentController.createComment
+)
 
 // // Update post information.
 // router.put(

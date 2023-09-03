@@ -18,3 +18,8 @@ export type CreatePostBody = Pick<
 >
 
 export type UpdatePostBody = Partial<Omit<CreatePostBody, "userId">>
+
+export type CreateCommentBody = Pick<
+  Prisma.CommentUncheckedCreateInput,
+  "content" | "userId" | "postId"
+>

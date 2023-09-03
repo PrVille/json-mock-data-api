@@ -2,7 +2,7 @@ import { Schema } from "express-validator"
 import commonValidationSchemas from "./commonValidationSchemas"
 import { SortCommentsBy, SortOrder } from "../typings/enums"
 import commonValidationFields from "./commonValidationFields"
-import { checkIfCommentExists } from "../utils/customValidators"
+import { checkIfCommentExists, checkIfPostExists, checkIfUserExists } from "../utils/customValidators"
 
 const getAllCommentsSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
@@ -42,7 +42,53 @@ const commentByIdSchema: Schema = {
   },
 }
 
+const createCommentSchema: Schema = {
+   content: {
+    exists: {
+      errorMessage: "The 'content' field is a required field.",
+      bail: true,
+    },
+    isString: {
+      errorMessage: "The 'content' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'content' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+  userId: {
+    exists: {
+      errorMessage: "The 'userId' field is a required field.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'userId' field must be a non-empty string.",
+      bail: true,
+    },
+    custom: {
+      options: checkIfUserExists,
+      errorMessage: "The specified user for the 'userId' field does not exist.",
+    },
+  },
+  postId: {
+    exists: {
+      errorMessage: "The 'postId' field is a required field.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'postId' field must be a non-empty string.",
+      bail: true,
+    },
+    custom: {
+      options: checkIfPostExists,
+      errorMessage: "The specified post for the 'postId' field does not exist.",
+    },
+  },
+}
+
 export default {
   getAllCommentsSchema,
-  commentByIdSchema
+  commentByIdSchema,
+  createCommentSchema
 }
