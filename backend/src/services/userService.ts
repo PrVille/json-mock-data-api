@@ -1,6 +1,6 @@
 import prisma from "../client"
 import { CreateUserBody, UpdateUserBody } from "../typings/bodies"
-import { GetAllPostsProps, GetAllUsersProps } from "../typings/props"
+import { GetAllCommentsProps, GetAllPostsProps, GetAllUsersProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 import { faker } from "@faker-js/faker"
 
@@ -71,6 +71,40 @@ const getAllPosts = async (
 
   return {
     data: posts,
+    total,
+    skip,
+    take,
+  }
+}
+
+const getAllComments = async (
+  userId: string,
+  commentsMeta: GetAllCommentsProps,
+  apiUserId: string
+) => {
+  const { skip, take, sortBy, sortOrder } = commentsMeta
+
+  const comments = await prisma.comment.findMany({
+    where: {
+      userId,
+      apiUserId,
+    },
+    skip,
+    take,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+  })
+
+  const total = await prisma.comment.count({
+    where: {
+      userId,
+      apiUserId,
+    },
+  })
+
+  return {
+    data: comments,
     total,
     skip,
     take,
@@ -164,6 +198,7 @@ export default {
   getAll,
   getById,
   getAllPosts,
+  getAllComments,
   create,
   updateById,
   deleteById,

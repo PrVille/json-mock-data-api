@@ -2,6 +2,8 @@ import supertest from "supertest"
 import app, { server } from "../../index"
 import {
   createTestApiUser,
+  createTestAuth,
+  createTestDb,
   createTestPost,
   createTestTokenForApiUser,
   createTestUser,
@@ -9,11 +11,17 @@ import {
   deleteTestPost,
   deleteTestUser,
 } from "../../utils/testHelpers"
-import { SortOrder, SortPostsBy, SortUsersBy } from "../../typings/enums"
+import {
+  SortCommentsBy,
+  SortOrder,
+  SortPostsBy,
+  SortUsersBy,
+} from "../../typings/enums"
 import { CreateUserBody, UpdateUserBody } from "../../typings/bodies"
 import { faker } from "@faker-js/faker"
 
 const api = supertest(app)
+const baseUrl = "/api/users"
 
 afterAll(() => {
   server.close()
@@ -342,6 +350,175 @@ describe("GET /api/users/:id/posts", function () {
     })
 
     await deleteTestUser(testUser.id)
+  })
+})
+
+describe(`GET ${baseUrl}/:id/comments`, function () {
+  it("should respond with json", async () => {
+    const { user, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${user.id}/comments`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await removeTestDb()
+  })
+
+  it("should return error 400 when the user doesn't exist", async () => {
+    const response = await api.get(`${baseUrl}/nonExistingId/comments`)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingId",
+          msg: "The specified user for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
+
+  it("should return comments for user with default parameters", async () => {
+    const { user, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${user.id}/comments`)
+
+    const expectedProperties = {
+      id: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+      postId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await removeTestDb()
+  })
+
+  it("should return meta data with commnets for user", async () => {
+    const { user, removeTestDb } = await createTestDb()
+    const response = await api.get(`${baseUrl}/${user.id}/comments`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.skip).toBeDefined()
+    expect(response.body.take).toBeDefined()
+    expect(response.body.total).toBeDefined()
+
+    await removeTestDb()
+  })
+
+  it("should return comments for user for an authenticated user", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+    const { user, removeTestDb } = await createTestDb(apiUser.id)
+
+    const response = await api
+      .get(`${baseUrl}/${user.id}/comments`)
+      .set("Authorization", `Bearer ${token}`)
+
+    const expectedProperties = {
+      id: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+      postId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toHaveLength(1)
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await removeTestDb()
+    await removeTestAuth()
+  })
+
+  it("should return comments with valid query parameters", async () => {
+    const { user, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${user.id}/comments`).query({
+      skip: 0,
+      take: 5,
+      sortOrder: SortOrder.ASC,
+      sortBy: SortCommentsBy.CREATED_AT,
+    })
+
+    const expectedProperties = {
+      id: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+      postId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toHaveLength(1)
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await removeTestDb()
+  })
+
+  it("should return error 400 with invalid properties", async () => {
+    const { user, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${user.id}/comments`).query({
+      skip: "invalidSkip",
+      take: "invalidTake",
+      sortOrder: "invalidSortOrder",
+      sortBy: "invalidSortBy",
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "invalidSkip",
+          msg: "The 'skip' field must be an integer greater than or equal to 0.",
+          path: "skip",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidTake",
+          msg: "The 'take' field must be an integer greater than or equal to 0.",
+          path: "take",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortBy",
+          msg: "The 'sortBy' field must be one of 'id', 'updatedAt' or 'createdAt'.",
+          path: "sortBy",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortOrder",
+          msg: "The 'sortOrder' field must be either 'asc' or 'desc'.",
+          path: "sortOrder",
+          location: "query",
+        },
+      ],
+    })
+
+    await removeTestDb()
   })
 })
 

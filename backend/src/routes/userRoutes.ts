@@ -30,6 +30,14 @@ router.get(
   userController.getAllPosts
 )
 
+// Retrieve a list of all comments for user.
+router.get(
+  "/:id/comments",
+  checkSchema(userValidationSchemas.getAllCommentsSchema),
+  validate,
+  userController.getAllComments
+)
+
 // Create a new user.
 router.post(
   "/",

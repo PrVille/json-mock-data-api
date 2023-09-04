@@ -2,9 +2,10 @@ import { Request, Response } from "express"
 import userService from "../services/userService"
 import { matchedData } from "express-validator"
 import { GetAllPostsQuery, GetAllUsersQuery } from "../typings/queries"
-import { SortOrder, SortPostsBy, SortUsersBy } from "../typings/enums"
+import { SortCommentsBy, SortOrder, SortPostsBy, SortUsersBy } from "../typings/enums"
 import { IdParams } from "../typings/params"
 import { CreateUserBody, UpdateUserBody } from "../typings/bodies"
+import { GetAllCommentsProps } from "../typings/props"
 
 const getAll = async (req: Request, res: Response) => {
   const {
@@ -43,6 +44,21 @@ const getAllPosts = async (req: Request, res: Response) => {
   res.json(posts)
 }
 
+const getAllComments = async (req: Request, res: Response) => {
+  const {
+    id: userId,
+    skip = 0,
+    take = 10,
+    sortBy = SortCommentsBy.CREATED_AT,
+    sortOrder = SortOrder.ASC,
+  } = matchedData(req) as GetAllCommentsProps & IdParams
+
+  const commentsMeta = { skip, take, sortBy, sortOrder }
+  const comments = await userService.getAllComments(userId, commentsMeta, req.apiUserId)
+
+  res.json(comments)
+}
+
 const create = async (req: Request, res: Response) => {
   const userToCreate = matchedData(req) as CreateUserBody
 
@@ -71,6 +87,7 @@ export default {
   getAll,
   getById,
   getAllPosts,
+  getAllComments,
   create,
   updateById,
   deleteById,

@@ -2,6 +2,7 @@ import { Schema } from "express-validator"
 import commonValidationFields from "./commonValidationFields"
 import commonValidationSchemas from "./commonValidationSchemas"
 import postValidationSchemas from "./postValidationSchemas"
+import commentValidationSchemas from "./commentValidationSchemas"
 import { checkIfUserExists } from "../utils/customValidators"
 import { SortOrder, SortUsersBy } from "../typings/enums"
 
@@ -46,6 +47,11 @@ const byIdSchema: Schema = {
 const getAllPostsSchema: Schema = {
   ...byIdSchema,
   ...postValidationSchemas.getAllSchema,
+}
+
+const getAllCommentsSchema: Schema = {
+  ...byIdSchema,
+  ...commentValidationSchemas.getAllSchema,
 }
 
 const updateByIdSchema: Schema = {
@@ -107,6 +113,7 @@ export default {
   getAllSchema,
   byIdSchema,
   getAllPostsSchema,
+  getAllCommentsSchema,
   updateByIdSchema,
   createSchema,
 }
