@@ -1,10 +1,13 @@
 import { faker } from "@faker-js/faker"
 import prisma from "../client"
-import { CreateCommentBody } from "../typings/bodies"
+import { CreateCommentBody, UpdateCommentBody } from "../typings/bodies"
 import { GetAllCommentsProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 
-const getAllComments = async (commentsMeta: GetAllCommentsProps, apiUserId: string) => {
+const getAllComments = async (
+  commentsMeta: GetAllCommentsProps,
+  apiUserId: string
+) => {
   const { skip, take, sortBy, sortOrder } = commentsMeta
 
   const comments = await prisma.comment.findMany({
@@ -43,7 +46,10 @@ const getCommentById = async (id: string, apiUserId: string) => {
   return comment
 }
 
-const createComment = async (commentToCreate: CreateCommentBody, apiUserId: string) => {
+const createComment = async (
+  commentToCreate: CreateCommentBody,
+  apiUserId: string
+) => {
   if (apiUserId === DEFAULT_API_USER_ID) {
     const mockComment = {
       id: faker.string.uuid(),
@@ -67,43 +73,43 @@ const createComment = async (commentToCreate: CreateCommentBody, apiUserId: stri
   return comment
 }
 
-// const updatePostById = async (
-//   id: string,
-//   postToUpdate: UpdatePostBody,
-//   apiUserId: string
-// ) => {
-//   if (apiUserId === DEFAULT_API_USER_ID) {
-//     const existingPost = await prisma.post.findUniqueOrThrow({
-//       where: {
-//         id,
-//         apiUserId,
-//       },
-//     })
+const updateCommentById = async (
+  id: string,
+  commentToUpdate: UpdateCommentBody,
+  apiUserId: string
+) => {
+  if (apiUserId === DEFAULT_API_USER_ID) {
+    const existingComment = await prisma.comment.findUniqueOrThrow({
+      where: {
+        id,
+        apiUserId,
+      },
+    })
 
-//     const mockPost = {
-//       id: existingPost.id,
-//       title: postToUpdate.title || existingPost.title,
-//       content: postToUpdate.content || existingPost.content,
-//       userId: existingPost.userId,
-//       createdAt: existingPost.createdAt,
-//       updatedAt: new Date(),
-//     }
+    const mockComment = {
+      id: existingComment.id,
+      content: commentToUpdate.content || existingComment.content,
+      userId: existingComment.userId,
+      postId: existingComment.postId,
+      createdAt: existingComment.createdAt,
+      updatedAt: new Date(),
+    }
 
-//     return mockPost
-//   }
+    return mockComment
+  }
 
-//   const post = await prisma.post.update({
-//     where: {
-//       id,
-//       apiUserId,
-//     },
-//     data: {
-//       ...postToUpdate,
-//     },
-//   })
+  const comment = await prisma.comment.update({
+    where: {
+      id,
+      apiUserId,
+    },
+    data: {
+      ...commentToUpdate,
+    },
+  })
 
-//   return post
-// }
+  return comment
+}
 
 // const deletePostById = async (id: string, apiUserId: string) => {
 //   if (apiUserId === DEFAULT_API_USER_ID) {
@@ -123,7 +129,6 @@ const createComment = async (commentToCreate: CreateCommentBody, apiUserId: stri
 export default {
   getAllComments,
   getCommentById,
-createComment,
-//   updatePostById,
-//   deletePostById
+  createComment,
+  updateCommentById, //   deletePostById
 }

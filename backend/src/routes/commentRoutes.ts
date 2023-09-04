@@ -30,13 +30,13 @@ router.post(
   commentController.createComment
 )
 
-// // Update post information.
-// router.put(
-//   "/:id",
-//   checkSchema(postValidationSchemas.updatePostByIdSchema),
-//   validate,
-//   postController.updatePostById
-// )
+// Update comment information.
+router.put(
+  "/:id",
+  checkSchema(commentValidationSchemas.updateCommentByIdSchema),
+  validate,
+  commentController.updateCommentById
+)
 
 // // Delete a post.
 // router.delete(

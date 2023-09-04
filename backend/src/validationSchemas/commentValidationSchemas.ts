@@ -87,8 +87,24 @@ const createCommentSchema: Schema = {
   },
 }
 
+const updateCommentByIdSchema: Schema = {
+  ...commentByIdSchema,
+  content: {
+    optional: true,
+    isString: {
+      errorMessage: "The 'content' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'content' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+}
+
 export default {
   getAllCommentsSchema,
   commentByIdSchema,
-  createCommentSchema
+  createCommentSchema,
+  updateCommentByIdSchema
 }

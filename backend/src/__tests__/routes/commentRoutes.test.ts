@@ -2,7 +2,7 @@ import supertest from "supertest"
 import app, { server } from "../../index"
 import { createTestAuth, createTestDb } from "../../utils/testHelpers"
 import { SortCommentsBy, SortOrder } from "../../typings/enums"
-import { CreateCommentBody } from "../../typings/bodies"
+import { CreateCommentBody, UpdateCommentBody } from "../../typings/bodies"
 
 const api = supertest(app)
 const baseUrl = "/api/comments"
@@ -373,5 +373,167 @@ describe(`POST ${baseUrl}`, function () {
     })
 
     removeTestDb()
+  })
+})
+
+describe(`PUT ${baseUrl}/:id`, function () {
+  it("should respond with json", async () => {
+    const { comment, removeTestDb } = await createTestDb()
+
+    const updatedData: UpdateCommentBody = {
+      content: "UpdatedContent",
+    }
+
+    const response = await api.put(`${baseUrl}/${comment.id}`).send(updatedData)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await removeTestDb()
+  })
+
+  it("should return error 400 when the comment doesn't exist", async () => {
+    const nonExistingCommentId = "nonExistingCommentId"
+    const updatedData: UpdateCommentBody = {
+      content: "UpdatedContent",
+    }
+
+    const response = await api
+      .put(`${baseUrl}/${nonExistingCommentId}`)
+      .send(updatedData)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: nonExistingCommentId,
+          msg: "The specified comment for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
+
+  it("should return updated comment with valid request body", async () => {
+    const { user, post, comment, removeTestDb } = await createTestDb()
+
+    const updatedData: UpdateCommentBody = {
+      content: "UpdatedContent",
+    }
+
+    const response = await api.put(`${baseUrl}/${comment.id}`).send(updatedData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        id: comment.id,
+        content: updatedData.content,
+        userId: user.id,
+        postId: post.id,
+      })
+    )
+
+    await removeTestDb()
+  })
+
+  it("should mock updating comment when not authenticated", async () => {
+    const { comment, removeTestDb } = await createTestDb()
+
+    const updatedData: UpdateCommentBody = {
+      content: "UpdatedContent",
+    }
+
+    const response = await api.put(`${baseUrl}/${comment.id}`).send(updatedData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("postId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    expect(response.body.id).toBe(comment.id)
+    expect(response.body.content).toBe(updatedData.content)
+
+    const commentAfter = await api.get(`${baseUrl}/${comment.id}`)
+
+    expect(commentAfter.status).toBe(200)
+    expect(commentAfter.body).toBeDefined()
+    expect(commentAfter.body.id).toBe(comment.id)
+    expect(commentAfter.body.content).toBe(comment.content)
+
+    await removeTestDb()
+  })
+
+  it("should save updated comment when authenticated", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+    const { comment, removeTestDb } = await createTestDb(apiUser.id)
+
+    const updatedData: UpdateCommentBody = {
+      content: "UpdatedContent",
+    }
+
+    const response = await api
+      .put(`${baseUrl}/${comment.id}`)
+      .send(updatedData)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("postId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    expect(response.body.id).toBe(comment.id)
+    expect(response.body.content).toBe(updatedData.content)
+
+    const commentAfter = await api
+      .get(`${baseUrl}/${comment.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(commentAfter.status).toBe(200)
+    expect(commentAfter.body).toBeDefined()
+    expect(commentAfter.body.id).toBe(comment.id)
+    expect(commentAfter.body.content).toBe(updatedData.content)
+
+    await removeTestDb()
+    await removeTestAuth()
+  })
+
+  it("should return error 400 with invalid request body", async () => {
+    const { comment, removeTestDb } = await createTestDb()
+
+    const updatedData: UpdateCommentBody = {
+      content: "",
+    }
+
+    const response = await api.put(`${baseUrl}/${comment.id}`).send(updatedData)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "",
+          msg: "The 'content' field must be a non-empty string.",
+          path: "content",
+          location: "body",
+        },
+      ],
+    })
+
+    await removeTestDb()
   })
 })
