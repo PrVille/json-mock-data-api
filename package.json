@@ -17,8 +17,7 @@
   "pre-commit": [
     "test",
     "make-badges",
-    "build",
-    "deploy"
+    "build"
   ],
   "keywords": [],
   "author": "",

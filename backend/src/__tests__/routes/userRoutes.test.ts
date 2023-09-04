@@ -855,6 +855,35 @@ describe("PUT /api/users/:id", function () {
     await deleteTestUser(testUser.id)
   })
 
+  it("should mock updating user correctly when request body is empty", async () => {
+    const { user, removeTestDb } = await createTestDb()
+
+    const updatedData: UpdateUserBody = {}
+
+    const response = await api.put(`${baseUrl}/${user.id}`).send(updatedData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("username")
+    expect(response.body).toHaveProperty("email")
+    expect(response.body).toHaveProperty("firstName")
+    expect(response.body).toHaveProperty("lastName")
+    expect(response.body).toHaveProperty("age")
+    expect(response.body).toHaveProperty("imageUrl")
+    
+    expect(response.body.id).toBe(user.id)
+    expect(response.body.username).toBe(user.username)
+    expect(response.body.email).toBe(user.email)
+    expect(response.body.firstName).toBe(user.firstName)
+    expect(response.body.lastName).toBe(user.lastName)
+    expect(response.body.age).toBe(user.age)
+    expect(response.body.imageUrl).toBe(user.imageUrl)
+    
+    await removeTestDb()
+  })
+
   it("should save updated user when authenticated", async () => {
     const testApiUser = await createTestApiUser()
     const token = createTestTokenForApiUser(testApiUser.id)

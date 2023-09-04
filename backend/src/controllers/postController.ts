@@ -2,9 +2,10 @@ import { Request, Response } from "express"
 import postService from "../services/postService"
 import { matchedData } from "express-validator"
 import { GetAllPostsQuery } from "../typings/queries"
-import { SortOrder, SortPostsBy } from "../typings/enums"
+import { SortCommentsBy, SortOrder, SortPostsBy } from "../typings/enums"
 import { IdParams } from "../typings/params"
 import { CreatePostBody, UpdatePostBody } from "../typings/bodies"
+import { GetAllCommentsProps } from "../typings/props"
 
 const getAll = async (req: Request, res: Response) => {
   const {
@@ -26,6 +27,21 @@ const getById = async (req: Request, res: Response) => {
   const post = await postService.getById(id, req.apiUserId)
 
   res.json(post)
+}
+
+const getAllComments = async (req: Request, res: Response) => {
+  const {
+    id: postId,
+    skip = 0,
+    take = 10,
+    sortBy = SortCommentsBy.CREATED_AT,
+    sortOrder = SortOrder.ASC,
+  } = matchedData(req) as GetAllCommentsProps & IdParams
+
+  const commentsMeta = { skip, take, sortBy, sortOrder }
+  const comments = await postService.getAllComments(postId, commentsMeta, req.apiUserId)
+
+  res.json(comments)
 }
 
 const create = async (req: Request, res: Response) => {
@@ -55,6 +71,7 @@ const deleteById = async (req: Request, res: Response) => {
 export default {
   getAll,
   getById,
+  getAllComments,
   create,
   updateById,
   deleteById

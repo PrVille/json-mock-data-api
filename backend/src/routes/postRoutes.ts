@@ -22,6 +22,14 @@ router.get(
   postController.getById
 )
 
+// Retrieve a list of all comments for post.
+router.get(
+  "/:id/comments",
+  checkSchema(postValidationSchemas.getAllCommentsSchema),
+  validate,
+  postController.getAllComments
+)
+
 // Create a new post.
 router.post(
   "/",

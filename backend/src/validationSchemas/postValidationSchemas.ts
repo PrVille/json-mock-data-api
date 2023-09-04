@@ -3,6 +3,7 @@ import commonValidationSchemas from "./commonValidationSchemas"
 import { SortOrder, SortPostsBy } from "../typings/enums"
 import commonValidationFields from "./commonValidationFields"
 import { checkIfPostExists, checkIfUserExists } from "../utils/customValidators"
+import commentValidationSchemas from "./commentValidationSchemas"
 
 const getAllSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
@@ -40,6 +41,11 @@ const byIdSchema: Schema = {
       options: checkIfPostExists,
     },
   },
+}
+
+const getAllCommentsSchema: Schema = {
+  ...byIdSchema,
+  ...commentValidationSchemas.getAllSchema,
 }
 
 const createSchema: Schema = {
@@ -116,6 +122,7 @@ const updateByIdSchema: Schema = {
 export default {
   getAllSchema,
   byIdSchema,
+  getAllCommentsSchema,
   createSchema,
   updateByIdSchema
 }

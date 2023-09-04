@@ -469,6 +469,25 @@ describe(`PUT ${baseUrl}/:id`, function () {
     await removeTestDb()
   })
 
+  it("should mock updating comment correctly when request body is empty", async () => {
+    const { comment, removeTestDb } = await createTestDb()
+
+    const updatedData: UpdateCommentBody = {}
+
+    const response = await api.put(`${baseUrl}/${comment.id}`).send(updatedData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("content")
+    
+    expect(response.body.id).toBe(comment.id)
+    expect(response.body.content).toBe(comment.content)
+
+    await removeTestDb()
+  })
+
   it("should save updated comment when authenticated", async () => {
     const { apiUser, token, removeTestAuth } = await createTestAuth()
     const { comment, removeTestDb } = await createTestDb(apiUser.id)
@@ -535,7 +554,7 @@ describe(`PUT ${baseUrl}/:id`, function () {
   })
 })
 
-describe(`"DELETE ${baseUrl}/:id"`, function () {
+describe(`DELETE ${baseUrl}/:id`, function () {
   it("should respond with json", async () => {
     const { comment, removeTestDb } = await createTestDb()
 
@@ -595,7 +614,9 @@ describe(`"DELETE ${baseUrl}/:id"`, function () {
 
   it("should delete comment when authenticated", async () => {
     const { apiUser, token, removeTestAuth } = await createTestAuth()
-    const { comment, removeTestPost, removeTestUser } = await createTestDb(apiUser.id)
+    const { comment, removeTestPost, removeTestUser } = await createTestDb(
+      apiUser.id
+    )
 
     const before = await api
       .get(baseUrl)
@@ -618,9 +639,7 @@ describe(`"DELETE ${baseUrl}/:id"`, function () {
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 
-    const after = await api
-      .get(baseUrl)
-      .set("Authorization", `Bearer ${token}`)
+    const after = await api.get(baseUrl).set("Authorization", `Bearer ${token}`)
 
     expect(after.status).toBe(200)
     expect(after.body.total).toBeDefined()

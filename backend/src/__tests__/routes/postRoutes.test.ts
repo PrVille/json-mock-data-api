@@ -11,7 +11,7 @@ import {
   deleteTestPost,
   deleteTestUser,
 } from "../../utils/testHelpers"
-import { SortOrder, SortPostsBy } from "../../typings/enums"
+import { SortCommentsBy, SortOrder, SortPostsBy } from "../../typings/enums"
 import { CreatePostBody, UpdatePostBody } from "../../typings/bodies"
 
 const api = supertest(app)
@@ -185,6 +185,175 @@ describe(`GET ${baseUrl}/:id`, function () {
         },
       ],
     })
+  })
+})
+
+describe(`GET ${baseUrl}/:id/comments`, function () {
+  it("should respond with json", async () => {
+    const { post, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${post.id}/comments`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await removeTestDb()
+  })
+
+  it("should return error 400 when the post doesn't exist", async () => {
+    const response = await api.get(`${baseUrl}/nonExistingId/comments`)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingId",
+          msg: "The specified post for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
+
+  it("should return comments for post with default parameters", async () => {
+    const { post, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${post.id}/comments`)
+
+    const expectedProperties = {
+      id: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+      postId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await removeTestDb()
+  })
+
+  it("should return meta data with comments for post", async () => {
+    const { post, removeTestDb } = await createTestDb()
+    const response = await api.get(`${baseUrl}/${post.id}/comments`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.skip).toBeDefined()
+    expect(response.body.take).toBeDefined()
+    expect(response.body.total).toBeDefined()
+
+    await removeTestDb()
+  })
+
+  it("should return comments for post for an authenticated user", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+    const { post, removeTestDb } = await createTestDb(apiUser.id)
+
+    const response = await api
+      .get(`${baseUrl}/${post.id}/comments`)
+      .set("Authorization", `Bearer ${token}`)
+
+    const expectedProperties = {
+      id: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+      postId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toBeDefined()
+    expect(response.body.data).toHaveLength(1)
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await removeTestDb()
+    await removeTestAuth()
+  })
+
+  it("should return comments with valid query parameters", async () => {
+    const { post, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${post.id}/comments`).query({
+      skip: 0,
+      take: 5,
+      sortOrder: SortOrder.ASC,
+      sortBy: SortCommentsBy.CREATED_AT,
+    })
+
+    const expectedProperties = {
+      id: expect.any(String),
+      content: expect.any(String),
+      userId: expect.any(String),
+      postId: expect.any(String),
+    }
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body.data).toHaveLength(1)
+    expect(response.body.data).toContainEqual(
+      expect.objectContaining(expectedProperties)
+    )
+
+    await removeTestDb()
+  })
+
+  it("should return error 400 with invalid properties", async () => {
+    const { post, removeTestDb } = await createTestDb()
+
+    const response = await api.get(`${baseUrl}/${post.id}/comments`).query({
+      skip: "invalidSkip",
+      take: "invalidTake",
+      sortOrder: "invalidSortOrder",
+      sortBy: "invalidSortBy",
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "invalidSkip",
+          msg: "The 'skip' field must be an integer greater than or equal to 0.",
+          path: "skip",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidTake",
+          msg: "The 'take' field must be an integer greater than or equal to 0.",
+          path: "take",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortBy",
+          msg: "The 'sortBy' field must be one of 'id', 'updatedAt' or 'createdAt'.",
+          path: "sortBy",
+          location: "query",
+        },
+        {
+          type: "field",
+          value: "invalidSortOrder",
+          msg: "The 'sortOrder' field must be either 'asc' or 'desc'.",
+          path: "sortOrder",
+          location: "query",
+        },
+      ],
+    })
+
+    await removeTestDb()
   })
 })
 
@@ -464,6 +633,27 @@ describe("PUT /api/posts/:id", function () {
 
     await deleteTestPost(testPost.id)
     await deleteTestUser(testUser.id)
+  })
+
+  it("should mock updating post correctly when request body is empty", async () => {
+    const { post, removeTestDb } = await createTestDb()
+
+    const updatedData: UpdatePostBody = {}
+
+    const response = await api.put(`${baseUrl}/${post.id}`).send(updatedData)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("title")
+    expect(response.body).toHaveProperty("content")
+    
+    expect(response.body.id).toBe(post.id)
+    expect(response.body.title).toBe(post.title)
+    expect(response.body.content).toBe(post.content)
+
+    await removeTestDb()
   })
 
   it("should save updated post when authenticated", async () => {
