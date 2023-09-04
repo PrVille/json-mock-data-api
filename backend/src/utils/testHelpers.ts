@@ -72,17 +72,23 @@ export const createTestDb = async (apiUserId = DEFAULT_API_USER_ID) => {
     },
   })
 
-  const removeTestDb = async () => {
+  const removeTestComment = async () => {
     await prisma.comment.delete({
       where: {
         id: comment.id,
       },
     })
+  }
+
+  const removeTestPost = async () => {
     await prisma.post.delete({
       where: {
         id: post.id,
       },
     })
+  }
+
+  const removeTestUser = async () => {
     await prisma.user.delete({
       where: {
         id: user.id,
@@ -90,7 +96,21 @@ export const createTestDb = async (apiUserId = DEFAULT_API_USER_ID) => {
     })
   }
 
-  return { user, post, comment, removeTestDb }
+  const removeTestDb = async () => {
+    await removeTestComment()
+    await removeTestPost()
+    await removeTestUser()
+  }
+
+  return {
+    user,
+    post,
+    comment,
+    removeTestUser,
+    removeTestPost,
+    removeTestComment,
+    removeTestDb,
+  }
 }
 
 export const createTestAuth = async () => {

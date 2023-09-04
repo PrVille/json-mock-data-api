@@ -160,7 +160,7 @@ describe(`GET ${baseUrl}/:id`, function () {
   })
 
   it("should return error 400 when the comment doesn't exist", async () => {
-    const response = await api.get(`${baseUrl}/nonExistingCommentId`)
+    const response = await api.get(`${baseUrl}/nonExistingId`)
 
     expect(response.status).toBe(400)
     expect(response.body).toBeDefined()
@@ -168,7 +168,7 @@ describe(`GET ${baseUrl}/:id`, function () {
       errors: [
         {
           type: "field",
-          value: "nonExistingCommentId",
+          value: "nonExistingId",
           msg: "The specified comment for the 'id' field does not exist.",
           path: "id",
           location: "params",
@@ -393,14 +393,11 @@ describe(`PUT ${baseUrl}/:id`, function () {
   })
 
   it("should return error 400 when the comment doesn't exist", async () => {
-    const nonExistingCommentId = "nonExistingCommentId"
     const updatedData: UpdateCommentBody = {
       content: "UpdatedContent",
     }
 
-    const response = await api
-      .put(`${baseUrl}/${nonExistingCommentId}`)
-      .send(updatedData)
+    const response = await api.put(`${baseUrl}/nonExistingId`).send(updatedData)
 
     expect(response.status).toBe(400)
     expect(response.body).toBeDefined()
@@ -408,7 +405,7 @@ describe(`PUT ${baseUrl}/:id`, function () {
       errors: [
         {
           type: "field",
-          value: nonExistingCommentId,
+          value: "nonExistingId",
           msg: "The specified comment for the 'id' field does not exist.",
           path: "id",
           location: "params",
@@ -535,5 +532,102 @@ describe(`PUT ${baseUrl}/:id`, function () {
     })
 
     await removeTestDb()
+  })
+})
+
+describe(`"DELETE ${baseUrl}/:id"`, function () {
+  it("should respond with json", async () => {
+    const { comment, removeTestDb } = await createTestDb()
+
+    const response = await api.delete(`${baseUrl}/${comment.id}`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+    expect(response.status).toBe(200)
+
+    await removeTestDb()
+  })
+
+  it("should return error 400 when the comment doesn't exist", async () => {
+    const response = await api.delete(`${baseUrl}/nonExistingId`)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingId",
+          msg: "The specified comment for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+  })
+
+  it("should mock deleting comment when not authenticated", async () => {
+    const { comment, removeTestDb } = await createTestDb()
+
+    const before = await api.get(baseUrl)
+    const response = await api.delete(`${baseUrl}/${comment.id}`)
+
+    expect(before.status).toBe(200)
+    expect(before.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("postId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    const after = await api.get(baseUrl)
+
+    expect(after.status).toBe(200)
+    expect(after.body.total).toBeDefined()
+    expect(after.body.total).toBe(before.body.total)
+
+    await removeTestDb()
+  })
+
+  it("should delete comment when authenticated", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+    const { comment, removeTestPost, removeTestUser } = await createTestDb(apiUser.id)
+
+    const before = await api
+      .get(baseUrl)
+      .set("Authorization", `Bearer ${token}`)
+
+    const response = await api
+      .delete(`${baseUrl}/${comment.id}`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(before.status).toBe(200)
+    expect(before.body.total).toBeDefined()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+
+    expect(response.body).toHaveProperty("id")
+    expect(response.body).toHaveProperty("content")
+    expect(response.body).toHaveProperty("userId")
+    expect(response.body).toHaveProperty("postId")
+    expect(response.body).toHaveProperty("createdAt")
+    expect(response.body).toHaveProperty("updatedAt")
+
+    const after = await api
+      .get(baseUrl)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(after.status).toBe(200)
+    expect(after.body.total).toBeDefined()
+    expect(after.body.total).toBe(before.body.total - 1)
+
+    await removeTestPost()
+    await removeTestUser()
+    await removeTestAuth()
   })
 })

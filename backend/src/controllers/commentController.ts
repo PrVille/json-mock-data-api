@@ -6,7 +6,7 @@ import { SortCommentsBy, SortOrder } from "../typings/enums"
 import { IdParams } from "../typings/params"
 import { CreateCommentBody, UpdateCommentBody } from "../typings/bodies"
 
-const getAllComments = async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response) => {
   const {
     skip = 0,
     take = 10,
@@ -15,47 +15,52 @@ const getAllComments = async (req: Request, res: Response) => {
   } = matchedData(req) as GetAllCommentsQuery
 
   const commentsMeta = { skip, take, sortBy, sortOrder }
-  const comments = await commentService.getAllComments(commentsMeta, req.apiUserId)
+  const comments = await commentService.getAll(commentsMeta, req.apiUserId)
 
   res.json(comments)
 }
 
-const getCommentById = async (req: Request, res: Response) => {
+const getById = async (req: Request, res: Response) => {
   const { id } = matchedData(req) as IdParams
 
-  const comment = await commentService.getCommentById(id, req.apiUserId)
+  const comment = await commentService.getById(id, req.apiUserId)
 
   res.json(comment)
 }
 
-const createComment = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response) => {
   const commentToCreate = matchedData(req) as CreateCommentBody
 
-  const comment = await commentService.createComment(commentToCreate, req.apiUserId)
+  const comment = await commentService.create(commentToCreate, req.apiUserId)
 
   res.json(comment)
 }
 
-const updateCommentById = async (req: Request, res: Response) => {
-  const { id, ...commentToUpdate } = matchedData(req) as IdParams & UpdateCommentBody
+const updateById = async (req: Request, res: Response) => {
+  const { id, ...commentToUpdate } = matchedData(req) as IdParams &
+    UpdateCommentBody
 
-  const comment = await commentService.updateCommentById(id, commentToUpdate, req.apiUserId)
+  const comment = await commentService.updateById(
+    id,
+    commentToUpdate,
+    req.apiUserId
+  )
 
   res.json(comment)
 }
 
-// const deletePostById = async (req: Request, res: Response) => {
-//   const { id } = matchedData(req) as IdParams
+const deleteById = async (req: Request, res: Response) => {
+  const { id } = matchedData(req) as IdParams
 
-//   const post = await postService.deletePostById(id, req.apiUserId)
+  const comment = await commentService.deleteById(id, req.apiUserId)
 
-//   res.json(post)
-// }
+  res.json(comment)
+}
 
 export default {
-  getAllComments,
-  getCommentById,
-  createComment,
-  updateCommentById
-
+  getAll,
+  getById,
+  create,
+  updateById,
+  deleteById,
 }

@@ -4,7 +4,7 @@ import { SortCommentsBy, SortOrder } from "../typings/enums"
 import commonValidationFields from "./commonValidationFields"
 import { checkIfCommentExists, checkIfPostExists, checkIfUserExists } from "../utils/customValidators"
 
-const getAllCommentsSchema: Schema = {
+const getAllSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
   ...commonValidationSchemas.takeSchema,
   sortBy: {
@@ -32,7 +32,7 @@ const getAllCommentsSchema: Schema = {
   },
 }
 
-const commentByIdSchema: Schema = {
+const byIdSchema: Schema = {
   id: {
     in: "params",
     ...commonValidationFields.idFields,
@@ -42,7 +42,7 @@ const commentByIdSchema: Schema = {
   },
 }
 
-const createCommentSchema: Schema = {
+const createSchema: Schema = {
    content: {
     exists: {
       errorMessage: "The 'content' field is a required field.",
@@ -87,8 +87,8 @@ const createCommentSchema: Schema = {
   },
 }
 
-const updateCommentByIdSchema: Schema = {
-  ...commentByIdSchema,
+const updateByIdSchema: Schema = {
+  ...byIdSchema,
   content: {
     optional: true,
     isString: {
@@ -103,8 +103,8 @@ const updateCommentByIdSchema: Schema = {
 }
 
 export default {
-  getAllCommentsSchema,
-  commentByIdSchema,
-  createCommentSchema,
-  updateCommentByIdSchema
+  getAllSchema,
+  byIdSchema,
+  createSchema,
+  updateByIdSchema
 }

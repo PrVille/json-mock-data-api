@@ -4,10 +4,7 @@ import { CreateCommentBody, UpdateCommentBody } from "../typings/bodies"
 import { GetAllCommentsProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 
-const getAllComments = async (
-  commentsMeta: GetAllCommentsProps,
-  apiUserId: string
-) => {
+const getAll = async (commentsMeta: GetAllCommentsProps, apiUserId: string) => {
   const { skip, take, sortBy, sortOrder } = commentsMeta
 
   const comments = await prisma.comment.findMany({
@@ -35,7 +32,7 @@ const getAllComments = async (
   }
 }
 
-const getCommentById = async (id: string, apiUserId: string) => {
+const getById = async (id: string, apiUserId: string) => {
   const comment = await prisma.comment.findUnique({
     where: {
       id,
@@ -46,7 +43,7 @@ const getCommentById = async (id: string, apiUserId: string) => {
   return comment
 }
 
-const createComment = async (
+const create = async (
   commentToCreate: CreateCommentBody,
   apiUserId: string
 ) => {
@@ -73,7 +70,7 @@ const createComment = async (
   return comment
 }
 
-const updateCommentById = async (
+const updateById = async (
   id: string,
   commentToUpdate: UpdateCommentBody,
   apiUserId: string
@@ -111,24 +108,25 @@ const updateCommentById = async (
   return comment
 }
 
-// const deletePostById = async (id: string, apiUserId: string) => {
-//   if (apiUserId === DEFAULT_API_USER_ID) {
-//     return await getPostById(id, apiUserId)
-//   }
+const deleteById = async (id: string, apiUserId: string) => {
+  if (apiUserId === DEFAULT_API_USER_ID) {
+    return await getById(id, apiUserId)
+  }
 
-//   const post = await prisma.post.delete({
-//     where: {
-//       id,
-//       apiUserId,
-//     },
-//   })
+  const comment = await prisma.comment.delete({
+    where: {
+      id,
+      apiUserId,
+    },
+  })
 
-//   return post
-// }
+  return comment
+}
 
 export default {
-  getAllComments,
-  getCommentById,
-  createComment,
-  updateCommentById, //   deletePostById
+  getAll,
+  getById,
+  create,
+  updateById,
+  deleteById,
 }

@@ -9,41 +9,41 @@ const router = express.Router()
 // Retrieve a list of all comments.
 router.get(
   "/",
-  checkSchema(commentValidationSchemas.getAllCommentsSchema),
+  checkSchema(commentValidationSchemas.getAllSchema),
   validate,
-  commentController.getAllComments
+  commentController.getAll
 )
 
 // Retrieve a specific comment by their ID.
 router.get(
   "/:id",
-  checkSchema(commentValidationSchemas.commentByIdSchema),
+  checkSchema(commentValidationSchemas.byIdSchema),
   validate,
-  commentController.getCommentById
+  commentController.getById
 )
 
 // Create a new comment.
 router.post(
   "/",
-  checkSchema(commentValidationSchemas.createCommentSchema),
+  checkSchema(commentValidationSchemas.createSchema),
   validate,
-  commentController.createComment
+  commentController.create
 )
 
 // Update comment information.
 router.put(
   "/:id",
-  checkSchema(commentValidationSchemas.updateCommentByIdSchema),
+  checkSchema(commentValidationSchemas.updateByIdSchema),
   validate,
-  commentController.updateCommentById
+  commentController.updateById
 )
 
-// // Delete a post.
-// router.delete(
-//   "/:id",
-//   checkSchema(postValidationSchemas.postByIdSchema),
-//   validate,
-//   postController.deletePostById
-// )
+// Delete a comment.
+router.delete(
+  "/:id",
+  checkSchema(commentValidationSchemas.byIdSchema),
+  validate,
+  commentController.deleteById
+)
 
 export default router
