@@ -9,41 +9,41 @@ const router = express.Router()
 // Retrieve a list of all posts.
 router.get(
   "/",
-  checkSchema(postValidationSchemas.getAllPostsSchema),
+  checkSchema(postValidationSchemas.getAllSchema),
   validate,
-  postController.getAllPosts
+  postController.getAll
 )
 
 // Retrieve a specific post by their ID.
 router.get(
   "/:id",
-  checkSchema(postValidationSchemas.postByIdSchema),
+  checkSchema(postValidationSchemas.byIdSchema),
   validate,
-  postController.getPostById
+  postController.getById
 )
 
 // Create a new post.
 router.post(
   "/",
-  checkSchema(postValidationSchemas.createPostSchema),
+  checkSchema(postValidationSchemas.createSchema),
   validate,
-  postController.createPost
+  postController.create
 )
 
 // Update post information.
 router.put(
   "/:id",
-  checkSchema(postValidationSchemas.updatePostByIdSchema),
+  checkSchema(postValidationSchemas.updateByIdSchema),
   validate,
-  postController.updatePostById
+  postController.updateById
 )
 
 // Delete a post.
 router.delete(
   "/:id",
-  checkSchema(postValidationSchemas.postByIdSchema),
+  checkSchema(postValidationSchemas.byIdSchema),
   validate,
-  postController.deletePostById
+  postController.deleteById
 )
 
 export default router

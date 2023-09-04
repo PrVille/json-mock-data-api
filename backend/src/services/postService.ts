@@ -4,7 +4,7 @@ import { CreatePostBody, UpdatePostBody } from "../typings/bodies"
 import { GetAllPostsProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 
-const getAllPosts = async (postsMeta: GetAllPostsProps, apiUserId: string) => {
+const getAll = async (postsMeta: GetAllPostsProps, apiUserId: string) => {
   const { skip, take, sortBy, sortOrder } = postsMeta
 
   const posts = await prisma.post.findMany({
@@ -32,7 +32,7 @@ const getAllPosts = async (postsMeta: GetAllPostsProps, apiUserId: string) => {
   }
 }
 
-const getPostById = async (id: string, apiUserId: string) => {
+const getById = async (id: string, apiUserId: string) => {
   const post = await prisma.post.findUnique({
     where: {
       id,
@@ -43,7 +43,7 @@ const getPostById = async (id: string, apiUserId: string) => {
   return post
 }
 
-const createPost = async (postToCreate: CreatePostBody, apiUserId: string) => {
+const create = async (postToCreate: CreatePostBody, apiUserId: string) => {
   if (apiUserId === DEFAULT_API_USER_ID) {
     const mockPost = {
       id: faker.string.uuid(),
@@ -67,7 +67,7 @@ const createPost = async (postToCreate: CreatePostBody, apiUserId: string) => {
   return post
 }
 
-const updatePostById = async (
+const updateById = async (
   id: string,
   postToUpdate: UpdatePostBody,
   apiUserId: string
@@ -105,9 +105,9 @@ const updatePostById = async (
   return post
 }
 
-const deletePostById = async (id: string, apiUserId: string) => {
+const deleteById = async (id: string, apiUserId: string) => {
   if (apiUserId === DEFAULT_API_USER_ID) {
-    return await getPostById(id, apiUserId)
+    return await getById(id, apiUserId)
   }
 
   const post = await prisma.post.delete({
@@ -121,9 +121,9 @@ const deletePostById = async (id: string, apiUserId: string) => {
 }
 
 export default {
-  getAllPosts,
-  getPostById,
-  createPost,
-  updatePostById,
-  deletePostById
+  getAll,
+  getById,
+  create,
+  updateById,
+  deleteById
 }

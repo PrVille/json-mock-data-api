@@ -4,7 +4,7 @@ import { SortOrder, SortPostsBy } from "../typings/enums"
 import commonValidationFields from "./commonValidationFields"
 import { checkIfPostExists, checkIfUserExists } from "../utils/customValidators"
 
-const getAllPostsSchema: Schema = {
+const getAllSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
   ...commonValidationSchemas.takeSchema,
   sortBy: {
@@ -32,7 +32,7 @@ const getAllPostsSchema: Schema = {
   },
 }
 
-const postByIdSchema: Schema = {
+const byIdSchema: Schema = {
   id: {
     in: "params",
     ...commonValidationFields.idFields,
@@ -42,7 +42,7 @@ const postByIdSchema: Schema = {
   },
 }
 
-const createPostSchema: Schema = {
+const createSchema: Schema = {
   title: {
     exists: {
       errorMessage: "The 'title' field is a required field.",
@@ -87,8 +87,8 @@ const createPostSchema: Schema = {
   },
 }
 
-const updatePostByIdSchema: Schema = {
-  ...postByIdSchema,
+const updateByIdSchema: Schema = {
+  ...byIdSchema,
   title: {
     optional: true,
     isString: {
@@ -114,8 +114,8 @@ const updatePostByIdSchema: Schema = {
 }
 
 export default {
-  getAllPostsSchema,
-  postByIdSchema,
-  createPostSchema,
-  updatePostByIdSchema
+  getAllSchema,
+  byIdSchema,
+  createSchema,
+  updateByIdSchema
 }

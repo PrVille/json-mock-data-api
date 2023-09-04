@@ -6,7 +6,7 @@ import { SortOrder, SortPostsBy } from "../typings/enums"
 import { IdParams } from "../typings/params"
 import { CreatePostBody, UpdatePostBody } from "../typings/bodies"
 
-const getAllPosts = async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response) => {
   const {
     skip = 0,
     take = 10,
@@ -15,47 +15,47 @@ const getAllPosts = async (req: Request, res: Response) => {
   } = matchedData(req) as GetAllPostsQuery
 
   const postsMeta = { skip, take, sortBy, sortOrder }
-  const posts = await postService.getAllPosts(postsMeta, req.apiUserId)
+  const posts = await postService.getAll(postsMeta, req.apiUserId)
 
   res.json(posts)
 }
 
-const getPostById = async (req: Request, res: Response) => {
+const getById = async (req: Request, res: Response) => {
   const { id } = matchedData(req) as IdParams
 
-  const post = await postService.getPostById(id, req.apiUserId)
+  const post = await postService.getById(id, req.apiUserId)
 
   res.json(post)
 }
 
-const createPost = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response) => {
   const postToCreate = matchedData(req) as CreatePostBody
 
-  const post = await postService.createPost(postToCreate, req.apiUserId)
+  const post = await postService.create(postToCreate, req.apiUserId)
 
   res.json(post)
 }
 
-const updatePostById = async (req: Request, res: Response) => {
+const updateById = async (req: Request, res: Response) => {
   const { id, ...postToUpdate } = matchedData(req) as IdParams & UpdatePostBody
 
-  const post = await postService.updatePostById(id, postToUpdate, req.apiUserId)
+  const post = await postService.updateById(id, postToUpdate, req.apiUserId)
 
   res.json(post)
 }
 
-const deletePostById = async (req: Request, res: Response) => {
+const deleteById = async (req: Request, res: Response) => {
   const { id } = matchedData(req) as IdParams
 
-  const post = await postService.deletePostById(id, req.apiUserId)
+  const post = await postService.deleteById(id, req.apiUserId)
 
   res.json(post)
 }
 
 export default {
-  getAllPosts,
-  getPostById,
-  createPost,
-  updatePostById,
-  deletePostById
+  getAll,
+  getById,
+  create,
+  updateById,
+  deleteById
 }

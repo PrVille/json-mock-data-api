@@ -4,7 +4,7 @@ import { GetAllPostsProps, GetAllUsersProps } from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 import { faker } from "@faker-js/faker"
 
-const getAllUsers = async (usersMeta: GetAllUsersProps, apiUserId: string) => {
+const getAll = async (usersMeta: GetAllUsersProps, apiUserId: string) => {
   const { skip, take, sortBy, sortOrder } = usersMeta
 
   const users = await prisma.user.findMany({
@@ -32,7 +32,7 @@ const getAllUsers = async (usersMeta: GetAllUsersProps, apiUserId: string) => {
   }
 }
 
-const getUserById = async (id: string, apiUserId: string) => {
+const getById = async (id: string, apiUserId: string) => {
   const user = await prisma.user.findUnique({
     where: {
       id,
@@ -43,7 +43,7 @@ const getUserById = async (id: string, apiUserId: string) => {
   return user
 }
 
-const getAllUserPosts = async (
+const getAllPosts = async (
   userId: string,
   postsMeta: GetAllPostsProps,
   apiUserId: string
@@ -77,7 +77,7 @@ const getAllUserPosts = async (
   }
 }
 
-const createUser = async (userToCreate: CreateUserBody, apiUserId: string) => {
+const create = async (userToCreate: CreateUserBody, apiUserId: string) => {
   if (apiUserId === DEFAULT_API_USER_ID) {
     const mockUser = {
       id: faker.string.uuid(),
@@ -104,7 +104,7 @@ const createUser = async (userToCreate: CreateUserBody, apiUserId: string) => {
   return user
 }
 
-const updateUserById = async (
+const updateById = async (
   id: string,
   userToUpdate: UpdateUserBody,
   apiUserId: string
@@ -145,9 +145,9 @@ const updateUserById = async (
   return user
 }
 
-const deleteUserById = async (id: string, apiUserId: string) => {
+const deleteById = async (id: string, apiUserId: string) => {
   if (apiUserId === DEFAULT_API_USER_ID) {
-    return await getUserById(id, apiUserId)
+    return await getById(id, apiUserId)
   }
 
   const user = await prisma.user.delete({
@@ -161,10 +161,10 @@ const deleteUserById = async (id: string, apiUserId: string) => {
 }
 
 export default {
-  getAllUsers,
-  getUserById,
-  getAllUserPosts,
-  createUser,
-  updateUserById,
-  deleteUserById,
+  getAll,
+  getById,
+  getAllPosts,
+  create,
+  updateById,
+  deleteById,
 }

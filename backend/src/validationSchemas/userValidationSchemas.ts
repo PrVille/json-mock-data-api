@@ -5,7 +5,7 @@ import postValidationSchemas from "./postValidationSchemas"
 import { checkIfUserExists } from "../utils/customValidators"
 import { SortOrder, SortUsersBy } from "../typings/enums"
 
-const getAllUsersSchema: Schema = {
+const getAllSchema: Schema = {
   ...commonValidationSchemas.skipSchema,
   ...commonValidationSchemas.takeSchema,
   sortBy: {
@@ -33,7 +33,7 @@ const getAllUsersSchema: Schema = {
   },
 }
 
-const userByIdSchema: Schema = {
+const byIdSchema: Schema = {
   id: {
     in: "params",
     ...commonValidationFields.idFields,
@@ -43,14 +43,13 @@ const userByIdSchema: Schema = {
   },
 }
 
-const getAllUserPostsSchema: Schema = {
-  ...userByIdSchema,
-  ...postValidationSchemas.getAllPostsSchema
+const getAllPostsSchema: Schema = {
+  ...byIdSchema,
+  ...postValidationSchemas.getAllSchema,
 }
 
-
-const updateUserByIdSchema: Schema = {
-  ...userByIdSchema,
+const updateByIdSchema: Schema = {
+  ...byIdSchema,
   email: {
     optional: true,
     ...commonValidationFields.emailFields,
@@ -71,7 +70,7 @@ const updateUserByIdSchema: Schema = {
   ...commonValidationSchemas.imageUrlSchema,
 }
 
-const createUserSchema: Schema = {
+const createSchema: Schema = {
   email: {
     exists: {
       errorMessage: "The 'email' field is a required field.",
@@ -105,9 +104,9 @@ const createUserSchema: Schema = {
 }
 
 export default {
-  getAllUsersSchema,
-  userByIdSchema,
-  getAllUserPostsSchema,
-  updateUserByIdSchema,
-  createUserSchema,
+  getAllSchema,
+  byIdSchema,
+  getAllPostsSchema,
+  updateByIdSchema,
+  createSchema,
 }

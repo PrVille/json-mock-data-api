@@ -9,49 +9,49 @@ const router = express.Router()
 // Retrieve a list of all users.
 router.get(
   "/",
-  checkSchema(userValidationSchemas.getAllUsersSchema),
+  checkSchema(userValidationSchemas.getAllSchema),
   validate,
-  userController.getAllUsers
+  userController.getAll
 )
 
 // Retrieve a specific user by their ID.
 router.get(
   "/:id",
-  checkSchema(userValidationSchemas.userByIdSchema),
+  checkSchema(userValidationSchemas.byIdSchema),
   validate,
-  userController.getUserById
+  userController.getById
 )
 
 // Retrieve a list of all posts for user.
 router.get(
   "/:id/posts",
-  checkSchema(userValidationSchemas.getAllUserPostsSchema),
+  checkSchema(userValidationSchemas.getAllPostsSchema),
   validate,
-  userController.getAllUserPosts
+  userController.getAllPosts
 )
 
 // Create a new user.
 router.post(
   "/",
-  checkSchema(userValidationSchemas.createUserSchema),
+  checkSchema(userValidationSchemas.createSchema),
   validate,
-  userController.createUser
+  userController.create
 )
 
 // Update user's information.
 router.put(
   "/:id",
-  checkSchema(userValidationSchemas.updateUserByIdSchema),
+  checkSchema(userValidationSchemas.updateByIdSchema),
   validate,
-  userController.updateUserById
+  userController.updateById
 )
 
 // Delete a user.
 router.delete(
   "/:id",
-  checkSchema(userValidationSchemas.userByIdSchema),
+  checkSchema(userValidationSchemas.byIdSchema),
   validate,
-  userController.deleteUserById
+  userController.deleteById
 )
 
 export default router
