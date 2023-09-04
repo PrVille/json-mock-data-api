@@ -5,6 +5,7 @@ import prisma from "../client"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { SECRET } from "../utils/config"
+import seedDb from "../data/seedDb"
 
 const signUp = async (req: Request, res: Response) => {
   const { email, password } = matchedData(req) as AuthBody
@@ -18,6 +19,8 @@ const signUp = async (req: Request, res: Response) => {
       passwordHash,
     },
   })
+
+  await seedDb(newApiUser.id) 
 
   const {
     passwordHash: excludedPasswordHash,
