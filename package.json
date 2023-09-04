@@ -12,7 +12,7 @@
     "build": "npm run build:backend && npm run build:frontend",
     "test": "npm run test:backend && npm run test:frontend",
     "make-badges": "npm run make-badges:backend",
-    "deploy": "vercel --prod"
+    "deploy": "npm run build && vercel --prod"
   },
   "pre-commit": [
     "test",
