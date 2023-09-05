@@ -28,6 +28,7 @@ const Examples = ({ children }: { children: React.ReactNode }) => {
   return <div className="flex-1 max-w-[600px] space-y-3">{children}</div>
 }
 
+
 const Divider = () => <div className="border-t mx-16" />
 
 Page.Section = Section

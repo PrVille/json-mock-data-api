@@ -5,7 +5,7 @@ import NavSection from "./NavSection"
 
 const Sidebar = () => {
   return (
-    <div className="w-[220px] h-screen overflow-y-auto overflow-x-hidden border-r">
+    <div className="w-[260px] h-screen overflow-y-auto overflow-x-hidden border-r">
       <header className="pl-4 py-3 pr-3">
         <Logo url="/docs" />
       </header>

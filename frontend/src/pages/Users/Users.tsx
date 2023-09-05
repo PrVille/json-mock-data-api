@@ -2,8 +2,6 @@ import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import Content from "../../components/Content"
 import { Method } from "../../typings/enums"
-import { useEffect, useState } from "react"
-import userService from "../../services/userService"
 
 const userSchema = `User {
   id        string
@@ -11,24 +9,124 @@ const userSchema = `User {
   email     string
   firstName string
   lastName  string
-  age       integer?
-  imageUrl  string?
+  age       integer | null
+  imageUrl  string  | null
   createdAt string
   updatedAt string
-  posts     Post[]
 }`
 
+const userExample = {
+  id: "2fb46dc7-17db-4102-af8e-421d9d892efe",
+  username: "Anabel_Huels-Ebert",
+  email: "Anabel.Huels-Ebert@yahoo.com",
+  firstName: "Anabel",
+  lastName: "Huels-Ebert",
+  age: null,
+  imageUrl: "https://avatars.githubusercontent.com/u/61087508",
+  createdAt: "2023-09-04T11:01:34.521Z",
+  updatedAt: "2023-09-04T11:01:34.521Z",
+}
+
+const endpoints = [
+  {
+    method: Method.get,
+    endpoint: "/api/users",
+    url: "/docs/users/get-several-users",
+  },
+  {
+    method: Method.post,
+    endpoint: "/api/users",
+    url: "/docs/users/create-user",
+  },
+  {
+    method: Method.get,
+    endpoint: "/api/users/:id",
+    url: "/docs/users/get-user",
+  },
+  {
+    method: Method.put,
+    endpoint: "/api/users/:id",
+    url: "/docs/users/update-user",
+  },
+  {
+    method: Method.delete,
+    endpoint: "/api/users/:id",
+    url: "/docs/users/delete-user",
+  },
+  {
+    method: Method.get,
+    endpoint: "/api/users/:id/posts",
+    url: "/docs/users/get-user-posts",
+  },
+  {
+    method: Method.get,
+    endpoint: "/api/users/:id/comments",
+    url: "/docs/users/get-user-comments",
+  },
+]
+
+const attributes = [
+  {
+    name: "id",
+    type: "string",
+    description: "Unique identifier for the user.",
+  },
+  {
+    name: "username",
+    type: "string",
+    description: "Username of the user.",
+  },
+  {
+    name: "email",
+    type: "string",
+    description: "Email address of the user.",
+  },
+  {
+    name: "firstName",
+    type: "string",
+    description: "First name of the user.",
+  },
+  {
+    name: "lastName",
+    type: "string",
+    description: "Last name of the user.",
+  },
+  {
+    name: "age",
+    type: "integer | null",
+    description: "Age of the user.",
+  },
+  {
+    name: "imageUrl",
+    type: "string | null",
+    description: "URL to the user's profile image.",
+  },
+  {
+    name: "createdAt",
+    type: "string",
+    description:
+      "This is a timestamp indicating when the user was created in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.",
+  },
+  {
+    name: "updatedAt",
+    type: "string",
+    description:
+      "This is a timestamp indicating when the user last updated in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.",
+  },
+]
+
 const Users = () => {
-  const [exampleUserObject, setExampleUserObject] = useState({})
+  // const [exampleUserObject, setExampleUserObject] = useState({})
 
-  const fetchUsers = async () => {
-    const { data } = await userService.getAll()
-    setExampleUserObject(data[0])
-  }
+  // const fetchUsers = async () => {
+  //   const { data } = await userService.getAll()
+  //   console.log(data)
+  //   setExampleUserObject(data[4])
+  // }
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
+  // useEffect(() => {
+  //   fetchUsers()
+  // }, [])
 
   return (
     <Page>
@@ -56,31 +154,14 @@ const Users = () => {
                 </ExampleResponse.TopBar.Title>
               </ExampleResponse.TopBar>
               <ExampleResponse.Endpoints>
-                <ExampleResponse.Endpoints.Endpoint
-                  method={Method.get}
-                  endpoint={"/api/users"}
-                  url={"/users/get-several-users"}
-                />
-                <ExampleResponse.Endpoints.Endpoint
-                  method={Method.post}
-                  endpoint={"/api/users"}
-                  url={"/users/create-user"}
-                />
-                <ExampleResponse.Endpoints.Endpoint
-                  method={Method.get}
-                  endpoint={"/api/users/:id"}
-                  url={"/users/get-user"}
-                />
-                <ExampleResponse.Endpoints.Endpoint
-                  method={Method.put}
-                  endpoint={"/api/users/:id"}
-                  url={"/users/update-user"}
-                />
-                <ExampleResponse.Endpoints.Endpoint
-                  method={Method.delete}
-                  endpoint={"/api/users/:id"}
-                  url={"/users/delete-user"}
-                />
+                {endpoints.map((endpoint, index) => (
+                  <ExampleResponse.Endpoints.Endpoint
+                    key={index}
+                    method={endpoint.method}
+                    endpoint={endpoint.endpoint}
+                    url={endpoint.url}
+                  />
+                ))}
               </ExampleResponse.Endpoints>
             </ExampleResponse>
           </Page.Section.Examples>
@@ -90,125 +171,24 @@ const Users = () => {
       <Page.Divider />
 
       <Page.Section>
-        <Page.Section.Title>The user schema</Page.Section.Title>
+        <Page.Section.Title>The user object</Page.Section.Title>
 
         <Page.Section.Body>
           <Page.Section.Content>
             <Content.Parameters>
               <Content.Parameters.Title>Attributes</Content.Parameters.Title>
               <Content.Parameters.List>
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel name="id" type="string" />
-                  <Content.Parameters.ListItemDescription>
-                    Unique identifier for the user.
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="username"
-                    type="string"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    Username of the user.
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="email"
-                    type="string"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    Email address of the user.
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="firstName"
-                    type="string"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    First name of the user.
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="lastName"
-                    type="string"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    Last name of the user.
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="age"
-                    type="integer?"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    Age of the user, can be null.
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="imageUrl"
-                    type="string?"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    URL to the user's profile image, can be null.
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="createdAt"
-                    type="string"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    This is a timestamp indicating when the user was created in
-                    ISO 8601 format:{" "}
-                    <span className="text-xs px-1 py-0.5 bg-gray-100 rounded-md whitespace-nowrap">
-                      YYYY-MM-DDTHH:MM:SSZ
-                    </span>
-                    .
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="updatedAt"
-                    type="string"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    This is a timestamp indicating when the user last updated in
-                    ISO 8601 format:{" "}
-                    <span className="text-xs px-1 py-0.5 bg-gray-100 rounded-md whitespace-nowrap">
-                      YYYY-MM-DDTHH:MM:SSZ
-                    </span>
-                    .
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
-
-                <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel
-                    name="posts"
-                    type="Post[]"
-                    url="/posts"
-                  />
-                  <Content.Parameters.ListItemDescription>
-                    This is a timestamp indicating when the user last updated in
-                    ISO 8601 format:{" "}
-                    <span className="text-xs px-1 py-0.5 bg-gray-100 rounded-md whitespace-nowrap">
-                      YYYY-MM-DDTHH:MM:SSZ
-                    </span>
-                    .
-                  </Content.Parameters.ListItemDescription>
-                </Content.Parameters.ListItem>
+                {attributes.map((attribute, index) => (
+                  <Content.Parameters.ListItem key={index}>
+                    <Content.Parameters.ListItemLabel
+                      name={attribute.name}
+                      type={attribute.type}
+                    />
+                    <Content.Parameters.ListItemDescription>
+                      {attribute.description}
+                    </Content.Parameters.ListItemDescription>
+                  </Content.Parameters.ListItem>
+                ))}
               </Content.Parameters.List>
             </Content.Parameters>
           </Page.Section.Content>
@@ -231,7 +211,7 @@ const Users = () => {
                 </ExampleResponse.TopBar.Title>
                 <ExampleResponse.TopBar.CopyButton />
               </ExampleResponse.TopBar>
-              <ExampleResponse.Json object={exampleUserObject} />
+              <ExampleResponse.Json object={userExample} />
             </ExampleResponse>
           </Page.Section.Examples>
         </Page.Section.Body>

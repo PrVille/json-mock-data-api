@@ -59,6 +59,7 @@ export const checkEmailNotInUse = async (
   value: string,
   { req }: { req: Request }
 ) => {
+  console.log("checkEmailNotInUse: req.apiUserId", req.apiUserId)
   const user = await prisma.user.findUnique({
     where: {
       email_apiUserId: {

@@ -5,7 +5,7 @@ import { DEFAULT_API_USER_ID, SECRET } from "../utils/config"
 
 const authApiUser = async (req: Request, res: Response, next: NextFunction) => {
   const tokenBearer = req.headers.authorization?.replace("Bearer ", "")
-
+  console.log({ DEFAULT_API_USER_ID, tokenBearer })
   if (tokenBearer !== undefined) {
     try {
       const decodedToken = verify(tokenBearer, SECRET)

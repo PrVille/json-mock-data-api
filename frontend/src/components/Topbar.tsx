@@ -3,6 +3,8 @@ import Logo from "./Logo"
 import { classNames } from "../utils"
 
 const Topbar = ({ showLogo }: { showLogo?: boolean }) => {
+  const loggedIn = false
+
   return (
     <header className="flex px-16 py-5">
       {showLogo && <Logo />}
@@ -37,6 +39,17 @@ const Topbar = ({ showLogo }: { showLogo?: boolean }) => {
         >
           GitHub
         </a>
+        <NavLink
+          to={loggedIn ? "/account" : "/login"}
+          className={({ isActive }) =>
+            classNames(
+              "py-1 pr-1 text-sm font-medium rounded-lg  hover:text-gray-800 transition-all",
+              isActive ? "text-gray-800" : "text-indigo-600"
+            )
+          }
+        >
+          {loggedIn ? "Account" : "Log In"} &rarr;
+        </NavLink>
       </nav>
     </header>
   )

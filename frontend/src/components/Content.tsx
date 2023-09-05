@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom"
-
 const Content = ({ children }: { children: React.ReactNode }) => {
   return <div>{children}</div>
 }
@@ -8,8 +6,12 @@ const Description = ({ children }: { children: React.ReactNode }) => {
   return <p className="text-base">{children}</p>
 }
 
+const Subtitle = ({ children }: { children: React.ReactNode }) => {
+  return <p className="text-sm mt-1.5 mb-4 text-gray-600">{children}</p>
+}
+
 const Parameters = ({ children }: { children: React.ReactNode }) => {
-  return <div>{children}</div>
+  return <div className="">{children}</div>
 }
 
 const ParametersTitle = ({ children }: { children: React.ReactNode }) => {
@@ -27,13 +29,13 @@ const ParametersListItem = ({ children }: { children: React.ReactNode }) => {
 type ParametersListItemLabelProps = {
   name: string
   type: string
-  url?: string
+  required?: boolean
 }
 
 const ParametersListItemLabel = ({
   name,
   type,
-  url,
+  required = false,
 }: ParametersListItemLabelProps) => {
   return (
     <h3 className="flex text-xs">
@@ -41,13 +43,12 @@ const ParametersListItemLabel = ({
         {name}
       </span>
       <span className="text-gray-500 font-semibold mr-1">{type}</span>
-      {url !== undefined && (
-        <Link
-          to={url}
-          className="uppercase text-[10px] tracking-widest font-semibold mr-1 text-sky-500 border-b border-gray-200 border-dashed"
+      {required && (
+        <span
+          className="text-[10px] uppercase font-semibold mr-1 text-orange-500"
         >
-          {name}
-        </Link>
+          required
+        </span>
       )}
     </h3>
   )
@@ -62,7 +63,7 @@ const ParametersListItemDescription = ({
 }
 
 Content.Description = Description
-
+Content.Subtitle = Subtitle
 Content.Parameters = Parameters
 Parameters.Title = ParametersTitle
 Parameters.List = ParametersList

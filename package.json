@@ -16,8 +16,7 @@
   },
   "pre-commit": [
     "test",
-    "make-badges",
-    "build"
+    "make-badges"
   ],
   "keywords": [],
   "author": "",

@@ -47,7 +47,7 @@ const TopBar = ({
   )
 }
 
-const Title = ({ children }: { children: React.ReactNode }) => {
+const TopBarTitle = ({ children }: { children: React.ReactNode }) => {
   return (
     <h1 className="text-xs font-medium text-gray-500 uppercase select-none pointer-events-none">
       {children}
@@ -60,7 +60,7 @@ type EndpointTitleProps = {
   endpoint: string
 }
 
-const EndpointTitle = ({ method, endpoint }: EndpointTitleProps) => {
+const TopBarEndpointTitle = ({ method, endpoint }: EndpointTitleProps) => {
   return (
     <h1 className="flex items-center gap-2 text-xs font-medium font-mono select-none pointer-events-none text-gray-300">
       <span className={methodColorMapLight[method]}>{method}</span>
@@ -164,8 +164,8 @@ const Javascript = ({ codeBlock }: { codeBlock: string }) => {
 }
 
 ExampleResponse.TopBar = TopBar
-TopBar.Title = Title
-TopBar.EndpointTitle = EndpointTitle
+TopBar.Title = TopBarTitle
+TopBar.EndpointTitle = TopBarEndpointTitle
 TopBar.CopyButton = CopyButton
 
 ExampleResponse.Endpoints = Endpoints

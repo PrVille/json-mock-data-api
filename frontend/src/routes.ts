@@ -7,6 +7,8 @@ import CreateUser from "./pages/Users/CreateUser"
 import DeleteUser from "./pages/Users/DeleteUser"
 import GetSeveralUsers from "./pages/Users/GetSeveralUsers"
 import GetUser from "./pages/Users/GetUser"
+import GetUserComments from "./pages/Users/GetUserComments"
+import GetUserPosts from "./pages/Users/GetUserPosts"
 import UpdateUser from "./pages/Users/UpdateUser"
 import Users from "./pages/Users/Users"
 
@@ -71,6 +73,20 @@ const routes = {
           name: "Delete user",
           badge: "delete",
           component: DeleteUser,
+          exact: true,
+        },
+        {
+          path: "get-user-posts",
+          name: "Get user posts",
+          badge: "get",
+          component: GetUserPosts,
+          exact: true,
+        },
+        {
+          path: "get-user-comments",
+          name: "Get user comments",
+          badge: "get",
+          component: GetUserComments,
           exact: true,
         },
       ],
