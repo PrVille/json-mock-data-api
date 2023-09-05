@@ -4,7 +4,7 @@ import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
 
-const createUserCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users', {
+const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -73,7 +73,7 @@ const CreateUser = () => {
   return (
     <Page>
       <Page.Section>
-        <Page.Section.Title>Create user</Page.Section.Title>
+        <Page.Section.Title>Create a user</Page.Section.Title>
 
         <Page.Section.Body>
           <Page.Section.Content>
@@ -103,6 +103,7 @@ const CreateUser = () => {
                       name={attribute.name}
                       type={attribute.type}
                       required={attribute.required}
+                      optional={!attribute.required}
                     />
                     <Content.Parameters.ListItemDescription>
                       {attribute.description}
@@ -139,7 +140,7 @@ const CreateUser = () => {
                 />
                 <ExampleResponse.TopBar.CopyButton darkMode />
               </ExampleResponse.TopBar>
-              <ExampleResponse.Javascript codeBlock={createUserCodeBlock} />
+              <ExampleResponse.Javascript codeBlock={exampleCodeBlock} />
             </ExampleResponse>
 
             <ExampleResponse>

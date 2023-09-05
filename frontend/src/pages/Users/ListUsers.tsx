@@ -5,7 +5,7 @@ import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
 import Highlight from "../../components/Highlight"
 
-const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users?take=3&sortBy=lastName&sortOrder=asc')
+const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users?take=3&sortBy=lastName')
   .then(response => response.json())
   .then(json => console.log(json))`
 
@@ -67,7 +67,8 @@ const ListUsers = () => {
                 <Content.Parameters.ListItem>
                   <Content.Parameters.ListItemLabel
                     name="take"
-                    type="optional"
+                    type="integer"
+                    optional
                   />
                   <Content.Parameters.ListItemDescription>
                     A limit on the number of objects to be returned.
@@ -80,7 +81,8 @@ const ListUsers = () => {
                 <Content.Parameters.ListItem>
                   <Content.Parameters.ListItemLabel
                     name="skip"
-                    type="optional"
+                    type="integer"
+                    optional
                   />
                   <Content.Parameters.ListItemDescription>
                     The number of objects to skip in the results before
@@ -94,7 +96,8 @@ const ListUsers = () => {
                 <Content.Parameters.ListItem>
                   <Content.Parameters.ListItemLabel
                     name="sortBy"
-                    type="optional"
+                    type="string"
+                    optional
                   />
                   <Content.Parameters.ListItemDescription>
                     The property to sort the returned objects by.
@@ -116,7 +119,8 @@ const ListUsers = () => {
                 <Content.Parameters.ListItem>
                   <Content.Parameters.ListItemLabel
                     name="sortOrder"
-                    type="optional"
+                    type="string"
+                    optional
                   />
                   <Content.Parameters.ListItemDescription>
                     The direction to sort the returned objects by.

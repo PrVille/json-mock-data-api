@@ -30,12 +30,14 @@ type ParametersListItemLabelProps = {
   name: string
   type?: string
   required?: boolean
+  optional?: boolean
 }
 
 const ParametersListItemLabel = ({
   name,
   type,
   required = false,
+  optional = false
 }: ParametersListItemLabelProps) => {
   return (
     <h3 className="flex text-xs">
@@ -48,6 +50,13 @@ const ParametersListItemLabel = ({
           className="text-[10px] uppercase font-semibold mr-1 text-orange-500"
         >
           required
+        </span>
+      )}
+       {optional && (
+        <span
+          className="text-[10px] uppercase font-semibold mr-1 text-gray-500"
+        >
+          optional
         </span>
       )}
     </h3>

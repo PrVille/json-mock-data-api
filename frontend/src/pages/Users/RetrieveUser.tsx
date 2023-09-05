@@ -35,7 +35,11 @@ const RetrieveUser = () => {
               </Content.Parameters.Title>
               <Content.Parameters.List>
                 <Content.Parameters.ListItem>
-                  <Content.Parameters.ListItemLabel name="id" required />
+                  <Content.Parameters.ListItemLabel
+                    name="id"
+                    type="string"
+                    required
+                  />
                   <Content.Parameters.ListItemDescription>
                     Unique identifier for the user.
                   </Content.Parameters.ListItemDescription>

@@ -2,8 +2,9 @@ import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import Content from "../../components/Content"
 import { Method } from "../../typings/enums"
+import Highlight from "../../components/Highlight" 
 
-const userSchema = `User {
+const schema = `User {
   id        string
   username  string
   email     string
@@ -15,7 +16,7 @@ const userSchema = `User {
   updatedAt string
 }`
 
-const userExample = {
+const example = {
   id: "2fb46dc7-17db-4102-af8e-421d9d892efe",
   username: "Anabel_Huels-Ebert",
   email: "Anabel.Huels-Ebert@yahoo.com",
@@ -101,18 +102,6 @@ const attributes = [
     type: "string | null",
     description: "URL to the user's profile image.",
   },
-  {
-    name: "createdAt",
-    type: "string",
-    description:
-      "This is a timestamp indicating when the user was created in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.",
-  },
-  {
-    name: "updatedAt",
-    type: "string",
-    description:
-      "This is a timestamp indicating when the user last updated in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.",
-  },
 ]
 
 const Users = () => {
@@ -177,6 +166,27 @@ const Users = () => {
                     </Content.Parameters.ListItemDescription>
                   </Content.Parameters.ListItem>
                 ))}
+                <Content.Parameters.ListItem>
+                  <Content.Parameters.ListItemLabel
+                    name="createdAt"
+                    type="string"
+                  />
+                  <Content.Parameters.ListItemDescription>
+                    A timestamp indicating when the post was created in ISO 8601
+                    format: <Highlight>YYYY-MM-DDTHH:MM:SSZ</Highlight>.
+                  </Content.Parameters.ListItemDescription>
+                </Content.Parameters.ListItem>
+
+                <Content.Parameters.ListItem>
+                  <Content.Parameters.ListItemLabel
+                    name="updatedAt"
+                    type="string"
+                  />
+                  <Content.Parameters.ListItemDescription>
+                    A timestamp indicating when the post last updated in ISO
+                    8601 format: <Highlight>YYYY-MM-DDTHH:MM:SSZ</Highlight>.
+                  </Content.Parameters.ListItemDescription>
+                </Content.Parameters.ListItem>
               </Content.Parameters.List>
             </Content.Parameters>
           </Page.Section.Content>
@@ -189,7 +199,7 @@ const Users = () => {
                 </ExampleResponse.TopBar.Title>
                 <ExampleResponse.TopBar.CopyButton />
               </ExampleResponse.TopBar>
-              <ExampleResponse.Schema schema={userSchema} />
+              <ExampleResponse.Schema schema={schema} />
             </ExampleResponse>
 
             <ExampleResponse>
@@ -199,7 +209,7 @@ const Users = () => {
                 </ExampleResponse.TopBar.Title>
                 <ExampleResponse.TopBar.CopyButton />
               </ExampleResponse.TopBar>
-              <ExampleResponse.Json object={userExample} />
+              <ExampleResponse.Json object={example} />
             </ExampleResponse>
           </Page.Section.Examples>
         </Page.Section.Body>

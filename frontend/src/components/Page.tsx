@@ -8,8 +8,8 @@ const Section = ({ children }: { children: React.ReactNode }) => {
   return <section className="p-16">{children}</section>
 }
 
-const Title = ({ children }: { children: React.ReactNode }) => {
-  return <h1 className="font-medium text-2xl">{children}</h1>
+const Title = ({ children, id }: { children: React.ReactNode, id?: string }) => {
+  return <h1 id={id} className="font-medium text-2xl">{children}</h1>
 }
 
 const Body = ({ children }: { children: React.ReactNode }) => {
