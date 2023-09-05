@@ -126,9 +126,20 @@ const Schema = ({ schema }: { schema: string }) => {
   )
 }
 
-const Json = ({ object }: { object: object }) => {
+const Json = ({
+  object,
+  className = "",
+}: {
+  object: object
+  className?: string
+}) => {
   return (
-    <div className="relative p-3 text-[13px]/[19px] font-mono max-h-[50vh] overflow-auto">
+    <div
+      className={classNames(
+        "relative p-3 text-[13px]/[19px] font-mono max-h-[50vh] overflow-auto",
+        className
+      )}
+    >
       <SyntaxHighlighter
         language="json"
         customStyle={{
@@ -144,9 +155,20 @@ const Json = ({ object }: { object: object }) => {
   )
 }
 
-const Javascript = ({ codeBlock }: { codeBlock: string }) => {
+const Javascript = ({
+  codeBlock,
+  className = "",
+}: {
+  codeBlock: string
+  className?: string
+}) => {
   return (
-    <div className="relative p-3 text-[13px]/[19px] font-mono max-h-[50vh] overflow-auto">
+    <div
+      className={classNames(
+        "relative p-3 text-[13px]/[19px] font-mono max-h-[50vh] overflow-auto",
+        className
+      )}
+    >
       <SyntaxHighlighter
         language="javascript"
         style={a11yDark}

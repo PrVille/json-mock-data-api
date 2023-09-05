@@ -5,10 +5,26 @@ import { Method } from "../typings/enums"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { classNames } from "../utils"
+import userService from "../services/userService"
 
-const RunRequestButton = () => {
+type RunRequestButtonProps = {
+  loading: boolean
+  onClick: () => void
+}
+
+const RunRequestButton = ({
+  loading = true,
+  onClick,
+}: RunRequestButtonProps) => {
   return (
-    <button className="flex items-center gap-1 bg-indigo-500 hover:bg-indigo-600 rounded-md font-medium text-sm text-white px-2 py-1">
+    <button
+      className={classNames(
+        "flex items-center gap-1 bg-indigo-500 hover:bg-indigo-600 rounded-md font-medium text-sm text-white px-2 py-1",
+        loading ? "animate-pulse" : "animate-none"
+      )}
+      onClick={onClick}
+      disabled={loading}
+    >
       <PlayIcon className="w-3 h-3 fill-white" />
       <span>Run request</span>
     </button>
@@ -18,11 +34,11 @@ const RunRequestButton = () => {
 type TabItemProps = {
   index: number
   activeTab: number
-  setActiveTab: React.Dispatch<number>
+  changeTab: React.Dispatch<number>
   name: string
 }
 
-const TabItem = ({ activeTab, index, setActiveTab, name }: TabItemProps) => {
+const TabItem = ({ activeTab, index, changeTab, name }: TabItemProps) => {
   return (
     <button
       className={classNames(
@@ -31,14 +47,14 @@ const TabItem = ({ activeTab, index, setActiveTab, name }: TabItemProps) => {
           ? "text-indigo-500 bg-white shadow-md"
           : "text-gray-500 hover:bg-white"
       )}
-      onClick={() => setActiveTab(index)}
+      onClick={() => changeTab(index)}
     >
       {name}
     </button>
   )
 }
 
-const getSeveralUsersCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users')
+const listUsersCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users')
   .then(res => res.json())
   .then(json => console.log(json))`
 
@@ -60,12 +76,13 @@ const getUserCodeBlock = `fetch('https://json-mock-data.vercel.app/api/user/01e2
 
 const tabs = [
   {
-    name: "Get several users",
+    name: "List users",
     method: Method.get,
     endpoint: "/api/users",
-    codeBlock: getSeveralUsersCodeBlock,
+    codeBlock: listUsersCodeBlock,
     learnMoreUrl: "/docs/users",
     learnMoreName: "Learn more about users",
+    runRequest: userService.getAll,
   },
   {
     name: "Create post",
@@ -74,6 +91,7 @@ const tabs = [
     codeBlock: createPostCodeBlock,
     learnMoreUrl: "/docs/posts",
     learnMoreName: "Learn more about posts",
+    runRequest: userService.getAll,
   },
   {
     name: "Get user",
@@ -82,6 +100,7 @@ const tabs = [
     codeBlock: getUserCodeBlock,
     learnMoreUrl: "/docs/users",
     learnMoreName: "Learn more about users",
+    runRequest: userService.getAll,
   },
   {
     name: "Get user",
@@ -90,6 +109,7 @@ const tabs = [
     codeBlock: getUserCodeBlock,
     learnMoreUrl: "/docs/users",
     learnMoreName: "Learn more about users",
+    runRequest: userService.getAll,
   },
   {
     name: "Get user",
@@ -98,6 +118,7 @@ const tabs = [
     codeBlock: getUserCodeBlock,
     learnMoreUrl: "/docs/users",
     learnMoreName: "Learn more about users",
+    runRequest: userService.getAll,
   },
   {
     name: "Get user",
@@ -106,12 +127,43 @@ const tabs = [
     codeBlock: getUserCodeBlock,
     learnMoreUrl: "/docs/users",
     learnMoreName: "Learn more about users",
+    runRequest: userService.getAll,
   },
 ]
 
+const defaultResponse = {
+  status: "Ready to run request.",
+  instructions:
+    "Press the 'Run Request' button to try out the selected request!",
+}
+
 const Home = () => {
+  const [loadingRequest, setLoadingRequest] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
+  const [response, setResponse] = useState(defaultResponse)
   const tab = tabs[activeTab]
+
+  const changeTab = (index: number) => {
+    if (loadingRequest) return
+
+    setActiveTab(index)
+    setResponse(defaultResponse)
+  }
+
+  const runRequest = async () => {
+    if (loadingRequest) return
+    setLoadingRequest(true)
+
+    setTimeout(async () => {
+      tab
+        .runRequest()
+        .then((data) => {
+          setResponse(data)
+          console.log(data)
+        })
+        .finally(() => setLoadingRequest(false))
+    }, 1000)
+  }
 
   return (
     <div>
@@ -155,7 +207,7 @@ const Home = () => {
                   <TabItem
                     index={index}
                     activeTab={activeTab}
-                    setActiveTab={setActiveTab}
+                    changeTab={changeTab}
                     name={tab.name}
                   />
                 ))}
@@ -170,7 +222,10 @@ const Home = () => {
                     endpoint={tab.endpoint}
                   />
                   <div className="flex gap-4 items-center">
-                    <RunRequestButton />
+                    <RunRequestButton
+                      onClick={runRequest}
+                      loading={loadingRequest}
+                    />
                     <ExampleResponse.TopBar.CopyButton darkMode />
                   </div>
                 </ExampleResponse.TopBar>
@@ -178,24 +233,22 @@ const Home = () => {
               </ExampleResponse>
 
               <div>
-                <ExampleResponse>
-                  <ExampleResponse.TopBar>
-                    <ExampleResponse.TopBar.Title>
-                      Response
-                    </ExampleResponse.TopBar.Title>
-                    <ExampleResponse.TopBar.CopyButton />
-                  </ExampleResponse.TopBar>
-                  <ExampleResponse.Json
-                    object={{
-                      name: "hello",
-                      name2: "hello",
-                      name3: "hello",
-                      name4: "hello",
-                      name5: "hello",
-                      name6: "hello",
-                    }}
-                  />
-                </ExampleResponse>
+                <div
+                  className={classNames(
+                    loadingRequest ? "animate-pulse" : "animate-none"
+                  )}
+                >
+                  <ExampleResponse>
+                    <ExampleResponse.TopBar>
+                      <ExampleResponse.TopBar.Title>
+                        Response
+                      </ExampleResponse.TopBar.Title>
+                      <ExampleResponse.TopBar.CopyButton />
+                    </ExampleResponse.TopBar>
+                    <ExampleResponse.Json object={response} />
+                  </ExampleResponse>{" "}
+                </div>
+
                 <div className="mt-2 flex justify-end">
                   <Link
                     to={tab.learnMoreUrl}
