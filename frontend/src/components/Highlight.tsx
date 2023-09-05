@@ -4,7 +4,7 @@ type HighlightProps = {
 
 const Highlight = ({ children }: HighlightProps) => {
   return (
-    <span className="text-xs px-1 py-0.5 bg-gray-100 rounded-md whitespace-nowrap">
+    <span className="text-xs text-gray-800 font-medium px-1 py-0.5 bg-gray-100 rounded-md whitespace-nowrap">
       {children}
     </span>
   )

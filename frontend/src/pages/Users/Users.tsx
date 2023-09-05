@@ -31,37 +31,37 @@ const endpoints = [
   {
     method: Method.get,
     endpoint: "/api/users",
-    url: "/docs/users/get-several-users",
+    url: "/docs/users/list",
   },
   {
     method: Method.post,
     endpoint: "/api/users",
-    url: "/docs/users/create-user",
+    url: "/docs/users/create",
   },
   {
     method: Method.get,
     endpoint: "/api/users/:id",
-    url: "/docs/users/get-user",
+    url: "/docs/users/retrieve",
   },
   {
     method: Method.put,
     endpoint: "/api/users/:id",
-    url: "/docs/users/update-user",
+    url: "/docs/users/update",
   },
   {
     method: Method.delete,
     endpoint: "/api/users/:id",
-    url: "/docs/users/delete-user",
+    url: "/docs/users/delete",
   },
   {
     method: Method.get,
     endpoint: "/api/users/:id/posts",
-    url: "/docs/users/get-user-posts",
+    url: "/docs/users/list-posts",
   },
   {
     method: Method.get,
     endpoint: "/api/users/:id/comments",
-    url: "/docs/users/get-user-comments",
+    url: "/docs/users/list-comments",
   },
 ]
 
@@ -116,18 +116,6 @@ const attributes = [
 ]
 
 const Users = () => {
-  // const [exampleUserObject, setExampleUserObject] = useState({})
-
-  // const fetchUsers = async () => {
-  //   const { data } = await userService.getAll()
-  //   console.log(data)
-  //   setExampleUserObject(data[4])
-  // }
-
-  // useEffect(() => {
-  //   fetchUsers()
-  // }, [])
-
   return (
     <Page>
       <Page.Section>

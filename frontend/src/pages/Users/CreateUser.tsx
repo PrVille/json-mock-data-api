@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { Link } from "react-router-dom"
 import Content from "../../components/Content"
 import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
@@ -13,22 +13,21 @@ const createUserCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users'
     firstName: "first",
     lastName: "last",
     age: 24,
-    imageUrl: "https://avatars.githubusercontent.com/u/61087508"
   })
 })
   .then(response => response.json())
   .then(json => console.log(json))`
 
-const userExample = {
-  id: "2fb46dc7-17db-4102-af8e-421d9d892efe",
-  username: "Anabel_Huels-Ebert",
-  email: "Anabel.Huels-Ebert@yahoo.com",
-  firstName: "Anabel",
-  lastName: "Huels-Ebert",
-  age: null,
-  imageUrl: "https://avatars.githubusercontent.com/u/61087508",
-  createdAt: "2023-09-04T11:01:34.521Z",
-  updatedAt: "2023-09-04T11:01:34.521Z",
+const exampleResponse = {
+  id: "c790f9a1-5160-478a-8508-3877964a5721",
+  username: "username",
+  email: "example@email.com",
+  firstName: "first",
+  lastName: "last",
+  age: 24,
+  imageUrl: null,
+  createdAt: "2023-09-05T06:11:26.919Z",
+  updatedAt: "2023-09-05T06:11:26.919Z",
 }
 
 const bodyParameters = [
@@ -71,23 +70,6 @@ const bodyParameters = [
 ]
 
 const CreateUser = () => {
-  useEffect(() => {
-    fetch("https://json-mock-data.vercel.app/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: "username",
-        email: "example@email.com",
-        firstName: "first",
-        lastName: "last",
-        age: 24,
-        imageUrl: "https://avatars.githubusercontent.com/u/61087508",
-      }),
-    })
-      .then((response) => response.json())
-      .then((json) => console.log(json))
-  }, [])
-
   return (
     <Page>
       <Page.Section>
@@ -96,6 +78,20 @@ const CreateUser = () => {
         <Page.Section.Body>
           <Page.Section.Content>
             <Content.Subtitle>Creates a new user object.</Content.Subtitle>
+            <Content.Subtitle>
+              <span className="font-bold text-gray-900">Note:</span> Please be
+              aware that if you are not{" "}
+              <Link
+                to="/docs/authentication"
+                className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+              >
+                authenticated
+              </Link>
+              , any attempt to create a user will not result in actual changes
+              on the server. Instead, the system will simulate a response for
+              your convenience.
+            </Content.Subtitle>
+
             <Content.Parameters>
               <Content.Parameters.Title>
                 Body parameters
@@ -115,6 +111,23 @@ const CreateUser = () => {
                 ))}
               </Content.Parameters.List>
             </Content.Parameters>
+
+            <Content.Parameters>
+              <Content.Parameters.Title>Returns</Content.Parameters.Title>
+              <div className="py-3">
+                <Content.Parameters.ListItemDescription>
+                  Returns the created user object on success. Otherwise, this
+                  call returns{" "}
+                  <Link
+                    to="/docs/errors"
+                    className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+                  >
+                    an error
+                  </Link>
+                  .
+                </Content.Parameters.ListItemDescription>
+              </div>
+            </Content.Parameters>
           </Page.Section.Content>
 
           <Page.Section.Examples>
@@ -132,11 +145,11 @@ const CreateUser = () => {
             <ExampleResponse>
               <ExampleResponse.TopBar>
                 <ExampleResponse.TopBar.Title>
-                  User example
+                  Response
                 </ExampleResponse.TopBar.Title>
                 <ExampleResponse.TopBar.CopyButton />
               </ExampleResponse.TopBar>
-              <ExampleResponse.Json object={userExample} />
+              <ExampleResponse.Json object={exampleResponse} />
             </ExampleResponse>
           </Page.Section.Examples>
         </Page.Section.Body>

@@ -1,15 +1,17 @@
 import { NavLink } from "react-router-dom"
 import { classNames } from "../utils"
+import { methodColorMap } from "../constants"
+import { Method } from "../typings/enums"
 
 const Link = ({
   url,
   name,
-  badge,
+  method,
   indent,
 }: {
   url: string
   name: string
-  badge?: string
+  method?: Method
   indent?: boolean
 }) => {
   return (
@@ -27,7 +29,12 @@ const Link = ({
       end
     >
       <span>{name}</span>
-      {badge !== undefined && <span className="text-xs">{badge}</span>}
+
+      {method !== undefined && (
+        <span className={classNames("text-[10px]", methodColorMap[method])}>
+          {method}
+        </span>
+      )}
     </NavLink>
   )
 }

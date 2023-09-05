@@ -110,7 +110,7 @@ const Endpoint = ({ method, endpoint, url }: EndpointProps) => {
 
 const Schema = ({ schema }: { schema: string }) => {
   return (
-    <div className="p-3 text-[13px]/[19px] font-mono max-h-[75vh] overflow-auto">
+    <div className="p-3 text-[13px]/[19px] font-mono max-h-[50vh] overflow-auto">
       <SyntaxHighlighter
         language="properties"
         customStyle={{
@@ -128,7 +128,7 @@ const Schema = ({ schema }: { schema: string }) => {
 
 const Json = ({ object }: { object: object }) => {
   return (
-    <div className="relative p-3 text-[13px]/[19px] font-mono max-h-[75vh] overflow-auto">
+    <div className="relative p-3 text-[13px]/[19px] font-mono max-h-[50vh] overflow-auto">
       <SyntaxHighlighter
         language="json"
         customStyle={{
@@ -146,7 +146,7 @@ const Json = ({ object }: { object: object }) => {
 
 const Javascript = ({ codeBlock }: { codeBlock: string }) => {
   return (
-    <div className="relative p-3 text-[13px]/[19px] font-mono max-h-[75vh] overflow-auto">
+    <div className="relative p-3 text-[13px]/[19px] font-mono max-h-[50vh] overflow-auto">
       <SyntaxHighlighter
         language="javascript"
         style={a11yDark}

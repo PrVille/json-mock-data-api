@@ -28,7 +28,7 @@ const ParametersListItem = ({ children }: { children: React.ReactNode }) => {
 
 type ParametersListItemLabelProps = {
   name: string
-  type: string
+  type?: string
   required?: boolean
 }
 
@@ -42,7 +42,7 @@ const ParametersListItemLabel = ({
       <span className="font-semibold text-gray-700 text-[13px] mr-1">
         {name}
       </span>
-      <span className="text-gray-500 font-semibold mr-1">{type}</span>
+      {type !== undefined && <span className="text-gray-500 font-semibold mr-1">{type}</span>}
       {required && (
         <span
           className="text-[10px] uppercase font-semibold mr-1 text-orange-500"

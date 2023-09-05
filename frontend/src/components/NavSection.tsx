@@ -31,7 +31,7 @@ const NavSection = ({ route }: { route: ApiRoute }) => {
               key={index}
               name={childRoute.name}
               url={route.path + "/" + childRoute.path}
-              badge={childRoute.badge}
+              method={childRoute.method}
               indent
             />
           ))}

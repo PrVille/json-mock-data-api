@@ -1,16 +1,19 @@
+import Authentication from "./pages/Authentication"
+import Errors from "./pages/Errors"
 import Overview from "./pages/Overview"
-import GetSeveralPosts from "./pages/Posts/GetSeveralPosts"
+import ListPosts from "./pages/Posts/ListPosts"
 import Posts from "./pages/Posts/Posts"
 import Quickstart from "./pages/Quickstart"
 import ReleaseNotes from "./pages/ReleaseNotes"
 import CreateUser from "./pages/Users/CreateUser"
 import DeleteUser from "./pages/Users/DeleteUser"
-import GetSeveralUsers from "./pages/Users/GetSeveralUsers"
-import GetUser from "./pages/Users/GetUser"
-import GetUserComments from "./pages/Users/GetUserComments"
-import GetUserPosts from "./pages/Users/GetUserPosts"
+import ListUsers from "./pages/Users/ListUsers"
+import RetrieveUser from "./pages/Users/RetrieveUser"
+import ListUserComments from "./pages/Users/ListUserComments"
+import ListUserPosts from "./pages/Users/ListUserPosts"
 import UpdateUser from "./pages/Users/UpdateUser"
 import Users from "./pages/Users/Users"
+import { Method } from "./typings/enums"
 
 const routes = {
   general: [
@@ -18,19 +21,26 @@ const routes = {
       path: "overview",
       name: "Overview",
       component: Overview,
-      exact: true,
     },
     {
       path: "quickstart",
       name: "Quickstart",
       component: Quickstart,
-      exact: true,
+    },
+    {
+      path: "authentication",
+      name: "Authentication",
+      component: Authentication,
+    },
+    {
+      path: "errors",
+      name: "Errors",
+      component: Errors,
     },
     {
       path: "release-notes",
       name: "Release Notes",
       component: ReleaseNotes,
-      exact: true,
     },
   ],
   api: [
@@ -38,56 +48,49 @@ const routes = {
       path: "users",
       name: "Users",
       component: Users,
-      exact: true,
+
       routes: [
         {
-          path: "get-several-users",
-          name: "Get several users",
-          badge: "get",
-          component: GetSeveralUsers,
-          exact: true,
+          path: "list",
+          name: "List all users",
+          method: Method.get,
+          component: ListUsers,
         },
         {
-          path: "create-user",
-          name: "Create user",
-          badge: "post",
+          path: "create",
+          name: "Create a user",
+          method: Method.post,
           component: CreateUser,
-          exact: true,
         },
         {
-          path: "get-user",
-          name: "Get user",
-          badge: "get",
-          component: GetUser,
-          exact: true,
+          path: "retrieve",
+          name: "Retrieve a user",
+          method: Method.get,
+          component: RetrieveUser,
         },
         {
-          path: "update-user",
-          name: "Update user",
-          badge: "put",
+          path: "update",
+          name: "Update a user",
+          method: Method.put,
           component: UpdateUser,
-          exact: true,
         },
         {
-          path: "delete-user",
-          name: "Delete user",
-          badge: "delete",
+          path: "delete",
+          name: "Delete a user",
+          method: Method.delete,
           component: DeleteUser,
-          exact: true,
         },
         {
-          path: "get-user-posts",
-          name: "Get user posts",
-          badge: "get",
-          component: GetUserPosts,
-          exact: true,
+          path: "list-posts",
+          name: "List all user posts",
+          method: Method.get,
+          component: ListUserPosts,
         },
         {
-          path: "get-user-comments",
-          name: "Get user comments",
-          badge: "get",
-          component: GetUserComments,
-          exact: true,
+          path: "list-comments",
+          name: "List all user comments",
+          method: Method.get,
+          component: ListUserComments,
         },
       ],
     },
@@ -95,14 +98,13 @@ const routes = {
       path: "posts",
       name: "Posts",
       component: Posts,
-      exact: true,
+
       routes: [
         {
-          path: "get-several-posts",
-          name: "Get several posts",
-          badge: "get",
-          component: GetSeveralPosts,
-          exact: true,
+          path: "list",
+          name: "List all posts",
+          method: Method.get,
+          component: ListPosts,
         },
       ],
     },
