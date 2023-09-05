@@ -245,7 +245,10 @@ const Home = () => {
                       </ExampleResponse.TopBar.Title>
                       <ExampleResponse.TopBar.CopyButton />
                     </ExampleResponse.TopBar>
-                    <ExampleResponse.Json object={response} />
+                    <ExampleResponse.Json
+                      object={response}
+                      className="h-[25vh]"
+                    />
                   </ExampleResponse>{" "}
                 </div>
 

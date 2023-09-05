@@ -4,37 +4,37 @@ import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
 
-const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users/513e1ed3-43cd-4f86-a0a8-3a61dfc35bc2', {
-  method: 'DELETE'
+const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/posts/74e84024-cb29-4769-a3bd-abe0ae32ebfd', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    title: "updatedTitle",
+  })
 })
   .then(response => response.json())
   .then(json => console.log(json))`
 
 const exampleResponse = {
-  id: "513e1ed3-43cd-4f86-a0a8-3a61dfc35bc2",
-  username: "Martin.Bogisich",
-  email: "Martin.Bogisich@gmail.com",
-  firstName: "Martin",
-  lastName: "Bogisich",
-  age: 63,
-  imageUrl: "https://avatars.githubusercontent.com/u/8046384",
-  createdAt: "2023-09-05T06:10:33.112Z",
-  updatedAt: "2023-09-05T06:10:33.112Z",
+  id: "74e84024-cb29-4769-a3bd-abe0ae32ebfd",
+  title: "updatedTitle",
+  content:
+    "Officia minima illo amet. Explicabo nulla distinctio. Ipsam perferendis facilis sequi aliquam quam numquam.\nBlanditiis culpa fuga suscipit fuga est. Quas tempora deleniti repellendus. Fugiat possimus quos.",
+  userId: "2fb46dc7-17db-4102-af8e-421d9d892efe",
+  createdAt: "2023-09-04T11:01:34.527Z",
+  updatedAt: "2023-09-04T11:04:00.017Z",
 }
 
-const DeleteUser = () => {
+const UpdatePost = () => {
   return (
     <Page>
       <Page.Section>
-        <Page.Section.Title>Delete a user</Page.Section.Title>
+        <Page.Section.Title>Update a post</Page.Section.Title>
 
         <Page.Section.Body>
           <Page.Section.Content>
-            <Content.Subtitle>Deletes a user by it's id.</Content.Subtitle>
             <Content.Subtitle>
-              <span className="font-bold text-red-900">Caution:</span> Deleting
-              a user will result in the removal of all associated data,
-              including posts, comments, and more.
+              Updates the specific post by setting the values of the parameters
+              passed. Any parameters not provided will be left unchanged.
             </Content.Subtitle>
             <Content.Subtitle>
               <span className="font-bold text-gray-900">Note:</span> Please be
@@ -45,7 +45,7 @@ const DeleteUser = () => {
               >
                 authenticated
               </Link>
-              , any attempt to delete a user will not result in actual changes
+              , any attempt to update a post will not result in actual changes
               on the server. Instead, the system will simulate a response for
               your convenience.
             </Content.Subtitle>
@@ -62,7 +62,36 @@ const DeleteUser = () => {
                     required
                   />
                   <Content.Parameters.ListItemDescription>
-                    Unique identifier for the user.
+                    Unique identifier for the post.
+                  </Content.Parameters.ListItemDescription>
+                </Content.Parameters.ListItem>
+              </Content.Parameters.List>
+            </Content.Parameters>
+
+            <Content.Parameters>
+              <Content.Parameters.Title>
+                Body parameters
+              </Content.Parameters.Title>
+              <Content.Parameters.List>
+                <Content.Parameters.ListItem>
+                  <Content.Parameters.ListItemLabel
+                    name="title"
+                    type="string"
+                    optional
+                  />
+                  <Content.Parameters.ListItemDescription>
+                    Title of the post.
+                  </Content.Parameters.ListItemDescription>
+                </Content.Parameters.ListItem>
+
+                <Content.Parameters.ListItem>
+                  <Content.Parameters.ListItemLabel
+                    name="content"
+                    type="string"
+                    optional
+                  />
+                  <Content.Parameters.ListItemDescription>
+                    Content of the post.
                   </Content.Parameters.ListItemDescription>
                 </Content.Parameters.ListItem>
               </Content.Parameters.List>
@@ -72,7 +101,7 @@ const DeleteUser = () => {
               <Content.Parameters.Title>Returns</Content.Parameters.Title>
               <div className="py-3">
                 <Content.Parameters.ListItemDescription>
-                  Returns the deleted user object on success. Otherwise, this
+                  Returns the updated post object on success. Otherwise, this
                   call returns{" "}
                   <Link
                     to="/docs/errors"
@@ -90,8 +119,8 @@ const DeleteUser = () => {
             <ExampleResponse darkMode>
               <ExampleResponse.TopBar darkMode>
                 <ExampleResponse.TopBar.EndpointTitle
-                  method={Method.delete}
-                  endpoint={"/api/users/:id"}
+                  method={Method.put}
+                  endpoint={"/api/posts/:id"}
                 />
                 <ExampleResponse.TopBar.CopyButton darkMode />
               </ExampleResponse.TopBar>
@@ -114,4 +143,4 @@ const DeleteUser = () => {
   )
 }
 
-export default DeleteUser
+export default UpdatePost

@@ -16,6 +16,8 @@ import Users from "./pages/Users/Users"
 import { Method } from "./typings/enums"
 import CreatePost from "./pages/Posts/CreatePost"
 import RetrievePost from "./pages/Posts/RetrievePost"
+import UpdatePost from "./pages/Posts/UpdatePost"
+import DeletePost from "./pages/Posts/DeletePost"
 
 const routes = {
   general: [
@@ -118,6 +120,18 @@ const routes = {
           name: "Retrieve a post",
           method: Method.get,
           component: RetrievePost,
+        },
+        {
+          path: "update",
+          name: "Update a post",
+          method: Method.put,
+          component: UpdatePost,
+        },
+        {
+          path: "delete",
+          name: "Delete a post",
+          method: Method.delete,
+          component: DeletePost,
         },
       ],
     },
