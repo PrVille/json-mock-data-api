@@ -157,7 +157,7 @@ const ListPosts = () => {
               <ExampleResponse.TopBar darkMode>
                 <ExampleResponse.TopBar.EndpointTitle
                   method={Method.get}
-                  endpoint={"/api/users"}
+                  endpoint={"/api/posts"}
                 />
                 <ExampleResponse.TopBar.CopyButton darkMode />
               </ExampleResponse.TopBar>
