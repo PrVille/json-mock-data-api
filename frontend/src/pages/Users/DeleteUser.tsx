@@ -33,8 +33,7 @@ const DeleteUser = () => {
             <Content.Subtitle>Deletes a user by it's id.</Content.Subtitle>
             <Content.Subtitle>
               <span className="font-bold text-red-900">Caution:</span> Deleting
-              a user will result in the removal of all associated data,
-              including posts, comments, and more.
+              a user will result in the removal of all corresponding posts and comments on the user.
             </Content.Subtitle>
             <Content.Subtitle>
               <span className="font-bold text-gray-900">Note:</span> Please be

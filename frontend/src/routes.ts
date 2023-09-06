@@ -4,7 +4,7 @@ import Overview from "./pages/Overview"
 import ListPosts from "./pages/Posts/ListPosts"
 import Posts from "./pages/Posts/Posts"
 import Quickstart from "./pages/Quickstart"
-import ReleaseNotes from "./pages/ReleaseNotes"
+import Changelog from "./pages/Changelog"
 import CreateUser from "./pages/Users/CreateUser"
 import DeleteUser from "./pages/Users/DeleteUser"
 import ListUsers from "./pages/Users/ListUsers"
@@ -18,6 +18,9 @@ import CreatePost from "./pages/Posts/CreatePost"
 import RetrievePost from "./pages/Posts/RetrievePost"
 import UpdatePost from "./pages/Posts/UpdatePost"
 import DeletePost from "./pages/Posts/DeletePost"
+import ListPostComments from "./pages/Posts/ListPostComments"
+import Comments from "./pages/Comments/Comments"
+import ListComments from "./pages/Comments/ListComments"
 
 const routes = {
   general: [
@@ -42,9 +45,9 @@ const routes = {
       component: Errors,
     },
     {
-      path: "release-notes",
-      name: "Release Notes",
-      component: ReleaseNotes,
+      path: "changelog",
+      name: "Changelog",
+      component: Changelog,
     },
   ],
   api: [
@@ -132,6 +135,25 @@ const routes = {
           name: "Delete a post",
           method: Method.delete,
           component: DeletePost,
+        },
+        {
+          path: "list-comments",
+          name: "List all post comments",
+          method: Method.get,
+          component: ListPostComments,
+        },
+      ],
+    },
+    {
+      path: "comments",
+      name: "Comments",
+      component: Comments,
+      routes: [
+        {
+          path: "list",
+          name: "List all comments",
+          method: Method.get,
+          component: ListComments,
         },
       ],
     },
