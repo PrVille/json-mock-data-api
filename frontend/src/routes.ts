@@ -23,6 +23,8 @@ import Comments from "./pages/Comments/Comments"
 import ListComments from "./pages/Comments/ListComments"
 import CreateComment from "./pages/Comments/CreateComment"
 import RetrieveComment from "./pages/Comments/RetrieveComment"
+import UpdateComment from "./pages/Comments/UpdateComment"
+import DeleteComment from "./pages/Comments/DeleteComment"
 
 const routes = {
   general: [
@@ -168,6 +170,18 @@ const routes = {
           name: "Retrieve a comment",
           method: Method.get,
           component: RetrieveComment,
+        },
+        {
+          path: "update",
+          name: "Update a comment",
+          method: Method.put,
+          component: UpdateComment,
+        },
+        {
+          path: "delete",
+          name: "Delete a comment",
+          method: Method.delete,
+          component: DeleteComment,
         },
       ],
     },
