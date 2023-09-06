@@ -22,6 +22,7 @@ import ListPostComments from "./pages/Posts/ListPostComments"
 import Comments from "./pages/Comments/Comments"
 import ListComments from "./pages/Comments/ListComments"
 import CreateComment from "./pages/Comments/CreateComment"
+import RetrieveComment from "./pages/Comments/RetrieveComment"
 
 const routes = {
   general: [
@@ -161,6 +162,12 @@ const routes = {
           name: "Create a comment",
           method: Method.post,
           component: CreateComment,
+        },
+        {
+          path: "retrieve",
+          name: "Retrieve a comment",
+          method: Method.get,
+          component: RetrieveComment,
         },
       ],
     },
