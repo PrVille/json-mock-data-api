@@ -16,7 +16,9 @@ const Heading = ({ children }: { children: React.ReactNode }) => {
 }
 
 const ChangeList = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="mt-3 ml-8 list-disc">{children}</ul>
+  return (
+    <ul className="mt-3 ml-8 list-disc text-gray-600">{children}</ul>
+  )
 }
 
 const ChangeListItem = ({ children }: { children: React.ReactNode }) => {
@@ -26,15 +28,14 @@ const ChangeListSubItem = ({ children }: { children: React.ReactNode }) => {
   return <li className="py-1 ml-8">{children}</li>
 }
 
+// TODO: style like others?
 const Changelog = () => {
   return (
     <Page>
       <Page.Section>
         <Page.Section.Title>Changelog</Page.Section.Title>
-        <h2 className="mt-2 text-xl">
-          Keep track of every change to the JSON Mock Data API.
-        </h2>
-        <p className="mt-10">
+
+        <p className="mt-6 text-gray-600">
           This changelog lists all additions and updates to the JSON Mock Data
           API, in chronological order.
         </p>

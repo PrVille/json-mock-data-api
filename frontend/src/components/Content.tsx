@@ -3,7 +3,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
 }
 
 const Description = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-base">{children}</p>
+  return <p className="text-base text-gray-600">{children}</p>
 }
 
 const Subtitle = ({ children }: { children: React.ReactNode }) => {
