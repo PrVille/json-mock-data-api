@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import errorHandler from "../../middlewares/errorHandler"
 
 describe("errorHandler", () => {
-  it("should respond with status 400 and error message for Error instance", () => {
+  it("should respond with status 500 and error message for Error instance", () => {
     const responseMock: Partial<Response> = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
@@ -17,7 +17,7 @@ describe("errorHandler", () => {
       {} as NextFunction
     )
 
-    expect(responseMock.status).toHaveBeenCalledWith(400)
+    expect(responseMock.status).toHaveBeenCalledWith(500)
     expect(responseMock.json).toHaveBeenCalledWith({
       error: "This is an error message",
     })
