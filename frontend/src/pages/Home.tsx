@@ -179,7 +179,7 @@ const Home = () => {
 
             <div className="flex items-center gap-6 mt-6">
               <Link
-                to="/docs/overview"
+                to="/docs"
                 className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 rounded-md font-medium text-white px-4 py-2"
               >
                 <span>Get started</span>

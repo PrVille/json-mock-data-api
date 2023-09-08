@@ -3,7 +3,7 @@ import routes from "./routes"
 import Sidebar from "./components/Sidebar"
 import Home from "./pages/Home"
 import Topbar from "./components/Topbar"
-import DocsHome from "./pages/DocsHome"
+import Introduction from "./pages/Introduction"
 import LogIn from "./pages/LogIn"
 import SignUp from "./pages/SignUp"
 
@@ -27,7 +27,7 @@ const App = () => {
             <Route path="/login" Component={LogIn} />
             <Route path="/signup" Component={SignUp} />
             <Route path="/docs">
-              <Route index Component={DocsHome} />
+              <Route index Component={Introduction} />
               {routes.general.map((route, index) => (
                 <Route
                   key={index}

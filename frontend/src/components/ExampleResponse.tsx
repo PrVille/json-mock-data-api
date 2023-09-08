@@ -47,9 +47,20 @@ const TopBar = ({
   )
 }
 
-const TopBarTitle = ({ children }: { children: React.ReactNode }) => {
+const TopBarTitle = ({
+  children,
+  darkMode = false,
+}: {
+  children: React.ReactNode
+  darkMode?: boolean
+}) => {
   return (
-    <h1 className="text-xs font-medium text-gray-500 uppercase select-none pointer-events-none">
+    <h1
+      className={classNames(
+        "text-xs font-medium uppercase select-none pointer-events-none",
+        darkMode ? "text-gray-300" : "text-gray-500"
+      )}
+    >
       {children}
     </h1>
   )

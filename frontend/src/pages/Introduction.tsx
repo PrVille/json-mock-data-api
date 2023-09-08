@@ -2,11 +2,11 @@ import ExampleResponse from "../components/ExampleResponse"
 import Page from "../components/Page"
 import Content from "../components/Content"
 
-const Authentication = () => {
+const Introduction = () => {
   return (
     <Page>
       <Page.Section>
-        <Page.Section.Title>Authentication</Page.Section.Title>
+        <Page.Section.Title>API Reference</Page.Section.Title>
 
         <Page.Section.Body>
           <Page.Section.Content>
@@ -40,4 +40,4 @@ const Authentication = () => {
   )
 }
 
-export default Authentication
+export default Introduction

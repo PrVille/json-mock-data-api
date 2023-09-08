@@ -175,7 +175,7 @@ const Errors = () => {
 
             <ExampleResponse darkMode>
               <ExampleResponse.TopBar darkMode>
-                <ExampleResponse.TopBar.Title>
+                <ExampleResponse.TopBar.Title darkMode>
                   Example error request
                 </ExampleResponse.TopBar.Title>
                 <ExampleResponse.TopBar.CopyButton darkMode />

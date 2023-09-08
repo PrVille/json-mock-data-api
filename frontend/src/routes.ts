@@ -1,9 +1,7 @@
 import Authentication from "./pages/Authentication"
 import Errors from "./pages/Errors"
-import Overview from "./pages/Overview"
 import ListPosts from "./pages/Posts/ListPosts"
 import Posts from "./pages/Posts/Posts"
-import Quickstart from "./pages/Quickstart"
 import Changelog from "./pages/Changelog"
 import CreateUser from "./pages/Users/CreateUser"
 import DeleteUser from "./pages/Users/DeleteUser"
@@ -25,18 +23,14 @@ import CreateComment from "./pages/Comments/CreateComment"
 import RetrieveComment from "./pages/Comments/RetrieveComment"
 import UpdateComment from "./pages/Comments/UpdateComment"
 import DeleteComment from "./pages/Comments/DeleteComment"
+import Introduction from "./pages/Introduction"
 
 const routes = {
   general: [
     {
-      path: "overview",
-      name: "Overview",
-      component: Overview,
-    },
-    {
-      path: "quickstart",
-      name: "Quickstart",
-      component: Quickstart,
+      path: "../docs",
+      name: "Introduction",
+      component: Introduction,
     },
     {
       path: "authentication",
