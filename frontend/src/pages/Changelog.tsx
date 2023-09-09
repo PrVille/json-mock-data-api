@@ -28,7 +28,6 @@ const ChangeListSubItem = ({ children }: { children: React.ReactNode }) => {
   return <li className="py-1 ml-8">{children}</li>
 }
 
-// TODO: style like others?
 const Changelog = () => {
   return (
     <Page>
