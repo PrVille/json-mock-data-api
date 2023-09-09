@@ -36,7 +36,7 @@ const signUpSchema: Schema = {
   },
 }
 
-const logInSchema: Schema = {
+const signInSchema: Schema = {
   email: {
     exists: {
       errorMessage: "The 'email' field is a required field.",
@@ -69,5 +69,5 @@ const logInSchema: Schema = {
 
 export default {
   signUpSchema,
-  logInSchema,
+  signInSchema,
 }

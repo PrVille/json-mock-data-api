@@ -40,7 +40,7 @@ const Topbar = ({ showLogo }: { showLogo?: boolean }) => {
           GitHub
         </a>
         <NavLink
-          to={loggedIn ? "/account" : "/login"}
+          to={loggedIn ? "/account" : "/signin"}
           className={({ isActive }) =>
             classNames(
               "py-1 pr-1 text-sm font-medium rounded-lg  hover:text-gray-800 transition-all",

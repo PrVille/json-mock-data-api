@@ -94,7 +94,7 @@ describe("POST /api/auth/signup", () => {
   })
 })
 
-describe("POST /api/auth/login", () => {
+describe("POST /api/auth/signin", () => {
   it("should log in an existing API user with valid credentials", async () => {
     const userCredentials = {
       email: faker.string.uuid() + "@test.com",
@@ -104,7 +104,7 @@ describe("POST /api/auth/login", () => {
     const responseSignUp = await api
       .post("/api/auth/signup")
       .send(userCredentials)
-    const response = await api.post("/api/auth/login").send(userCredentials)
+    const response = await api.post("/api/auth/signin").send(userCredentials)
 
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty("token")
@@ -119,7 +119,7 @@ describe("POST /api/auth/login", () => {
       password: "123",
     }
 
-    const response = await api.post("/api/auth/login").send(invalidCredentials)
+    const response = await api.post("/api/auth/signin").send(invalidCredentials)
 
     expect(response.status).toBe(400)
     expect(response.body).toBeDefined()
@@ -137,7 +137,7 @@ describe("POST /api/auth/login", () => {
   })
 
   it("should return error 400 when email doesn't exist", async () => {
-    const response = await api.post("/api/auth/login").send({
+    const response = await api.post("/api/auth/signin").send({
       email: "nonExisting@email.com",
       password: "testpassword",
     })
@@ -168,7 +168,7 @@ describe("POST /api/auth/login", () => {
       .send(userCredentials)
 
     const response = await api
-      .post("/api/auth/login")
+      .post("/api/auth/signin")
       .send({ ...userCredentials, password: "wrongPassword" })
 
     expect(response.status).toBe(400)

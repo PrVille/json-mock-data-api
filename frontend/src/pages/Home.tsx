@@ -200,7 +200,7 @@ const Home = () => {
         <Page.Section>
           <Page.Section.Title>Try it out</Page.Section.Title>
 
-          <div className="mt-5 grid grid-cols-1 gap-12 md:grid-cols-2 place-items-start">
+          <div className="mt-5 grid grid-cols-1 gap-12 md:grid-cols-3 place-items-start">
             <div className="bg-gray-50 p-3 rounded-xl w-full">
               <div className="flex flex-col gap-1">
                 {tabs.map((tab, index) => (
@@ -214,7 +214,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 w-full">
+            <div className="col-span-2 flex flex-col gap-3 w-full">
               <ExampleResponse darkMode>
                 <ExampleResponse.TopBar darkMode>
                   <ExampleResponse.TopBar.EndpointTitle

@@ -14,12 +14,12 @@ router.post(
   authController.signUp
 )
 
-// Login API User.
+// Sign in API User.
 router.post(
-  "/login",
-  checkSchema(authValidationSchemas.logInSchema),
+  "/signin",
+  checkSchema(authValidationSchemas.signInSchema),
   validate,
-  authController.logIn
+  authController.signIn
 )
 
 export default router

@@ -30,7 +30,7 @@ const signUp = async (req: Request, res: Response) => {
   res.json(newApiUserWithoutPasswordHash)
 }
 
-const logIn = async (req: Request, res: Response) => {
+const signIn = async (req: Request, res: Response) => {
   const { email, password } = matchedData(req) as AuthBody
 
   const user = await prisma.apiUser.findUnique({
@@ -79,5 +79,5 @@ const logIn = async (req: Request, res: Response) => {
 
 export default {
   signUp,
-  logIn,
+  signIn,
 }
