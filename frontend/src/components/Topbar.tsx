@@ -54,7 +54,7 @@ const Topbar = ({
             onClick={() => {
               clearUser()
               storage.removeUser()
-              navigate("/")
+              navigate("/signin")
             }}
             className="py-1 pr-1 text-sm font-medium rounded-lg text-indigo-600 hover:text-gray-800 transition-all"
           >
