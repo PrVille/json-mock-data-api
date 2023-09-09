@@ -12,12 +12,12 @@ const Highlight = ({ children }: { children: React.ReactNode }) => {
 }
 
 const Heading = ({ children }: { children: React.ReactNode }) => {
-  return <h3 className="mt-8 font-medium">{children}</h3>
+  return <h3 className="mt-8 font-medium text-sm">{children}</h3>
 }
 
 const ChangeList = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ul className="mt-3 ml-8 list-disc text-gray-600">{children}</ul>
+    <ul className="mt-3 ml-8 list-disc text-gray-600 text-sm">{children}</ul>
   )
 }
 
@@ -39,6 +39,20 @@ const Changelog = () => {
           This changelog lists all additions and updates to the JSON Mock Data
           API, in chronological order.
         </p>
+
+        <Heading>September 9, 2023</Heading>
+        <ChangeList>
+          <ChangeListItem>
+            Added optional{" "}
+            <Link
+              to="/docs/authentication"
+              className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+            >
+              Authentication
+            </Link>{" "}
+            to allow API users to have their own instances of the resources.
+          </ChangeListItem>
+        </ChangeList>
 
         <Heading>September 6, 2023</Heading>
         <ChangeList>

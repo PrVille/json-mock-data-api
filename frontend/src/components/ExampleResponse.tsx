@@ -181,7 +181,7 @@ const Javascript = ({
       )}
     >
       <SyntaxHighlighter
-        language="javascript"
+        language="javascript" 
         style={a11yDark}
         customStyle={{
           backgroundColor: "inherit",
