@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Route, Routes, useLocation } from "react-router-dom"
 import routes from "./routes"
 import Sidebar from "./components/Sidebar"
@@ -6,12 +7,21 @@ import Topbar from "./components/Topbar"
 import Introduction from "./pages/Introduction"
 import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
+import { useUser } from "./hooks/useUser"
+import storage from "./services/storage"
 
 const App = () => {
+  const { setUser } = useUser()
   const location = useLocation()
   const onHomePage = location.pathname === "/"
   const onSignInPage = location.pathname === "/signin"
   const onSignUpPage = location.pathname === "/signup"
+
+  useEffect(() => {
+    const storedUser = storage.loadUser()
+    setUser(storedUser)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>

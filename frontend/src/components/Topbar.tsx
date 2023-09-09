@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom"
 import Logo from "./Logo"
 import { classNames } from "../utils"
+import { useUser } from "../hooks/useUser"
 
 const Topbar = ({ showLogo }: { showLogo?: boolean }) => {
-  const loggedIn = false
+  const { user } = useUser()
+  const loggedIn = user !== null
 
   return (
     <header className="flex px-16 py-5">
@@ -48,7 +50,7 @@ const Topbar = ({ showLogo }: { showLogo?: boolean }) => {
             )
           }
         >
-          {loggedIn ? "Account" : "Log In"} &rarr;
+          {loggedIn ? "Account" : "Sign In"} &rarr;
         </NavLink>
       </nav>
     </header>
