@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
 import { useUser } from "./hooks/useUser"
 import storage from "./services/storage"
+import Account from "./pages/Account"
 
 const App = () => {
   const { setUser } = useUser()
@@ -16,6 +17,7 @@ const App = () => {
   const onHomePage = location.pathname === "/"
   const onSignInPage = location.pathname === "/signin"
   const onSignUpPage = location.pathname === "/signup"
+  const onAccountPage = location.pathname === "/account"
 
   useEffect(() => {
     const storedUser = storage.loadUser()
@@ -26,16 +28,21 @@ const App = () => {
   return (
     <>
       <div className="min-h-screen flex">
-        {!(onHomePage || onSignInPage || onSignUpPage) && <Sidebar />}
+        {!(onHomePage || onSignInPage || onSignUpPage || onAccountPage) && (
+          <Sidebar />
+        )}
 
         <div className="relative flex-1 overflow-y-auto h-screen">
           {/* Content */}
-          {!(onSignInPage || onSignUpPage) && <Topbar showLogo={onHomePage} />}
+          {!(onSignInPage || onSignUpPage) && (
+            <Topbar showLogo={onHomePage} onAccountPage={onAccountPage} />
+          )}
 
           <Routes>
             <Route path="/" Component={Home} />
             <Route path="/signin" Component={SignIn} />
             <Route path="/signup" Component={SignUp} />
+            <Route path="/account" Component={Account} />
             <Route path="/docs">
               <Route index Component={Introduction} />
               {routes.general.map((route, index) => (
