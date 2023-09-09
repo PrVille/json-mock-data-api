@@ -2,7 +2,8 @@ import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import Content from "../../components/Content"
 import { Method } from "../../typings/enums"
-import Highlight from "../../components/Highlight" 
+import Highlight from "../../components/Highlight"
+import { Link } from "react-router-dom"
 
 const schema = `User {
   id        string
@@ -113,13 +114,27 @@ const Users = () => {
         <Page.Section.Body>
           <Page.Section.Content>
             <Content.Description>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              congue ante id ligula rutrum fringilla. Praesent ullamcorper nec
-              nunc ac interdum. Aenean quis ultricies tortor. Aenean faucibus
-              nisl pharetra, lacinia justo et, fermentum risus. Nunc et lacinia
-              quam, accumsan tincidunt tellus. Maecenas ac feugiat tortor. Etiam
-              pretium sodales metus, non maximus ligula cursus a. Nunc hendrerit
-              consequat neque ut mattis.
+              The user resource represents the individuals or entities within
+              your mock data ecosystem. In scenarios where you need to simulate
+              user interactions, registrations, or profiles, the user resource
+              becomes indispensable. It's a fundamental tool for mimicking
+              user-related activities in your development and testing processes.
+            </Content.Description>
+            <Content.Description>
+              Related resources:{" "}
+              <Link
+                to="/docs/posts"
+                className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+              >
+                Posts
+              </Link>
+              ,{" "}
+              <Link
+                to="/docs/comments"
+                className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+              >
+                Comments
+              </Link>
             </Content.Description>
           </Page.Section.Content>
 

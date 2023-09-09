@@ -60,13 +60,27 @@ const Comments = () => {
         <Page.Section.Body>
           <Page.Section.Content>
             <Content.Description>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              congue ante id ligula rutrum fringilla. Praesent ullamcorper nec
-              nunc ac interdum. Aenean quis ultricies tortor. Aenean faucibus
-              nisl pharetra, lacinia justo et, fermentum risus. Nunc et lacinia
-              quam, accumsan tincidunt tellus. Maecenas ac feugiat tortor. Etiam
-              pretium sodales metus, non maximus ligula cursus a. Nunc hendrerit
-              consequat neque ut mattis.
+              The comment resource plays a pivotal role in emulating user
+              engagement and interaction with the content in your application.
+              Whether it's comments on posts, articles, or any other
+              user-generated content, comments help simulate this user
+              interaction.
+            </Content.Description>
+            <Content.Description>
+              Related resources:{" "}
+              <Link
+                to="/docs/users"
+                className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+              >
+                Users
+              </Link>
+              ,{" "}
+              <Link
+                to="/docs/posts"
+                className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+              >
+                Posts
+              </Link>
             </Content.Description>
           </Page.Section.Content>
 

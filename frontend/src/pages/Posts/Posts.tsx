@@ -66,13 +66,27 @@ const Posts = () => {
         <Page.Section.Body>
           <Page.Section.Content>
             <Content.Description>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              congue ante id ligula rutrum fringilla. Praesent ullamcorper nec
-              nunc ac interdum. Aenean quis ultricies tortor. Aenean faucibus
-              nisl pharetra, lacinia justo et, fermentum risus. Nunc et lacinia
-              quam, accumsan tincidunt tellus. Maecenas ac feugiat tortor. Etiam
-              pretium sodales metus, non maximus ligula cursus a. Nunc hendrerit
-              consequat neque ut mattis.
+              The post resource serves as a foundation for generating mock
+              content, such as articles, posts, or messages, in your
+              application. Whether you're building a blog platform or a social
+              network, different types of content can be represented as separate
+              posts.
+            </Content.Description>
+            <Content.Description>
+              Related resources:{" "}
+              <Link
+                to="/docs/users"
+                className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+              >
+                Users
+              </Link>
+              ,{" "}
+              <Link
+                to="/docs/comments"
+                className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+              >
+                Comments
+              </Link>
             </Content.Description>
           </Page.Section.Content>
 
