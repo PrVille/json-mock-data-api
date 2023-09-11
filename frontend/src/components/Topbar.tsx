@@ -58,7 +58,7 @@ const Topbar = ({
             }}
             className="py-1 pr-1 text-sm font-medium rounded-lg text-indigo-600 hover:text-gray-800 transition-all"
           >
-            Sign out
+            Sign out &rarr;
           </button>
         ) : (
           <NavLink

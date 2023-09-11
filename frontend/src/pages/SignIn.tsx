@@ -10,6 +10,7 @@ import * as yup from "yup"
 import { REGEX_EMAIL } from "../constants"
 import { useUser } from "../hooks/useUser"
 import storage from "../services/storage"
+import Logo from "../components/Logo"
 
 const schema = yup
   .object({
@@ -61,7 +62,10 @@ const SignIn = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full text-gray-800">
       <div className="max-w-lg w-full">
-        <div className="bg-white shadow-lg rounded-lg px-12 py-14">
+        <div className="mb-10 ml-6">
+          <Logo />
+        </div>
+        <div className="bg-white shadow-2xl rounded-2xl px-12 py-14">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="px-5 flex flex-col"
@@ -138,6 +142,7 @@ const SignIn = () => {
             </button>
           </form>
         </div>
+
         <div className="mt-10 ml-6">
           <p className="text-sm">
             Don't have an account?{" "}

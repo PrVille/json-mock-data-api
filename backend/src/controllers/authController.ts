@@ -67,6 +67,7 @@ const signIn = async (req: Request, res: Response) => {
     })
   }
 
+  // TODO: Decide token expiration time
   const token = jwt.sign({ id: user.id }, SECRET, {
     expiresIn: 60 * 60 * 24 * 365,
   })

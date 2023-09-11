@@ -46,7 +46,7 @@ const Authentication = () => {
               >
                 Bearer tokens
               </a>{" "}
-              to authenticate requests. You can view and manage your tokens in{" "}
+              to authenticate requests. You can view your token in{" "}
               <Link
                 to=""
                 className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
@@ -65,9 +65,9 @@ const Authentication = () => {
             </Content.Subtitle>
 
             <Content.Subtitle>
-              Your tokens carry many privileges, so be sure to keep them secure.
-              Don't share your secret tokens in publicly accessible areas such
-              as GitHub, client-side code, and so forth.
+              Your token carries many privileges, so be sure to keep it secure.
+              Don't share your secret token in publicly accessible areas such as
+              GitHub, client-side code, and so forth.
             </Content.Subtitle>
 
             <Content.Subtitle>
