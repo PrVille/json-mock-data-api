@@ -13,10 +13,11 @@ const main = async () => {
       id: DEFAULT_API_USER_ID,
       email: faker.internet.email(),
       passwordHash: faker.internet.password(),
+      token: faker.string.uuid()
     },
   })
 
-  await seedDb(DEFAULT_API_USER_ID)
+  await seedDb(defaultApiUser.id)
 }
 
 main()

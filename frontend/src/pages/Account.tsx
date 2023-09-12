@@ -48,12 +48,12 @@ const Account = () => {
                 Token{" "}
                 <ClipboardIcon className="-mt-1 ml-1 h-4 w-4 inline-block text-gray-600 cursor-pointer" />
               </h6>
-              <h6>Last used</h6>
+              <h6>Created</h6>
             </div>
             <div className="grid grid-cols-5 gap-x-10 text-gray-600 text-sm px-4 py-2 rounded-lg">
               <span className="font-medium">DEFAULT_TOKEN</span>
               <span className="break-words col-span-3">{user.token}</span>
-              <span>Never</span>
+              <span>{user.createdAt.slice(0,10)}</span>
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ export const createTestApiUser = async () => {
     data: {
       email: uuid() + "@test.com",
       passwordHash: faker.internet.password(),
+      token: uuid()
     },
   })
 }
@@ -118,6 +119,7 @@ export const createTestAuth = async () => {
     data: {
       email: uuid() + "@test.com",
       passwordHash: faker.internet.password(),
+      token: uuid()
     },
   })
 

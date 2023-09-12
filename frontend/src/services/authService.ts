@@ -6,6 +6,7 @@ export interface ApiUser {
   id: string
   email: string
   token: string
+  createdAt: string
 }
 
 const signIn = async (email: string, password: string) => {

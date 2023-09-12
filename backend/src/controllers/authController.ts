@@ -6,21 +6,26 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { SECRET } from "../utils/config"
 import seedDb from "../data/seedDb"
+import { faker } from "@faker-js/faker"
 
 const signUp = async (req: Request, res: Response) => {
   const { email, password } = matchedData(req) as AuthBody
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
+  const id = faker.string.uuid()
+  const token = jwt.sign({ id }, SECRET)
 
   const newApiUser = await prisma.apiUser.create({
     data: {
+      id,
       email,
       passwordHash,
+      token,
     },
   })
 
-  await seedDb(newApiUser.id) 
+  await seedDb(newApiUser.id)
 
   const {
     passwordHash: excludedPasswordHash,
@@ -67,15 +72,10 @@ const signIn = async (req: Request, res: Response) => {
     })
   }
 
-  // TODO: Decide token expiration time
-  const token = jwt.sign({ id: user.id }, SECRET, {
-    expiresIn: 60 * 60 * 24 * 365,
-  })
-
   const { passwordHash: excludedPasswordHash, ...apiUserWithoutPasswordHash } =
     user
 
-  res.json({ token, ...apiUserWithoutPasswordHash })
+  res.json(apiUserWithoutPasswordHash)
 }
 
 export default {

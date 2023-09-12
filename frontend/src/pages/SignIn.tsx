@@ -26,7 +26,7 @@ type FormData = yup.InferType<typeof schema>
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
+  const [rememberMe, setRememberMe] = useState(true)
   const navigate = useNavigate()
 
   const { setUser } = useUser()
