@@ -2,20 +2,21 @@ import { Link } from "react-router-dom"
 import Page from "../components/Page"
 import { useUser } from "../hooks/useUser"
 import { ClipboardIcon } from "@heroicons/react/24/outline"
+import { useState } from "react"
+import { classNames } from "../utils"
 
 const Account = () => {
   const { user } = useUser()
+  const [showKey, setShowKey] = useState(false)
 
   if (!user) return null // TODO: Handle case when accessing account page without auth
 
   return (
     <Page>
-      <Page.Section>
-        <Page.Section.Title>Profile</Page.Section.Title>
-      </Page.Section>
-
-      <Page.Divider />
-
+      <div className="px-16 pt-16">
+        <h1 className="font-medium text-3xl">Your account</h1>
+      </div>
+      
       <Page.Section>
         <div className="flex justify-between items-center">
           <Page.Section.Title>API token</Page.Section.Title>
@@ -52,8 +53,42 @@ const Account = () => {
             </div>
             <div className="grid grid-cols-5 gap-x-10 text-gray-600 text-sm px-4 py-2 rounded-lg">
               <span className="font-medium">DEFAULT_TOKEN</span>
-              <span className="break-words col-span-3">{user.token}</span>
-              <span>{user.createdAt.slice(0,10)}</span>
+
+              {/* TODO: Select none if not revealed */}
+              <div className="break-words col-span-3 relative">
+                {!showKey && (
+                  <div className="absolute z-10 w-full h-full flex items-center justify-center">
+                    <div>
+                      <button
+                        onClick={() => setShowKey(true)}
+                        className="px-2 py-1 select-none font-medium text-sm text-gray-600 bg-white border rounded-md shadow-sm hover:shadow-md transition-all"
+                      >
+                        Reveal token
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <span
+                  className={classNames(
+                    showKey ? "blur-none select-auto" : "blur-sm select-none"
+                  )}
+                >
+                  {user.token}
+                </span>
+
+                {showKey && (
+                  <div className="mt-2">
+                    <button
+                      onClick={() => setShowKey(false)}
+                      className="px-2 py-1 select-none font-medium text-sm text-gray-600 bg-white border rounded-md shadow-sm hover:shadow-md transition-all"
+                    >
+                      Hide token
+                    </button>
+                  </div>
+                )}
+              </div>
+              <span>{user.createdAt.slice(0, 10)}</span>
             </div>
           </div>
         </div>
@@ -65,6 +100,33 @@ const Account = () => {
         <Page.Section.Title>Data</Page.Section.Title>
 
         {/* TODO: Clear data, seed data */}
+        <div className="mt-6 flex justify-between items-center">
+          <div>
+            <h1 className="font-medium">Clear your database</h1>
+            <p className="text-sm mt-1 mb-4 text-gray-600">
+              Delete all of your data in one fell swoop.
+            </p>
+          </div>
+          <div>
+            <button className="px-2 py-1 font-medium text-sm text-gray-600 border rounded-md shadow-sm hover:shadow-md transition-all">
+              Clear database
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-between items-center">
+          <div>
+            <h1 className="font-medium">Reset your database</h1>
+            <p className="text-sm mt-1 mb-4 text-gray-600">
+              Reset your data to match the default database.
+            </p>
+          </div>
+          <div>
+            <button className="px-2 py-1 font-medium text-sm text-gray-600 border rounded-md shadow-sm hover:shadow-md transition-all">
+              Reset database
+            </button>
+          </div>
+        </div>
       </Page.Section>
 
       <Page.Divider />
@@ -72,7 +134,48 @@ const Account = () => {
       <Page.Section>
         <Page.Section.Title>Settings</Page.Section.Title>
 
-        {/* TODO: Delete account */}
+        {/* TODO: Delete account & change pw & change email*/}
+        <div className="mt-6 flex justify-between items-center">
+          <div>
+            <h1 className="font-medium">Change your email</h1>
+            <p className="text-sm mt-1 mb-4 text-gray-600">
+              Change your email.
+            </p>
+          </div>
+          <div>
+            <button className="px-2 py-1 font-medium text-sm text-gray-600 border rounded-md shadow-sm hover:shadow-md transition-all">
+              Change email
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-between items-center">
+          <div>
+            <h1 className="font-medium">Change your password</h1>
+            <p className="text-sm mt-1 mb-4 text-gray-600">
+              Change your password.
+            </p>
+          </div>
+          <div>
+            <button className="px-2 py-1 font-medium text-sm text-gray-600 border rounded-md shadow-sm hover:shadow-md transition-all">
+              Change password
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-between items-center">
+          <div>
+            <h1 className="font-medium">Delete your account</h1>
+            <p className="text-sm mt-1 mb-4 text-gray-600">
+              Delete your account and all related data.
+            </p>
+          </div>
+          <div>
+            <button className="px-2 py-1 font-medium text-sm text-gray-600 border rounded-md shadow-sm hover:shadow-md transition-all">
+              Delete account
+            </button>
+          </div>
+        </div>
       </Page.Section>
     </Page>
   )
