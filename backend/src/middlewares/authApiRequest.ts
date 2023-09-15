@@ -1,9 +1,13 @@
 import { Request, Response, NextFunction } from "express"
 import { verify } from "jsonwebtoken"
 import prisma from "../client"
-import { SECRET } from "../utils/config"
+import { DEFAULT_API_USER_ID, SECRET } from "../utils/config"
 
-const authApiUser = async (req: Request, res: Response, next: NextFunction) => {
+const authApiRequest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const tokenBearer = req.headers.authorization?.replace("Bearer ", "")
 
   if (tokenBearer !== undefined) {
@@ -24,12 +28,10 @@ const authApiUser = async (req: Request, res: Response, next: NextFunction) => {
       })
     }
   } else {
-    return res.status(401).json({
-      errors: [{ type: "auth", value: tokenBearer, msg: "Missing token." }],
-    })
+    req.apiUserId = DEFAULT_API_USER_ID
   }
 
   next()
 }
 
-export default authApiUser
+export default authApiRequest

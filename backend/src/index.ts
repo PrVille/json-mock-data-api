@@ -5,11 +5,13 @@ import "express-async-errors"
 import { PORT } from "./utils/config"
 
 import authRouter from "./routes/authRoutes"
+import accountRouter from "./routes/accountRoutes"
 import usersRouter from "./routes/userRoutes"
 import postsRouter from "./routes/postRoutes"
 import commentsRouter from "./routes/commentRoutes"
 
 import errorHandler from "./middlewares/errorHandler"
+import authApiRequest from "./middlewares/authApiRequest"
 import authApiUser from "./middlewares/authApiUser"
 
 const app = express()
@@ -18,9 +20,11 @@ app.use(cors())
 
 app.use("/api/auth", authRouter)
 
-app.use("/api/users", authApiUser, usersRouter)
-app.use("/api/posts", authApiUser, postsRouter)
-app.use("/api/comments", authApiUser, commentsRouter)
+app.use("/api/account", authApiUser, accountRouter)
+
+app.use("/api/users", authApiRequest, usersRouter)
+app.use("/api/posts", authApiRequest, postsRouter)
+app.use("/api/comments", authApiRequest, commentsRouter)
 
 app.use(errorHandler)
 

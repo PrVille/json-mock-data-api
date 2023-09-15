@@ -16,7 +16,7 @@ const Account = () => {
       <div className="px-16 pt-16">
         <h1 className="font-medium text-3xl">Your account</h1>
       </div>
-      
+
       <Page.Section>
         <div className="flex justify-between items-center">
           <Page.Section.Title>API token</Page.Section.Title>
@@ -54,7 +54,6 @@ const Account = () => {
             <div className="grid grid-cols-5 gap-x-10 text-gray-600 text-sm px-4 py-2 rounded-lg">
               <span className="font-medium">DEFAULT_TOKEN</span>
 
-              {/* TODO: Select none if not revealed */}
               <div className="break-words col-span-3 relative">
                 {!showKey && (
                   <div className="absolute z-10 w-full h-full flex items-center justify-center">
@@ -88,6 +87,7 @@ const Account = () => {
                   </div>
                 )}
               </div>
+              {/* TODO: Format date */}
               <span>{user.createdAt.slice(0, 10)}</span>
             </div>
           </div>
@@ -118,7 +118,7 @@ const Account = () => {
           <div>
             <h1 className="font-medium">Reset your database</h1>
             <p className="text-sm mt-1 mb-4 text-gray-600">
-              Reset your data to match the default database.
+              Delete all your data and create a new instance.
             </p>
           </div>
           <div>

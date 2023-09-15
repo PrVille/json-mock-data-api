@@ -31,9 +31,11 @@ const Authentication = () => {
             </Content.Subtitle>
 
             <Content.Subtitle>
-              If authenticated you will have your own instance of the resources
-              and are free to make changes to them that will update on the
-              server.
+              Once authenticated, you will gain access to your dedicated
+              resource instance, allowing you the freedom to make updates that
+              will synchronize with the server. It's important to acknowledge
+              that the content within your unique resource instance will differ
+              from the default resources, as it is generated randomly.
             </Content.Subtitle>
 
             <Content.Subtitle>
