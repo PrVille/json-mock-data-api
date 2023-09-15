@@ -11,6 +11,7 @@ import { REGEX_EMAIL } from "../constants"
 import { useUser } from "../hooks/useUser"
 import storage from "../services/storage"
 import Logo from "../components/Logo"
+import axios from "axios"
 
 const schema = yup
   .object({
@@ -47,34 +48,31 @@ const SignUp = () => {
     mode: "onSubmit",
   })
 
-  const onSubmit = (data: FormData) => {
-    setLoading(true)
-
-    setTimeout(() => {
-      authService
-        .signUp(data.email, data.password)
-        .then(() => {
-          authService.signIn(data.email, data.password).then((user) => {
-            setUser(user)
-            storage.saveUser(user)
-            navigate("/")
+  const onSubmit = async (data: FormData) => {
+    try {
+      setLoading(true)
+      await authService.signUp(data.email, data.password)
+      const user = await authService.signIn(data.email, data.password)
+      setUser(user)
+      storage.saveUser(user)
+      navigate("/")
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const emailInUse = error?.response?.data?.errors.some(
+          (err: { msg: string }) =>
+            err.msg.includes("'email' field is already in use.")
+        )
+        if (emailInUse) {
+          setError("email", {
+            message: "An account already exists with this email.",
           })
-        })
-        .catch((error) => {
-          const emailInUse = error?.response?.data?.errors?.some(
-            (err: { msg: string }) =>
-              err.msg.includes("'email' field is already in use.")
-          )
-          if (emailInUse) {
-            setError("email", {
-              message: "An account already exists with this email.",
-            })
-          } else {
-            setError("root", { message: "Something went wrong!" })
-          }
-        })
-        .finally(() => setLoading(false))
-    }, 3000)
+        } else {
+          setError("root", { message: "Something went wrong!" })
+        }
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

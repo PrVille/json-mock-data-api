@@ -41,22 +41,18 @@ const SignIn = () => {
     mode: "onSubmit",
   })
 
-  const onSubmit = (data: FormData) => {
-    setLoading(true)
-
-    setTimeout(() => {
-      authService
-        .signIn(data.email, data.password)
-        .then((user) => {
-          setUser(user)
-          if (rememberMe) storage.saveUser(user)
-          navigate("/")
-        })
-        .catch(() => {
-          setError("root", { message: "Incorrect email or password." })
-        })
-        .finally(() => setLoading(false))
-    }, 3000)
+  const onSubmit = async (data: FormData) => {
+    try {
+      setLoading(true)
+      const user = await authService.signIn(data.email, data.password)
+      setUser(user)
+      if (rememberMe) storage.saveUser(user)
+      navigate("/")
+    } catch (error) {
+      setError("root", { message: "Incorrect email or password." })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

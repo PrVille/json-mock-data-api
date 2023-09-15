@@ -115,5 +115,3 @@ export const checkApiUserEmailNotInUse = async (value: string) => {
 
   return true
 }
-
-// TODO: Add pw confirmation for apiUser
