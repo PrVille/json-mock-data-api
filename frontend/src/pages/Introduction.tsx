@@ -3,8 +3,11 @@ import Page from "../components/Page"
 import Content from "../components/Content"
 import { Link } from "react-router-dom"
 import routes from "../routes"
+import { useCopyToClipboard } from "../hooks/useCopyToClipboard"
 
 const Introduction = () => {
+  const { copyToClipboard } = useCopyToClipboard()
+
   return (
     <Page>
       <Page.Section>
@@ -61,7 +64,12 @@ const Introduction = () => {
                 <ExampleResponse.TopBar.Title darkMode>
                   Base url
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton darkMode />
+                <ExampleResponse.TopBar.CopyButton
+                  darkMode
+                  onClick={() =>
+                    copyToClipboard("https://json-mock-data.vercel.app/api/")
+                  }
+                />
               </ExampleResponse.TopBar>
               <div className="px-5 py-3 text-[13px]/[22px] text-white font-medium font-mono max-h-[75vh] overflow-auto">
                 <span>https://json-mock-data.vercel.app/api/</span>

@@ -80,9 +80,15 @@ const TopBarEndpointTitle = ({ method, endpoint }: EndpointTitleProps) => {
   )
 }
 
-const CopyButton = ({ darkMode = false }: { darkMode?: boolean }) => {
+const CopyButton = ({
+  darkMode = false,
+  onClick,
+}: {
+  darkMode?: boolean
+  onClick?: () => void
+}) => {
   return (
-    <button>
+    <button onClick={onClick}>
       <ClipboardIcon
         className={classNames(
           "h-4 w-4",
@@ -181,7 +187,7 @@ const Javascript = ({
       )}
     >
       <SyntaxHighlighter
-        language="javascript" 
+        language="javascript"
         style={a11yDark}
         customStyle={{
           backgroundColor: "inherit",
