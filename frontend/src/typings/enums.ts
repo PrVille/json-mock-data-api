@@ -4,3 +4,9 @@ export enum Method {
   put = "PUT",
   delete = "DELETE",
 }
+
+export enum NotificationType {
+  info = "INFO",
+  error = "ERROR",
+  success = "SUCCESS"
+}

@@ -9,12 +9,14 @@ import { Dialog } from "@headlessui/react"
 import accountService from "../services/accountService"
 import Spinner from "../components/Spinner"
 import axios from "axios"
+import { useNotification } from "../hooks/useNotification"
+import { NotificationType } from "../typings/enums"
 
 type DeleteAccountConfirmationProps = {
   open: boolean
   setOpen: React.Dispatch<boolean>
   loading: boolean
-  deleteAccount: () => void
+  deleteAccount: () => Promise<void>
 }
 
 const DeleteAccountConfirmation = ({
@@ -66,6 +68,7 @@ const DeleteAccountConfirmation = ({
 const Account = () => {
   const navigate = useNavigate()
   const { user, clearUser } = useUser()
+  const { notify } = useNotification()
   const [showKey, setShowKey] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -73,16 +76,16 @@ const Account = () => {
   if (!user) return null // TODO: Handle case when accessing account page without auth
 
   const deleteAccount = async () => {
-    // TODO: Notify on deletion & error
     try {
-      setLoading(true)      
+      setLoading(true)
       await accountService.deleteById(user.id, user.token)
       clearUser()
+      notify("Account deleted successfully.")
       navigate("/")
-      console.log("account deleted!")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error)
+        notify("Something went wrong.", NotificationType.error)
       }
     } finally {
       setLoading(false)

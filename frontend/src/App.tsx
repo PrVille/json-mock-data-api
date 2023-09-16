@@ -10,6 +10,7 @@ import SignUp from "./pages/SignUp"
 import { useUser } from "./hooks/useUser"
 import storage from "./services/storage"
 import Account from "./pages/Account"
+import Notification from "./components/Notification"
 
 const App = () => {
   const { setUser } = useUser()
@@ -27,6 +28,8 @@ const App = () => {
 
   return (
     <>
+      <Notification />
+
       <div className="min-h-screen flex">
         {!(onHomePage || onSignInPage || onSignUpPage || onAccountPage) && (
           <Sidebar />
