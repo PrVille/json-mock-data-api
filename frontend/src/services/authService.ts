@@ -1,13 +1,7 @@
 import axios from "axios"
+import { ApiUser } from "../typings/interfaces"
 
 const baseUrl = "/api/auth"
-
-export interface ApiUser {
-  id: string
-  email: string
-  token: string
-  createdAt: string
-}
 
 const signIn = async (email: string, password: string) => {
   const { data } = await axios.post<ApiUser>(baseUrl + "/signin", {

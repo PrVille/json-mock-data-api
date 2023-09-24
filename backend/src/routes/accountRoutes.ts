@@ -6,6 +6,22 @@ import accountController from "../controllers/accountController"
 
 const router = express.Router()
 
+// Get API User resources.
+router.get(
+  "/:id/resources",
+  checkSchema(accountValidationSchemas.byIdSchema),
+  validate,
+  accountController.getResources
+)
+
+// Delete API User resources (Clear database for API User).
+router.delete(
+  "/:id/resources",
+  checkSchema(accountValidationSchemas.byIdSchema),
+  validate,
+  accountController.deleteResources
+)
+
 // Delete API User.
 router.delete(
   "/:id",
