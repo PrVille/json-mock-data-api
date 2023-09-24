@@ -14,6 +14,13 @@ router.get(
   accountController.getResources
 )
 
+router.post(
+  "/:id/resources",
+  checkSchema(accountValidationSchemas.byIdSchema),
+  validate,
+  accountController.resetResources
+)
+
 // Delete API User resources (Clear database for API User).
 router.delete(
   "/:id/resources",

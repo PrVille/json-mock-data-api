@@ -1,4 +1,5 @@
 import prisma from "../client"
+import seedDb from "../data/seedDb"
 
 const deleteById = async (id: string) => {
   const apiUser = await prisma.apiUser.delete({
@@ -43,8 +44,15 @@ const deleteResources = async (id: string) => {
   }
 }
 
+const resetResources = async (id: string) => {
+  const seedResult = await seedDb(id)
+
+  return seedResult
+}
+
 export default {
   deleteById,
   getResources,
   deleteResources,
+  resetResources,
 }

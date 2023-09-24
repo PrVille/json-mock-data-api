@@ -66,8 +66,30 @@ const deleteResources = async (req: Request, res: Response) => {
   res.json(resources)
 }
 
+const resetResources = async (req: Request, res: Response) => {
+  const { id } = matchedData(req) as IdParams
+  const apiUserId = req.apiUserId
+
+  if (id !== apiUserId) {
+    return res.status(401).json({
+      errors: [
+        {
+          type: "auth",
+          value: id,
+          msg: "You do not have permission to reset another user's resources.",
+        },
+      ],
+    })
+  }
+
+  const resources = await accountService.resetResources(id)
+
+  res.json(resources)
+}
+
 export default {
   deleteById,
   getResources,
   deleteResources,
+  resetResources
 }

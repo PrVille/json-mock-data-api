@@ -162,7 +162,7 @@ describe(`GET ${baseUrl}/:id/resources`, () => {
   })
 
   it("should return resources when authenticated", async () => {
-    const { apiUser, token } = await createTestAuth()
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
 
     const response = await api
       .get(`${baseUrl}/${apiUser.id}/resources`)
@@ -179,6 +179,8 @@ describe(`GET ${baseUrl}/:id/resources`, () => {
     expect(response.body.resources).toContainEqual(
       expect.objectContaining(expectedProperties)
     )
+
+    await removeTestAuth()
   })
 })
 
@@ -250,8 +252,8 @@ describe(`DELETE ${baseUrl}/:id/resources`, () => {
     await removeTestAuth()
   })
 
-  it("should return resources when authenticated", async () => {
-    const { apiUser, token } = await createTestAuth()
+  it("should delete resources when authenticated", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
 
     const response = await api
       .delete(`${baseUrl}/${apiUser.id}/resources`)
@@ -264,5 +266,101 @@ describe(`DELETE ${baseUrl}/:id/resources`, () => {
       posts: { count: 0 },
       comments: { count: 0 },
     })
+
+    await removeTestAuth()
+  })
+})
+
+describe(`POST ${baseUrl}/:id/resources`, () => {
+  it("should respond with json", async () => {
+    const { apiUser, removeTestAuth } = await createTestAuth()
+
+    const response = await api.post(`${baseUrl}/${apiUser.id}/resources`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+
+    await removeTestAuth()
+  })
+
+  it("should return error 401 if missing auth", async () => {
+    const response = await api.post(`${baseUrl}/id/resources`)
+
+    expect(response.status).toBe(401)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "auth",
+          msg: "Missing token.",
+        },
+      ],
+    })
+  })
+
+  it("should return error 401 if invalid auth", async () => {
+    const response = await api
+      .post(`${baseUrl}/id/resources`)
+      .set("Authorization", `Bearer invalidToken`)
+
+    expect(response.status).toBe(401)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "auth",
+          msg: "Invalid token.",
+          value: "invalidToken",
+        },
+      ],
+    })
+  })
+
+  it("should return error 400 when the apiUser doesn't exist", async () => {
+    const { token, removeTestAuth } = await createTestAuth()
+
+    const response = await api
+      .post(`${baseUrl}/nonExistingId/resources`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingId",
+          msg: "The specified apiUser for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+
+    await removeTestAuth()
+  })
+
+  it("should reset resources when authenticated", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+
+    const response = await api
+      .post(`${baseUrl}/${apiUser.id}/resources`)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      deleted: {
+        users: { count: 0 },
+        posts: { count: 0 },
+        comments: { count: 0 },
+      },
+      created: {
+        users: expect.any(Number),
+        posts: expect.any(Number),
+        comments: expect.any(Number),
+      },
+    })
+
+    await removeTestAuth()
   })
 })
