@@ -2,6 +2,7 @@ import ExampleResponse from "../components/ExampleResponse"
 import Page from "../components/Page"
 import Content from "../components/Content"
 import Highlight from "../components/Highlight"
+import { useCopyToClipboard } from "../hooks/useCopyToClipboard"
 
 const exampleCodeBlock = `// Request with an invalid body
 fetch('https://json-mock-data.vercel.app/api/posts', {
@@ -59,6 +60,8 @@ const statusCodes = [
 ]
 
 const Errors = () => {
+  const { copyToClipboard } = useCopyToClipboard()
+
   return (
     <Page>
       <Page.Section>
@@ -178,7 +181,10 @@ const Errors = () => {
                 <ExampleResponse.TopBar.Title darkMode>
                   Error request
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton darkMode />
+                <ExampleResponse.TopBar.CopyButton
+                  darkMode
+                  onClick={() => copyToClipboard(exampleCodeBlock)}
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Javascript codeBlock={exampleCodeBlock} />
             </ExampleResponse>
@@ -188,7 +194,11 @@ const Errors = () => {
                 <ExampleResponse.TopBar.Title>
                   Response
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton />
+                <ExampleResponse.TopBar.CopyButton
+                  onClick={() =>
+                    copyToClipboard(JSON.stringify(example, null, 2))
+                  }
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Json object={example} />
             </ExampleResponse>

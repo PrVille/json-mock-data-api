@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { useState } from "react"
 import { classNames } from "../utils"
 import userService from "../services/userService"
+import { useCopyToClipboard } from "../hooks/useCopyToClipboard"
 
 type RunRequestButtonProps = {
   loading: boolean
@@ -138,6 +139,7 @@ const defaultResponse = {
 }
 
 const Home = () => {
+  const { copyToClipboard } = useCopyToClipboard()
   const [loadingRequest, setLoadingRequest] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
   const [response, setResponse] = useState(defaultResponse)
@@ -226,7 +228,10 @@ const Home = () => {
                       onClick={runRequest}
                       loading={loadingRequest}
                     />
-                    <ExampleResponse.TopBar.CopyButton darkMode />
+                    <ExampleResponse.TopBar.CopyButton
+                      darkMode
+                      onClick={() => copyToClipboard(tab.codeBlock)}
+                    />
                   </div>
                 </ExampleResponse.TopBar>
                 <ExampleResponse.Javascript codeBlock={tab.codeBlock} />
@@ -243,7 +248,11 @@ const Home = () => {
                       <ExampleResponse.TopBar.Title>
                         Response
                       </ExampleResponse.TopBar.Title>
-                      <ExampleResponse.TopBar.CopyButton />
+                      <ExampleResponse.TopBar.CopyButton
+                        onClick={() =>
+                          copyToClipboard(JSON.stringify(response, null, 2))
+                        }
+                      />
                     </ExampleResponse.TopBar>
                     <ExampleResponse.Json
                       object={response}

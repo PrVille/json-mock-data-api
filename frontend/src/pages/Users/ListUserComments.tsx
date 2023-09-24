@@ -4,6 +4,7 @@ import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
 import Highlight from "../../components/Highlight"
+import { useCopyToClipboard } from "../../hooks/useCopyToClipboard"
 
 const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users/e9731fb5-ef7f-4666-9143-da9773a41fe8/comments')
   .then(response => response.json())
@@ -26,6 +27,8 @@ const exampleResponse = {
 }
 
 const ListUserComments = () => {
+  const { copyToClipboard } = useCopyToClipboard()
+
   return (
     <Page>
       <Page.Section>
@@ -143,7 +146,10 @@ const ListUserComments = () => {
                   method={Method.get}
                   endpoint={"/api/users/:id/comments"}
                 />
-                <ExampleResponse.TopBar.CopyButton darkMode />
+                <ExampleResponse.TopBar.CopyButton
+                  darkMode
+                  onClick={() => copyToClipboard(exampleCodeBlock)}
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Javascript codeBlock={exampleCodeBlock} />
             </ExampleResponse>
@@ -153,7 +159,11 @@ const ListUserComments = () => {
                 <ExampleResponse.TopBar.Title>
                   Response
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton />
+                <ExampleResponse.TopBar.CopyButton
+                  onClick={() =>
+                    copyToClipboard(JSON.stringify(exampleResponse, null, 2))
+                  }
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Json object={exampleResponse} />
             </ExampleResponse>

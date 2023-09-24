@@ -3,6 +3,7 @@ import Content from "../../components/Content"
 import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
+import { useCopyToClipboard } from "../../hooks/useCopyToClipboard"
 
 const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/comments', {
   method: 'POST',
@@ -26,6 +27,8 @@ const exampleResponse = {
 }
 
 const CreateComment = () => {
+  const { copyToClipboard } = useCopyToClipboard()
+
   return (
     <Page>
       <Page.Section>
@@ -127,7 +130,10 @@ const CreateComment = () => {
                   method={Method.post}
                   endpoint={"/api/comments"}
                 />
-                <ExampleResponse.TopBar.CopyButton darkMode />
+                <ExampleResponse.TopBar.CopyButton
+                  darkMode
+                  onClick={() => copyToClipboard(exampleCodeBlock)}
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Javascript codeBlock={exampleCodeBlock} />
             </ExampleResponse>
@@ -137,7 +143,11 @@ const CreateComment = () => {
                 <ExampleResponse.TopBar.Title>
                   Response
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton />
+                <ExampleResponse.TopBar.CopyButton
+                  onClick={() =>
+                    copyToClipboard(JSON.stringify(exampleResponse, null, 2))
+                  }
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Json object={exampleResponse} />
             </ExampleResponse>

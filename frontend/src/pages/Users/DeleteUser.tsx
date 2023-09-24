@@ -3,6 +3,7 @@ import Content from "../../components/Content"
 import ExampleResponse from "../../components/ExampleResponse"
 import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
+import { useCopyToClipboard } from "../../hooks/useCopyToClipboard"
 
 const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users/513e1ed3-43cd-4f86-a0a8-3a61dfc35bc2', {
   method: 'DELETE'
@@ -23,6 +24,8 @@ const exampleResponse = {
 }
 
 const DeleteUser = () => {
+  const { copyToClipboard } = useCopyToClipboard()
+
   return (
     <Page>
       <Page.Section>
@@ -33,7 +36,8 @@ const DeleteUser = () => {
             <Content.Subtitle>Deletes a user by it's id.</Content.Subtitle>
             <Content.Subtitle>
               <span className="font-bold text-red-900">Caution:</span> Deleting
-              a user will result in the removal of all corresponding posts and comments on the user.
+              a user will result in the removal of all corresponding posts and
+              comments on the user.
             </Content.Subtitle>
             <Content.Subtitle>
               <span className="font-bold text-gray-900">Note:</span> Please be
@@ -92,7 +96,10 @@ const DeleteUser = () => {
                   method={Method.delete}
                   endpoint={"/api/users/:id"}
                 />
-                <ExampleResponse.TopBar.CopyButton darkMode />
+                <ExampleResponse.TopBar.CopyButton
+                  darkMode
+                  onClick={() => copyToClipboard(exampleCodeBlock)}
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Javascript codeBlock={exampleCodeBlock} />
             </ExampleResponse>
@@ -102,7 +109,11 @@ const DeleteUser = () => {
                 <ExampleResponse.TopBar.Title>
                   Response
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton />
+                <ExampleResponse.TopBar.CopyButton
+                  onClick={() =>
+                    copyToClipboard(JSON.stringify(exampleResponse, null, 2))
+                  }
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Json object={exampleResponse} />
             </ExampleResponse>

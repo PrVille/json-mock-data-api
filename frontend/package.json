@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && tsc && vite build",
+    "tsc": "tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "echo \"Testing frontend\" && exit 0"

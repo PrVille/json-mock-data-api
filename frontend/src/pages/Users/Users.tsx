@@ -4,6 +4,7 @@ import Content from "../../components/Content"
 import { Method } from "../../typings/enums"
 import Highlight from "../../components/Highlight"
 import { Link } from "react-router-dom"
+import { useCopyToClipboard } from "../../hooks/useCopyToClipboard"
 
 const schema = `User {
   id        string
@@ -106,6 +107,8 @@ const attributes = [
 ]
 
 const Users = () => {
+  const { copyToClipboard } = useCopyToClipboard()
+
   return (
     <Page>
       <Page.Section>
@@ -212,7 +215,9 @@ const Users = () => {
                 <ExampleResponse.TopBar.Title>
                   User schema
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton />
+                <ExampleResponse.TopBar.CopyButton
+                  onClick={() => copyToClipboard(schema)}
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Schema schema={schema} />
             </ExampleResponse>
@@ -222,7 +227,11 @@ const Users = () => {
                 <ExampleResponse.TopBar.Title>
                   User example
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton />
+                <ExampleResponse.TopBar.CopyButton
+                  onClick={() =>
+                    copyToClipboard(JSON.stringify(example, null, 2))
+                  }
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Json object={example} />
             </ExampleResponse>

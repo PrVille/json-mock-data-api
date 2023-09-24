@@ -7,9 +7,9 @@ export const useCopyToClipboard = () => {
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      notify("Copied.")
+      notify("Copied to clipboard.")
     } catch (error) {
-      notify("Failed to copy.", NotificationType.error)
+      notify("Failed to copy to clipboard.", NotificationType.error)
     }
   }
 

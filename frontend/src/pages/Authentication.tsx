@@ -3,6 +3,7 @@ import Page from "../components/Page"
 import Content from "../components/Content"
 import { Link } from "react-router-dom"
 import Highlight from "../components/Highlight"
+import { useCopyToClipboard } from "../hooks/useCopyToClipboard"
 
 const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users', {
   method: 'GET',
@@ -15,6 +16,8 @@ const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users', {
   .then(json => console.log(json))`
 
 const Authentication = () => {
+  const { copyToClipboard } = useCopyToClipboard()
+
   return (
     <Page>
       <Page.Section>
@@ -92,7 +95,10 @@ const Authentication = () => {
                 <ExampleResponse.TopBar.Title darkMode>
                   Authenticated request
                 </ExampleResponse.TopBar.Title>
-                <ExampleResponse.TopBar.CopyButton darkMode />
+                <ExampleResponse.TopBar.CopyButton
+                  darkMode
+                  onClick={() => copyToClipboard(exampleCodeBlock)}
+                />
               </ExampleResponse.TopBar>
               <ExampleResponse.Javascript codeBlock={exampleCodeBlock} />
             </ExampleResponse>

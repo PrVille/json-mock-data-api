@@ -85,7 +85,7 @@ const CopyButton = ({
   onClick,
 }: {
   darkMode?: boolean
-  onClick?: () => void
+  onClick: () => void
 }) => {
   return (
     <button onClick={onClick}>
