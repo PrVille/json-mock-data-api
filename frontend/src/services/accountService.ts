@@ -35,4 +35,18 @@ const deleteResources = async (id: string, token: string) => {
   return data
 }
 
-export default { deleteById, getResources, deleteResources }
+const resetResources = async (id: string, token: string) => {
+  const { data } = await axios.post(
+    `${baseUrl}/${id}/resources`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  return data
+}
+
+export default { deleteById, getResources, deleteResources, resetResources }

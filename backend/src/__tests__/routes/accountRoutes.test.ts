@@ -355,9 +355,9 @@ describe(`POST ${baseUrl}/:id/resources`, () => {
         comments: { count: 0 },
       },
       created: {
-        users: expect.any(Number),
-        posts: expect.any(Number),
-        comments: expect.any(Number),
+        users: 10,
+        posts: 100,
+        comments: 250,
       },
     })
 

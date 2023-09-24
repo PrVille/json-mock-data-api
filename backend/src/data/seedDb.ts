@@ -40,7 +40,7 @@ const seedDb = async (apiUserId: string) => {
   const posts = await prisma.post.findMany(where)
 
   for (const user of users) {
-    const commentsToCreate = Math.floor(Math.random() * 10) + 1
+    const commentsToCreate = 25
 
     for (let i = 0; i < commentsToCreate; i++) {
       const randomPost = posts[Math.floor(Math.random() * posts.length)]
