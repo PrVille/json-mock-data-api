@@ -56,7 +56,7 @@ const Authentication = () => {
                 to=""
                 className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
               >
-                the Account settings
+                your Account page
               </Link>
               .
             </Content.Subtitle>

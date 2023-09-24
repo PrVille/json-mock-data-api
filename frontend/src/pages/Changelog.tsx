@@ -39,6 +39,34 @@ const Changelog = () => {
           API, in chronological order.
         </p>
 
+        <Heading>September 24, 2023</Heading>
+        <ChangeList>
+          <ChangeListItem>
+            Authenticated users can now reset their database from their{" "}
+            <Link
+              to=""
+              className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+            >
+              Account page
+            </Link>
+            .
+          </ChangeListItem>
+        </ChangeList>
+
+        <Heading>September 22, 2023</Heading>
+        <ChangeList>
+          <ChangeListItem>
+            Authenticated users can now clear their database from their{" "}
+            <Link
+              to=""
+              className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+            >
+              Account page
+            </Link>
+            .
+          </ChangeListItem>
+        </ChangeList>
+
         <Heading>September 9, 2023</Heading>
         <ChangeList>
           <ChangeListItem>

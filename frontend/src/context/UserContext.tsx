@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode } from "react"
-import { ApiUser } from "../services/authService"
+import { ApiUser } from "../typings/interfaces"
 
 export interface UserContextType {
   user: ApiUser | null

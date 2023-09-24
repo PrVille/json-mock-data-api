@@ -1,4 +1,4 @@
-import { ApiUser } from "./authService"
+import { ApiUser } from "../typings/interfaces"
 
 const USER_KEY = "user"
 
