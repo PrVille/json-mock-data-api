@@ -366,7 +366,7 @@ describe(`POST ${baseUrl}/:id/resources`, () => {
   })
 })
 
-describe.only(`POST ${baseUrl}/:id/update/email`, () => {
+describe(`POST ${baseUrl}/:id/update/email`, () => {
   it("should respond with json", async () => {
     const { apiUser, removeTestAuth } = await createTestAuth()
 
