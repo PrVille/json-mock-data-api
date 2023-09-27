@@ -49,4 +49,18 @@ const resetResources = async (id: string, token: string) => {
   return data
 }
 
-export default { deleteById, getResources, deleteResources, resetResources }
+const updateEmailById = async (id: string, token: string, email: string) => {
+  const { data } = await axios.post<ApiUser>(
+    `${baseUrl}/${id}/update/email`,
+    { email },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  return data
+}
+
+export default { deleteById, getResources, deleteResources, resetResources, updateEmailById }

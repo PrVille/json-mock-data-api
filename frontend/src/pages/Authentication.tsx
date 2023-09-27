@@ -51,12 +51,12 @@ const Authentication = () => {
               >
                 Bearer tokens
               </a>{" "}
-              to authenticate requests. You can view your token in{" "}
+              to authenticate requests. You can view your token in your{" "}
               <Link
                 to=""
                 className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
               >
-                your Account page
+                Account page
               </Link>
               .
             </Content.Subtitle>

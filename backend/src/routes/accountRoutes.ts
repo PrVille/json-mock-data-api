@@ -14,6 +14,15 @@ router.get(
   accountController.getResources
 )
 
+// Update API User email.
+router.post(
+  "/:id/update/email",
+  checkSchema(accountValidationSchemas.updateEmailByIdSchema),
+  validate,
+  accountController.updateEmailById
+)
+
+// Reset API User resources (Reset database for API User).
 router.post(
   "/:id/resources",
   checkSchema(accountValidationSchemas.byIdSchema),
