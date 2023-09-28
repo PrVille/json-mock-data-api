@@ -22,6 +22,14 @@ router.post(
   accountController.updateEmailById
 )
 
+// Update API User password.
+router.post(
+  "/:id/update/password",
+  checkSchema(accountValidationSchemas.updatePasswordByIdSchema),
+  validate,
+  accountController.updatePasswordById
+)
+
 // Reset API User resources (Reset database for API User).
 router.post(
   "/:id/resources",

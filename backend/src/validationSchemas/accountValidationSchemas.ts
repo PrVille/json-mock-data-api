@@ -1,6 +1,9 @@
 import { Schema } from "express-validator"
 import commonValidationFields from "./commonValidationFields"
-import { checkApiUserEmailNotInUse, checkIfApiUserExists } from "../utils/customValidators"
+import {
+  checkApiUserEmailNotInUse,
+  checkIfApiUserExists,
+} from "../utils/customValidators"
 
 const byIdSchema: Schema = {
   id: {
@@ -31,7 +34,40 @@ const updateEmailByIdSchema: Schema = {
       options: checkApiUserEmailNotInUse,
     },
   },
- 
 }
 
-export default { byIdSchema, updateEmailByIdSchema }
+const updatePasswordByIdSchema: Schema = {
+  ...byIdSchema,
+  oldPassword: {
+    exists: {
+      errorMessage: "The 'oldPassword' field is a required field.",
+      bail: true,
+    },
+    isString: {
+      errorMessage: "The 'oldPassword' field must be a string.",
+      bail: true,
+    },
+    isLength: {
+      options: { min: 5 },
+      errorMessage: "The 'oldPassword' field must be at least 5 characters long.",
+      bail: true,
+    },
+  },
+  newPassword: {
+    exists: {
+      errorMessage: "The 'newPassword' field is a required field.",
+      bail: true,
+    },
+    isString: {
+      errorMessage: "The 'newPassword' field must be a string.",
+      bail: true,
+    },
+    isLength: {
+      options: { min: 5 },
+      errorMessage: "The 'newPassword' field must be at least 5 characters long.",
+      bail: true,
+    },
+  },
+}
+
+export default { byIdSchema, updateEmailByIdSchema, updatePasswordByIdSchema }

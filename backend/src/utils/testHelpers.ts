@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker"
 import prisma from "../client"
 import { DEFAULT_API_USER_ID } from "./config"
 import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 import { SECRET } from "../utils/config"
 
 const uuid = () => {
@@ -13,7 +14,7 @@ export const createTestApiUser = async () => {
     data: {
       email: uuid() + "@test.com",
       passwordHash: faker.internet.password(),
-      token: uuid()
+      token: uuid(),
     },
   })
 }
@@ -115,11 +116,15 @@ export const createTestDb = async (apiUserId = DEFAULT_API_USER_ID) => {
 }
 
 export const createTestAuth = async () => {
+  const password = faker.internet.password()
+  const saltRounds = 10
+  const passwordHash = await bcrypt.hash(password, saltRounds)
+
   const apiUser = await prisma.apiUser.create({
     data: {
       email: uuid() + "@test.com",
-      passwordHash: faker.internet.password(),
-      token: uuid()
+      passwordHash,
+      token: uuid(),
     },
   })
 
@@ -135,7 +140,7 @@ export const createTestAuth = async () => {
     })
   }
 
-  return { apiUser, token, removeTestAuth }
+  return { apiUser, token, password, removeTestAuth }
 }
 
 export const createTestUser = async (apiUserId = DEFAULT_API_USER_ID) => {

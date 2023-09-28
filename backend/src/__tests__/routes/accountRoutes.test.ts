@@ -514,3 +514,164 @@ describe(`POST ${baseUrl}/:id/update/email`, () => {
     await removeTestAuth()
   })
 })
+
+describe(`POST ${baseUrl}/:id/update/password`, () => {
+  it("should respond with json", async () => {
+    const { apiUser, removeTestAuth } = await createTestAuth()
+
+    const response = await api.post(`${baseUrl}/${apiUser.id}/update/password`)
+
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+
+    await removeTestAuth()
+  })
+
+  it("should return error 401 if missing auth", async () => {
+    const response = await api.post(`${baseUrl}/id/update/password`)
+
+    expect(response.status).toBe(401)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "auth",
+          msg: "Missing token.",
+        },
+      ],
+    })
+  })
+
+  it("should return error 401 if invalid auth", async () => {
+    const response = await api
+      .post(`${baseUrl}/id/update/password`)
+      .set("Authorization", `Bearer invalidToken`)
+
+    expect(response.status).toBe(401)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "auth",
+          msg: "Invalid token.",
+          value: "invalidToken",
+        },
+      ],
+    })
+  })
+
+  it("should return error 400 when the apiUser doesn't exist", async () => {
+    const { token, removeTestAuth } = await createTestAuth()
+
+    const body = {
+      oldPassword: faker.string.uuid(),
+      newPassword: faker.string.uuid(),
+    }
+
+    const response = await api
+      .post(`${baseUrl}/nonExistingId/update/password`)
+      .send(body)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: "nonExistingId",
+          msg: "The specified apiUser for the 'id' field does not exist.",
+          path: "id",
+          location: "params",
+        },
+      ],
+    })
+
+    await removeTestAuth()
+  })
+
+  it("should return error 400 with invalid request body", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+
+    const response = await api
+      .post(`${baseUrl}/${apiUser.id}/update/password`)
+      .send({ password: "" })
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          msg: "The 'oldPassword' field is a required field.",
+          path: "oldPassword",
+          location: "body",
+        },
+        {
+          type: "field",
+          msg: "The 'newPassword' field is a required field.",
+          path: "newPassword",
+          location: "body",
+        },
+      ],
+    })
+
+    await removeTestAuth()
+  })
+
+  it("should return error 400 when old password is incorrect", async () => {
+    const { apiUser, token, removeTestAuth } = await createTestAuth()
+
+    const body = {
+      oldPassword: faker.string.uuid(),
+      newPassword: faker.string.uuid(),
+    }
+
+    const response = await api
+      .post(`${baseUrl}/${apiUser.id}/update/password`)
+      .send(body)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      errors: [
+        {
+          type: "field",
+          value: body.oldPassword,
+          msg: "The specified password for the 'oldPassword' field is incorrect.",
+          path: "oldPassword",
+          location: "body",
+        },
+      ],
+    })
+
+    await removeTestAuth()
+  })
+
+  it("should update password when authenticated with valid request body", async () => {
+    const { apiUser, token, password, removeTestAuth } = await createTestAuth()
+
+    const body = {
+      oldPassword: password,
+      newPassword: faker.string.uuid(),
+    }
+
+    const response = await api
+      .post(`${baseUrl}/${apiUser.id}/update/password`)
+      .send(body)
+      .set("Authorization", `Bearer ${token}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeDefined()
+    expect(response.body).toEqual({
+      email: apiUser.email,
+      id: apiUser.id,
+      token: apiUser.token,
+      createdAt: apiUser.createdAt.toISOString(),
+      updatedAt: expect.any(String),
+    })
+
+    await removeTestAuth()
+  })
+})

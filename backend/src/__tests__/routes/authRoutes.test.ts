@@ -9,6 +9,8 @@ afterAll(() => {
   server.close()
 })
 
+// TODO: rework these tests
+
 describe("POST /api/auth/signup", () => {
   it("should respond with json", async () => {
     const userCredentials = {
