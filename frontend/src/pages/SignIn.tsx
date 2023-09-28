@@ -1,6 +1,6 @@
 import { useState } from "react"
 import authService from "../services/authService"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import Spinner from "../components/Spinner"
 import { classNames } from "../utils"
 import { ExclamationTriangleIcon } from "@heroicons/react/20/solid"
@@ -28,7 +28,7 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
   const navigate = useNavigate()
-
+  const location = useLocation()
   const { setUser } = useUser()
 
   const {
@@ -47,7 +47,7 @@ const SignIn = () => {
       const user = await authService.signIn(data.email, data.password)
       setUser(user)
       if (rememberMe) storage.saveUser(user)
-      navigate("/")
+      navigate(location?.state?.prevUrl || "/account")
     } catch (error) {
       // TODO: check response and add correct error msg
       setError("root", { message: "Incorrect email or password." })
@@ -145,6 +145,7 @@ const SignIn = () => {
             Don't have an account?{" "}
             <Link
               to="/signup"
+              state={{ prevUrl: location?.state?.prevUrl }}
               className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
             >
               Sign up

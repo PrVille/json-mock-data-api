@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import Logo from "./Logo"
 import { classNames } from "../utils"
 import { useUser } from "../hooks/useUser"
@@ -13,6 +13,7 @@ const Topbar = ({
 }) => {
   const { user, clearUser } = useUser()
   const navigate = useNavigate()
+  const location = useLocation()
   const loggedIn = user !== null
 
   return (
@@ -54,7 +55,7 @@ const Topbar = ({
             onClick={() => {
               clearUser()
               storage.removeUser()
-              navigate("/signin")
+              navigate("/signin", { state: { prevUrl: location.pathname } })
             }}
             className="py-1 pr-1 text-sm font-medium rounded-lg text-indigo-600 hover:text-gray-800 transition-all"
           >
@@ -63,6 +64,7 @@ const Topbar = ({
         ) : (
           <NavLink
             to={loggedIn ? "/account" : "/signin"}
+            state={{ prevUrl: location.pathname }}
             className={({ isActive }) =>
               classNames(
                 "py-1 pr-1 text-sm font-medium rounded-lg  hover:text-gray-800 transition-all",

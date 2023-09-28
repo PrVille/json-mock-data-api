@@ -1,6 +1,6 @@
 import { useState } from "react"
 import authService from "../services/authService"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import Spinner from "../components/Spinner"
 import { classNames } from "../utils"
 import { ExclamationTriangleIcon } from "@heroicons/react/20/solid"
@@ -35,7 +35,7 @@ type FormData = yup.InferType<typeof schema>
 const SignUp = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-
+  const location = useLocation()
   const { setUser } = useUser()
 
   const {
@@ -55,7 +55,7 @@ const SignUp = () => {
       const user = await authService.signIn(data.email, data.password)
       setUser(user)
       storage.saveUser(user)
-      navigate("/")
+      navigate(location?.state?.prevUrl || "/account")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const emailInUse = error?.response?.data?.errors.some(
