@@ -11,6 +11,7 @@ import ClearDatabase from "./ClearDatabase"
 import ResetDatabase from "./ResetDatabase"
 import ChangeEmail from "./ChangeEmail"
 import DeleteAccount from "./DeleteAccount"
+import ChangePassword from "./ChangePassword"
 
 const Account = () => {
   const navigate = useNavigate()
@@ -124,20 +125,8 @@ const Account = () => {
           {/* TODO: Change pw & change email*/}
 
           <ChangeEmail user={user} setUser={setUser} notify={notify} />
+          <ChangePassword user={user} notify={notify} />
 
-          <div className="mt-6 flex justify-between items-center">
-            <div>
-              <h1 className="font-medium">Change your password</h1>
-              <p className="text-sm mt-1 mb-4 text-gray-600">
-                Change your password.
-              </p>
-            </div>
-            <div>
-              <button className="px-2 py-1 font-medium text-sm text-gray-600 border rounded-md shadow-sm hover:shadow-md transition-all">
-                Change password
-              </button>
-            </div>
-          </div>
 
           <DeleteAccount
             user={user}

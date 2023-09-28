@@ -22,7 +22,7 @@ const schema = yup
     password: yup
       .string()
       .required("Please enter your password.")
-      .length(5, "Your password must be at least 5 characters."),
+      .min(5, "Your password must be at least 5 characters."),
     passwordConfirmation: yup
       .string()
       .required("Please confirm your password.")

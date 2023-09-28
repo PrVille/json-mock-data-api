@@ -47,9 +47,8 @@ const updatePasswordByIdSchema: Schema = {
       errorMessage: "The 'oldPassword' field must be a string.",
       bail: true,
     },
-    isLength: {
-      options: { min: 5 },
-      errorMessage: "The 'oldPassword' field must be at least 5 characters long.",
+    notEmpty: {
+      errorMessage: "The 'oldPassword' field must be a non-empty string.",
       bail: true,
     },
   },
@@ -64,7 +63,8 @@ const updatePasswordByIdSchema: Schema = {
     },
     isLength: {
       options: { min: 5 },
-      errorMessage: "The 'newPassword' field must be at least 5 characters long.",
+      errorMessage:
+        "The 'newPassword' field must be at least 5 characters long.",
       bail: true,
     },
   },

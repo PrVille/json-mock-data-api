@@ -63,4 +63,30 @@ const updateEmailById = async (id: string, token: string, email: string) => {
   return data
 }
 
-export default { deleteById, getResources, deleteResources, resetResources, updateEmailById }
+const updatePasswordById = async (
+  id: string,
+  token: string,
+  oldPassword: string,
+  newPassword: string
+) => {
+  const { data } = await axios.post<ApiUser>(
+    `${baseUrl}/${id}/update/password`,
+    { oldPassword, newPassword },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  return data
+}
+
+export default {
+  deleteById,
+  getResources,
+  deleteResources,
+  resetResources,
+  updateEmailById,
+  updatePasswordById
+}
