@@ -9,7 +9,7 @@ import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
 import { useUser } from "./hooks/useUser"
 import storage from "./services/storage"
-import Account from "./pages/Account"
+import Account from "./pages/Account/Account"
 import Notification from "./components/Notification"
 
 const App = () => {
