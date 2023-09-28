@@ -53,7 +53,7 @@ const Authentication = () => {
               </a>{" "}
               to authenticate requests. You can view your token in your{" "}
               <Link
-                to=""
+                to="/account"
                 className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
               >
                 Account page

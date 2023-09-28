@@ -44,7 +44,7 @@ const Changelog = () => {
           <ChangeListItem>
             Authenticated users can now reset their database from their{" "}
             <Link
-              to=""
+              to="/account"
               className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
             >
               Account page
@@ -58,7 +58,7 @@ const Changelog = () => {
           <ChangeListItem>
             Authenticated users can now clear their database from their{" "}
             <Link
-              to=""
+              to="/account"
               className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
             >
               Account page

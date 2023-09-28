@@ -167,8 +167,8 @@ const SignUp = () => {
           </form>
         </div>
 
-        <div className="mt-10 ml-6">
-          <p className="text-sm">
+        <div className="mt-10 ml-6 text-sm text-gray-600">
+          <p>
             Have an account?{" "}
             <Link
               to="/signin"
@@ -177,6 +177,25 @@ const SignUp = () => {
               Sign in
             </Link>
           </p>
+
+          <div className="mt-8 font-medium text-gray-500">
+            <Link to="/" className="hover:text-gray-800 transition-all">
+              Home
+            </Link>
+            <span className="px-2 select-none">·</span>
+            <Link to="/docs" className="hover:text-gray-800 transition-all">
+              Docs
+            </Link>
+            <span className="px-2 select-none">·</span>
+            <a
+              href="https://github.com/PrVille/json-mock-data-api"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-gray-800 transition-all"
+            >
+              GitHub
+            </a>
+          </div>
         </div>
       </div>
     </div>

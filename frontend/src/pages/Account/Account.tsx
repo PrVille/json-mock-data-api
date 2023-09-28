@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Page from "../../components/Page"
 import { useUser } from "../../hooks/useUser"
 import { ClipboardIcon } from "@heroicons/react/24/outline"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { classNames } from "../../utils"
 import { useNotification } from "../../hooks/useNotification"
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard"
@@ -20,7 +20,11 @@ const Account = () => {
   const [showKey, setShowKey] = useState(false)
   const { copyToClipboard } = useCopyToClipboard()
 
-  if (!user) return null // TODO: Handle case when accessing account page without auth
+  useEffect(() => {
+    if (!user) navigate("/signin")
+  }, [user, navigate])
+
+  if (!user) return null
 
   return (
     <>
@@ -126,7 +130,6 @@ const Account = () => {
 
           <ChangeEmail user={user} setUser={setUser} notify={notify} />
           <ChangePassword user={user} notify={notify} />
-
 
           <DeleteAccount
             user={user}
