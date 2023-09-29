@@ -5,6 +5,36 @@ import { Link } from "react-router-dom"
 import routes from "../routes"
 import { useCopyToClipboard } from "../hooks/useCopyToClipboard"
 
+export const AllRoutes = () => {
+  return (
+    <Page.Section>
+      <Page.Section.Title>All Routes</Page.Section.Title>
+
+      <div className="mt-5 grid grid-cols-4">
+        {routes.api.map((route, index) => (
+          <ul key={index} className="flex flex-col mt-1">
+            <Link
+              to={"/docs/" + route.path}
+              className="py-2 pr-1 text-lg font-semibold transition-all bg-inherit text-gray-600 hover:text-gray-800"
+            >
+              {route.name}
+            </Link>
+            {route.routes.map((childRoute, index) => (
+              <Link
+                key={index}
+                to={"/docs/" + route.path + "/" + childRoute.path}
+                className="py-1 pr-1 text-sm font-medium transition-all bg-inherit text-gray-500 hover:text-gray-800"
+              >
+                <span>{childRoute.name}</span>
+              </Link>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </Page.Section>
+  )
+}
+
 const Introduction = () => {
   const { copyToClipboard } = useCopyToClipboard()
 
@@ -81,31 +111,7 @@ const Introduction = () => {
 
       <Page.Divider></Page.Divider>
 
-      <Page.Section>
-        <Page.Section.Title>All Resources</Page.Section.Title>
-
-        <div className="mt-5 grid grid-cols-4">
-          {routes.api.map((route, index) => (
-            <ul key={index} className="flex flex-col mt-1">
-              <Link
-                to={"/docs/" + route.path}
-                className="py-2 pr-1 text-lg font-semibold transition-all bg-inherit text-gray-600 hover:text-gray-800"
-              >
-                {route.name}
-              </Link>
-              {route.routes.map((childRoute, index) => (
-                <Link
-                  key={index}
-                  to={"/docs/" + route.path + "/" + childRoute.path}
-                  className="py-1 pr-1 text-sm font-medium transition-all bg-inherit text-gray-500 hover:text-gray-800"
-                >
-                  <span>{childRoute.name}</span>
-                </Link>
-              ))}
-            </ul>
-          ))}
-        </div>
-      </Page.Section>
+      <AllRoutes />
     </Page>
   )
 }
