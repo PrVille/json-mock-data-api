@@ -1,7 +1,7 @@
 import { ChevronRightIcon, PlayIcon } from "@heroicons/react/24/outline"
 import ExampleResponse from "../components/ExampleResponse"
 import Page from "../components/Page"
-import { Method } from "../typings/enums"
+import { Method, NotificationType } from "../typings/enums"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { classNames } from "../utils"
@@ -12,6 +12,7 @@ import { AllRoutes } from "./Introduction"
 import Logo from "../components/Logo"
 import bgImage from "../assets/bg.svg"
 import commentService from "../services/commentService"
+import { useNotification } from "../hooks/useNotification"
 
 const Background = () => {
   return (
@@ -117,7 +118,7 @@ const createUserCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users'
   .then(response => response.json())
   .then(json => console.log(json))`
 
-const tabs = [
+const tabs: Tab[] = [
   {
     name: "Create user",
     method: Method.post,
@@ -163,19 +164,22 @@ const tabs = [
   },
 ]
 
+interface Tab {
+  name: string
+  method: Method
+  endpoint: string
+  codeBlock: string
+  learnMoreUrl: string
+  learnMoreName: string
+  runRequest: () => Promise<object[]>
+}
+
 const Home = () => {
   const { copyToClipboard } = useCopyToClipboard()
+  const { notify } = useNotification()
   const [loadingRequest, setLoadingRequest] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
-  const [response, setResponse] = useState<{
-    name: string
-    method: Method
-    endpoint: string
-    codeBlock: string
-    learnMoreUrl: string
-    learnMoreName: string
-    runRequest: () => Promise<void>
-  } | null>(null)
+  const [response, setResponse] = useState<object[] | null>(null)
   const tab = tabs[activeTab]
 
   const changeTab = (index: number) => {
@@ -187,17 +191,17 @@ const Home = () => {
 
   const runRequest = async () => {
     if (loadingRequest) return
-    setLoadingRequest(true)
 
-    setTimeout(() => {
-      tab
-        .runRequest()
-        .then((data) => {
-          setResponse(data)
-          console.log(data)
-        })
-        .finally(() => setLoadingRequest(false))
-    }, 5000)
+    try {
+      setLoadingRequest(true)
+      const data = await tab.runRequest()
+      setResponse(data)
+    } catch (error) {
+      console.log(error)
+      notify("Something went wrong.", NotificationType.error)
+    } finally {
+      setLoadingRequest(false)
+    }
   }
 
   return (
@@ -210,7 +214,7 @@ const Home = () => {
             <h1 className="text-4xl text-black font-bold">
               JSON Mock Data API
             </h1>
-            <h5 className="text-2xl mt-4 text-gray-500">
+            <h5 className="text-2xl mt-4 text-gray-600">
               Easing development for free with placeholder data.
             </h5>
 

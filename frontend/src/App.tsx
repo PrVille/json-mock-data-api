@@ -26,6 +26,10 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    document.querySelector("main")?.scrollTo(0, 0)
+  }, [location.pathname])
+
   return (
     <>
       <Notification />
@@ -35,7 +39,7 @@ const App = () => {
           <Sidebar />
         )}
 
-        <div className="relative flex-1 overflow-y-auto h-screen">
+        <main className="relative flex-1 overflow-y-auto h-screen">
           {/* Content */}
           {!(onSignInPage || onSignUpPage) && (
             <Topbar showLogo={onHomePage} onAccountPage={onAccountPage} />
@@ -70,7 +74,7 @@ const App = () => {
               ))}
             </Route>
           </Routes>
-        </div>
+        </main>
       </div>
     </>
   )
