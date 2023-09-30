@@ -23,11 +23,6 @@ app.get("/api", (_req, res) => {
   res.json({ message: "Welcome to JSON Mock Data API!", ...routes })
 })
 
-app.get("*", (req, res) => {
-  const invalidRoute = req.originalUrl
-  res.json({ message: `Page not found: ${invalidRoute}`, ...routes })
-})
-
 app.use("/api/auth", authRouter)
 
 app.use("/api/account", authApiUser, accountRouter)
@@ -35,6 +30,11 @@ app.use("/api/account", authApiUser, accountRouter)
 app.use("/api/users", authApiRequest, usersRouter)
 app.use("/api/posts", authApiRequest, postsRouter)
 app.use("/api/comments", authApiRequest, commentsRouter)
+
+app.get("*", (req, res) => {
+  const invalidRoute = req.originalUrl
+  res.json({ message: `Page not found: ${invalidRoute}`, ...routes })
+})
 
 app.use(errorHandler)
 
