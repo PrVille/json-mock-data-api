@@ -3,6 +3,7 @@ import cors from "cors"
 import "express-async-errors"
 
 import { PORT } from "./utils/config"
+import { routes } from "./const"
 
 import authRouter from "./routes/authRoutes"
 import accountRouter from "./routes/accountRoutes"
@@ -17,6 +18,15 @@ import authApiUser from "./middlewares/authApiUser"
 const app = express()
 app.use(express.json())
 app.use(cors())
+
+app.get("/api", (_req, res) => {
+  res.json({ message: "Welcome to JSON Mock Data API!", ...routes })
+})
+
+app.get("*", (req, res) => {
+  const invalidRoute = req.originalUrl
+  res.json({ message: `Page not found: ${invalidRoute}`, ...routes })
+})
 
 app.use("/api/auth", authRouter)
 

@@ -11,6 +11,7 @@ import { useUser } from "./hooks/useUser"
 import storage from "./services/storage"
 import Account from "./pages/Account/Account"
 import Notification from "./components/Notification"
+import NotFound from "./pages/NotFound"
 
 const App = () => {
   const { setUser } = useUser()
@@ -73,6 +74,7 @@ const App = () => {
                 </Route>
               ))}
             </Route>
+            <Route path="*" Component={NotFound} />
           </Routes>
         </main>
       </div>

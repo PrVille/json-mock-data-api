@@ -97,7 +97,7 @@ const Introduction = () => {
                 <ExampleResponse.TopBar.CopyButton
                   darkMode
                   onClick={() =>
-                    copyToClipboard("https://json-mock-data.vercel.app/api/")
+                    copyToClipboard("https://json-mock-data.vercel.app/api")
                   }
                 />
               </ExampleResponse.TopBar>
