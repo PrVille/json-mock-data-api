@@ -15,7 +15,7 @@ const Parameters = ({ children }: { children: React.ReactNode }) => {
 }
 
 const ParametersTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h1 className="py-3 border-b font-medium">{children}</h1>
+  return <h5 className="py-3 border-b font-medium">{children}</h5>
 }
 
 const ParametersList = ({ children }: { children: React.ReactNode }) => {
@@ -40,7 +40,7 @@ const ParametersListItemLabel = ({
   optional = false
 }: ParametersListItemLabelProps) => {
   return (
-    <h3 className="flex text-xs">
+    <p className="flex text-xs">
       <span className="font-semibold text-gray-700 text-[13px] mr-1">
         {name}
       </span>
@@ -59,7 +59,7 @@ const ParametersListItemLabel = ({
           optional
         </span>
       )}
-    </h3>
+    </p>
   )
 }
 

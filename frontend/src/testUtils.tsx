@@ -1,4 +1,4 @@
-// Imports
+/* eslint-disable react-refresh/only-export-components */
 import React, { ReactElement } from "react"
 import { render, RenderOptions } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
@@ -23,6 +23,6 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">
 ) => render(ui, { wrapper: Wrappers, ...options })
 
-// eslint-disable-next-line react-refresh/only-export-components
 export * from "@testing-library/react"
+export * from "@testing-library/user-event"
 export { customRender as render }

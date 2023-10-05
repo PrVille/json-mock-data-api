@@ -15,9 +15,13 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     coverage: {
-      provider: 'istanbul',
-      reporter:  ["json-summary", "text-summary", "lcov"],
-      reportsDirectory: './src/coverage'
+      provider: "istanbul",
+      reporter: ["json-summary", "text-summary", "lcov"],
+      reportsDirectory: "./src/coverage",
+      // branches: 90,
+      // functions: 90,
+      // lines: 90,
+      // statements: 90,
     },
   },
 })

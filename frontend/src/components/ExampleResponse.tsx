@@ -55,14 +55,14 @@ const TopBarTitle = ({
   darkMode?: boolean
 }) => {
   return (
-    <h1
+    <h6
       className={classNames(
         "text-xs font-medium uppercase select-none pointer-events-none",
         darkMode ? "text-gray-300" : "text-gray-500"
       )}
     >
       {children}
-    </h1>
+    </h6>
   )
 }
 
@@ -73,10 +73,10 @@ type EndpointTitleProps = {
 
 const TopBarEndpointTitle = ({ method, endpoint }: EndpointTitleProps) => {
   return (
-    <h1 className="flex items-center gap-2 text-xs font-medium font-mono select-none pointer-events-none text-gray-300">
+    <h6 className="flex items-center gap-2 text-xs font-medium font-mono select-none pointer-events-none text-gray-300">
       <span className={methodColorMapLight[method]}>{method}</span>
       <span>{endpoint}</span>
-    </h1>
+    </h6>
   )
 }
 
@@ -88,7 +88,7 @@ const CopyButton = ({
   onClick: () => void
 }) => {
   return (
-    <button onClick={onClick}>
+    <button id="copyButton" onClick={onClick}>
       <ClipboardIcon
         className={classNames(
           "h-4 w-4",
