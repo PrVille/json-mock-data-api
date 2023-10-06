@@ -32,7 +32,7 @@ const CreateComment = () => {
   return (
     <Page>
       <Page.Section>
-        <Page.Section.Title>Create a Comment</Page.Section.Title>
+        <Page.Section.Title>Create a comment</Page.Section.Title>
 
         <Page.Section.Body>
           <Page.Section.Content>
