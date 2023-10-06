@@ -8,7 +8,7 @@ import { useCopyToClipboard } from "../hooks/useCopyToClipboard"
 export const AllRoutes = () => {
   return (
     <Page.Section>
-      <Page.Section.Title>All Routes</Page.Section.Title>
+      <Page.Section.Title>All routes</Page.Section.Title>
 
       <div className="mt-5 grid grid-cols-4">
         {routes.api.map((route, index) => (
@@ -41,7 +41,7 @@ const Introduction = () => {
   return (
     <Page>
       <Page.Section>
-        <Page.Section.Title>API Reference</Page.Section.Title>
+        <Page.Section.Title>API reference</Page.Section.Title>
 
         <Page.Section.Body>
           <Page.Section.Content>

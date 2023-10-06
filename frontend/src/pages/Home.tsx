@@ -56,6 +56,7 @@ const RunRequestButton = ({
 }: RunRequestButtonProps) => {
   return (
     <button
+      id="runRequestButton"
       className={classNames(
         "flex items-center gap-1 bg-indigo-500 hover:bg-indigo-600 rounded-md font-medium text-sm text-white px-2 py-1",
         loading ? "animate-pulse" : "animate-none"
