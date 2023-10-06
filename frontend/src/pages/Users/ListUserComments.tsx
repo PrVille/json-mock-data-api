@@ -39,6 +39,25 @@ const ListUserComments = () => {
             <Content.Subtitle>
               Returns a list of comments for the specific user.
             </Content.Subtitle>
+            
+            <Content.Parameters>
+              <Content.Parameters.Title>
+                Path parameters
+              </Content.Parameters.Title>
+              <Content.Parameters.List>
+                <Content.Parameters.ListItem>
+                  <Content.Parameters.ListItemLabel
+                    name="id"
+                    type="string"
+                    required
+                  />
+                  <Content.Parameters.ListItemDescription>
+                    Unique identifier for the user.
+                  </Content.Parameters.ListItemDescription>
+                </Content.Parameters.ListItem>
+              </Content.Parameters.List>
+            </Content.Parameters>
+
             <Content.Parameters>
               <Content.Parameters.Title>
                 Query parameters

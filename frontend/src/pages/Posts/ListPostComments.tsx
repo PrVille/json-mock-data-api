@@ -32,13 +32,32 @@ const ListPostComments = () => {
   return (
     <Page>
       <Page.Section>
-        <Page.Section.Title>List all user comments</Page.Section.Title>
+        <Page.Section.Title>List all post comments</Page.Section.Title>
 
         <Page.Section.Body>
           <Page.Section.Content>
             <Content.Subtitle>
-              Returns a list of comments for the specific user.
+              Returns a list of comments for the specific post.
             </Content.Subtitle>
+
+            <Content.Parameters>
+              <Content.Parameters.Title>
+                Path parameters
+              </Content.Parameters.Title>
+              <Content.Parameters.List>
+                <Content.Parameters.ListItem>
+                  <Content.Parameters.ListItemLabel
+                    name="id"
+                    type="string"
+                    required
+                  />
+                  <Content.Parameters.ListItemDescription>
+                    Unique identifier for the post.
+                  </Content.Parameters.ListItemDescription>
+                </Content.Parameters.ListItem>
+              </Content.Parameters.List>
+            </Content.Parameters>
+
             <Content.Parameters>
               <Content.Parameters.Title>
                 Query parameters
@@ -118,11 +137,11 @@ const ListPostComments = () => {
                 <Content.Parameters.ListItemDescription>
                   An object with a <Highlight>data</Highlight> property that
                   contains an array of up to
-                  <Highlight>take</Highlight> comments for the specific user,
+                  <Highlight>take</Highlight> comments for the specific post,
                   starting after <Highlight>skip</Highlight>, sorted by{" "}
                   <Highlight>sortBy</Highlight> in the direction of{" "}
                   <Highlight>sortOrder</Highlight>. Each entry in the array is a
-                  separate comment object. If no comments for the specific user
+                  separate comment object. If no comments for the specific post
                   are available, the resulting array will be empty. The return
                   object also contains meta data <Highlight>total</Highlight>,{" "}
                   <Highlight>skip</Highlight> and <Highlight>take</Highlight>.
@@ -144,7 +163,7 @@ const ListPostComments = () => {
               <ExampleResponse.TopBar darkMode>
                 <ExampleResponse.TopBar.EndpointTitle
                   method={Method.get}
-                  endpoint={"/api/users/:id/comments"}
+                  endpoint={"/api/posts/:id/comments"}
                 />
                 <ExampleResponse.TopBar.CopyButton
                   darkMode

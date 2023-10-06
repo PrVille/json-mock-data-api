@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest"
 import { userEvent, render } from "../../../testUtils"
 
-import Users from "../../../pages/Users/Users"
+import ListUserPosts from "../../../pages/Users/ListUserPosts"
 
-describe("Users", async () => {
+describe("ListUserPosts", async () => {
   it("should render correctly", async () => {
-    const { container } = render(<Users />)
+    const { container } = render(<ListUserPosts />)
 
     const titleElements = container.querySelectorAll("h1")
-    const expectedTitles = ["Users", "The user object"]
+    const expectedTitles = ["List all user posts"]
 
     for (const titleElement of titleElements) {
       expect(
@@ -17,7 +17,7 @@ describe("Users", async () => {
     }
 
     const subtitleElements = container.querySelectorAll("h5")
-    const expectedSubtitles = ["Attributes"]
+    const expectedSubtitles = ["Path parameters", "Query parameters", "Returns"]
 
     for (const subtitleElement of subtitleElements) {
       expect(
@@ -26,7 +26,7 @@ describe("Users", async () => {
     }
 
     const codeboxElements = container.querySelectorAll("h6")
-    const expectedCodeboxes = ["Endpoints", "User schema", "User example"]
+    const expectedCodeboxes = ["Response", "GET/api/users/:id/posts"]
 
     for (const codeboxElement of codeboxElements) {
       expect(
@@ -36,7 +36,7 @@ describe("Users", async () => {
   })
 
   it("should copy correctly", async () => {
-    const { container } = render(<Users />)
+    const { container } = render(<ListUserPosts />)
     const user = userEvent.setup()
 
     const copyButtons = container.querySelectorAll("#copyButton")
