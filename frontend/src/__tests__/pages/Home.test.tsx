@@ -43,7 +43,7 @@ describe("Home", async () => {
     }
   })
 
-  it("should be able to try out", async () => {
+  it("should be able to try it out", async () => {
     const { container } = render(<Home />)
     const user = userEvent.setup()
 
@@ -71,7 +71,6 @@ describe("Home", async () => {
 
         if (runRequestButton) {
           await user.click(runRequestButton)
-          // TODO: expect something
         }
       }
     }

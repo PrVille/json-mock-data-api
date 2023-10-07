@@ -198,7 +198,6 @@ const Home = () => {
       const data = await tab.runRequest()
       setResponse(data)
     } catch (error) {
-      console.log(error)
       notify("Something went wrong.", NotificationType.error)
     } finally {
       setLoadingRequest(false)

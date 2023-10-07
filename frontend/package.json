@@ -10,6 +10,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest run --coverage",
+    "start:backend": "cd ../backend && npm run dev",
     "make-badges": "istanbul-badges-readme --coverageDir=\\\"src/coverage\\\" --style=\\\"for-the-badge\\\" --logo=\\\"vitest\\\" && git add README.md"
   },
   "dependencies": {

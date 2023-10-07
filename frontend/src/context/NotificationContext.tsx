@@ -14,7 +14,7 @@ export const NotificationContext = createContext<NotificationContextType>(
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notification, setNotification] = useState<Notification | null>(null)
-  const [notificationTimeout, setNotificationTimeout] = useState<number | null>(
+  const [notificationTimeout, setNotificationTimeout] = useState<NodeJS.Timeout | null>(
     null
   )
 
