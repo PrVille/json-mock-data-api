@@ -7,6 +7,10 @@ import {
 
 // TODO: More sophisticated seed
 const seedDb = async (apiUserId: string) => {
+  const usersToCreate = 100
+  const postsToCreate = 10 // Per user
+  const commentsToCreate = 10 // Per user
+
   const where = {
     where: {
       apiUserId,
@@ -17,7 +21,7 @@ const seedDb = async (apiUserId: string) => {
   const deletedPostsCount = await prisma.post.deleteMany(where)
   const deletedUsersCount = await prisma.user.deleteMany(where)
 
-  for (const fakeUser of generateFakeUsers(10)) {
+  for (const fakeUser of generateFakeUsers(usersToCreate)) {
     const user = await prisma.user.create({
       data: {
         ...fakeUser,
@@ -25,7 +29,7 @@ const seedDb = async (apiUserId: string) => {
       },
     })
 
-    for (const fakePost of generateFakePostsWithoutUser(10)) {
+    for (const fakePost of generateFakePostsWithoutUser(postsToCreate)) {
       const post = await prisma.post.create({
         data: {
           ...fakePost,
@@ -40,8 +44,6 @@ const seedDb = async (apiUserId: string) => {
   const posts = await prisma.post.findMany(where)
 
   for (const user of users) {
-    const commentsToCreate = 25
-
     for (let i = 0; i < commentsToCreate; i++) {
       const randomPost = posts[Math.floor(Math.random() * posts.length)]
       const comment = await prisma.comment.create({

@@ -356,14 +356,14 @@ describe(`POST ${baseUrl}/:id/resources`, () => {
         comments: { count: 0 },
       },
       created: {
-        users: 10,
-        posts: 100,
-        comments: 250,
+        users: 100,
+        posts: 1000,
+        comments: 1000,
       },
     })
 
     await removeTestAuth()
-  })
+  }, 10000)
 })
 
 describe(`POST ${baseUrl}/:id/update/email`, () => {

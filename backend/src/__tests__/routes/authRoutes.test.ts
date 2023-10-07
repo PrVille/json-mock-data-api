@@ -24,7 +24,7 @@ describe("POST /api/auth/signup", () => {
     expect(response.status).toBe(200)
 
     await deleteTestApiUser(response.body.id)
-  })
+  }, 10000)
 
   it("should create a new API user", async () => {
     const userCredentials = {
@@ -39,7 +39,7 @@ describe("POST /api/auth/signup", () => {
     expect(response.body.email).toBe(userCredentials.email)
 
     await deleteTestApiUser(response.body.id)
-  })
+  }, 10000)
 
   it("should return error 400 with invalid request body", async () => {
     const invalidCredentials = {
