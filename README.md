@@ -24,8 +24,8 @@ The [JSON Mock Data API](https://json-mock-data.vercel.app/) is a free online RE
 ## Resources
 
 - Users: [https://json-mock-data.vercel.app/api/users](https://json-mock-data.vercel.app/api/users)
-- Posts: [https://json-mock-data.vercel.app/api/users](https://json-mock-data.vercel.app/api/users)
-- Comments: [https://json-mock-data.vercel.app/api/users](https://json-mock-data.vercel.app/api/users)
+- Posts: [https://json-mock-data.vercel.app/api/posts](https://json-mock-data.vercel.app/api/posts)
+- Comments: [https://json-mock-data.vercel.app/api/comments](https://json-mock-data.vercel.app/api/comments)
 
 ...and more coming soon!
 

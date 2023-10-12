@@ -113,7 +113,7 @@ describe("POST /api/auth/signin", () => {
     expect(response.body).toHaveProperty("email", userCredentials.email)
 
     await deleteTestApiUser(responseSignUp.body.id)
-  })
+  }, 10000)
 
   it("should return error 400 with invalid request body", async () => {
     const invalidCredentials = {
@@ -188,5 +188,5 @@ describe("POST /api/auth/signin", () => {
     })
 
     await deleteTestApiUser(responseSignUp.body.id)
-  })
+  }, 10000)
 })

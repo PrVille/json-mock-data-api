@@ -11,6 +11,7 @@ import { REGEX_EMAIL } from "../constants"
 import { useUser } from "../hooks/useUser"
 import storage from "../services/storage"
 import Logo from "../components/Logo"
+import { useNotification } from "../hooks/useNotification"
 
 const schema = yup
   .object({
@@ -27,6 +28,7 @@ type FormData = yup.InferType<typeof schema>
 const SignIn = () => {
   const [loading, setLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
+  const { notify } = useNotification()
   const navigate = useNavigate()
   const location = useLocation()
   const { setUser } = useUser()
@@ -48,6 +50,7 @@ const SignIn = () => {
       setUser(user)
       if (rememberMe) storage.saveUser(user)
       navigate(location?.state?.prevUrl || "/account")
+      notify("Welcome back!")
     } catch (error) {
       // TODO: check response and add correct error msg
       setError("root", { message: "Incorrect email or password." })

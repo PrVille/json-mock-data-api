@@ -12,6 +12,8 @@ import { useUser } from "../hooks/useUser"
 import storage from "../services/storage"
 import Logo from "../components/Logo"
 import axios from "axios"
+import { useNotification } from "../hooks/useNotification"
+import { NotificationType } from "../typings/enums"
 
 const schema = yup
   .object({
@@ -34,6 +36,7 @@ type FormData = yup.InferType<typeof schema>
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false)
+  const { notify } = useNotification()
   const navigate = useNavigate()
   const location = useLocation()
   const { setUser } = useUser()
@@ -56,6 +59,7 @@ const SignUp = () => {
       setUser(user)
       storage.saveUser(user)
       navigate(location?.state?.prevUrl || "/account")
+      notify("Welcome!")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const emailInUse = error?.response?.data?.errors.some(
@@ -68,6 +72,7 @@ const SignUp = () => {
           })
         } else {
           setError("root", { message: "Something went wrong!" })
+          notify("Something went wrong!", NotificationType.error)
         }
       }
     } finally {
