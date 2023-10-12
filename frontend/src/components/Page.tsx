@@ -5,7 +5,7 @@ const Page = ({ children }: { children: React.ReactNode }) => {
 }
 
 const Section = ({ children }: { children: React.ReactNode }) => {
-  return <section className="p-16">{children}</section>
+  return <section className="p-8 md:p-16">{children}</section>
 }
 
 const Title = ({ children, id }: { children: React.ReactNode, id?: string }) => {
@@ -14,7 +14,7 @@ const Title = ({ children, id }: { children: React.ReactNode, id?: string }) => 
 
 const Body = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mt-5 flex flex-col justify-between md:flex-row gap-12">
+    <div className="mt-5 flex flex-col justify-between lg:flex-row gap-12">
       {children}
     </div>
   )

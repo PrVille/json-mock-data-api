@@ -10,7 +10,7 @@ export const AllRoutes = () => {
     <Page.Section>
       <Page.Section.Title>All routes</Page.Section.Title>
 
-      <div className="mt-5 grid grid-cols-4">
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-4">
         {routes.api.map((route, index) => (
           <ul key={index} className="flex flex-col mt-1">
             <Link

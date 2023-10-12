@@ -3,13 +3,19 @@ import Logo from "./Logo"
 import { classNames } from "../utils"
 import { useUser } from "../hooks/useUser"
 import storage from "../services/storage"
+import { Dispatch } from "react"
+import { Bars3Icon } from "@heroicons/react/24/outline"
 
 const Topbar = ({
   showLogo,
   onAccountPage,
+  sidebarOpen,
+  setSidebarOpen,
 }: {
   showLogo: boolean
   onAccountPage: boolean
+  sidebarOpen: boolean
+  setSidebarOpen: Dispatch<boolean>
 }) => {
   const { user, clearUser } = useUser()
   const navigate = useNavigate()
@@ -17,25 +23,33 @@ const Topbar = ({
   const loggedIn = user !== null
 
   return (
-    <header className="flex px-16 py-5">
-      {(showLogo || onAccountPage) && <Logo />}
+    <header className="flex px-8 md:px-16 py-5">
+      {showLogo && <Logo />}
+
+      {!showLogo && <div className="flex lg:hidden items-center">
+        <button onClick={() => setSidebarOpen(!sidebarOpen)}>
+          <Bars3Icon className="h-6 w-6 text-gray-600" />
+        </button>
+      </div>}
+
       <nav className="flex-1 flex justify-end gap-5">
         <NavLink
           to="/"
           className={({ isActive }) =>
             classNames(
-              "py-1 pr-1 text-sm font-medium rounded-lg  hover:text-gray-800 transition-all",
+              "hidden md:block py-1 pr-1 text-sm font-medium rounded-lg  hover:text-gray-800 transition-all",
               isActive ? "text-gray-800" : "text-indigo-600"
             )
           }
         >
           Home
         </NavLink>
+
         <NavLink
           to="/docs"
           className={({ isActive }) =>
             classNames(
-              "py-1 pr-1 text-sm font-medium rounded-lg  hover:text-gray-800 transition-all",
+              "hidden md:block py-1 pr-1 text-sm font-medium rounded-lg  hover:text-gray-800 transition-all",
               isActive ? "text-gray-800" : "text-indigo-600"
             )
           }
@@ -46,10 +60,11 @@ const Topbar = ({
           href="https://github.com/PrVille/json-mock-data-api"
           target="_blank"
           rel="noopener noreferrer"
-          className="py-1 pr-1 text-sm font-medium rounded-lg text-indigo-600 hover:text-gray-800 transition-all"
+          className="hidden md:block py-1 pr-1 text-sm font-medium rounded-lg text-indigo-600 hover:text-gray-800 transition-all"
         >
           GitHub
         </a>
+
         {onAccountPage ? (
           <button
             onClick={() => {

@@ -210,15 +210,15 @@ const Home = () => {
 
       <Page>
         <Page.Section>
-          <div className="inline-block bg-white/75 shadow-[0_0_64px_64px] shadow-white/75">
-            <h1 className="text-4xl text-black font-bold">
+          <div className="mt-8 md:mt-0 inline-block bg-white/75 shadow-[0_0_64px_64px] shadow-white/75">
+            <h1 className="text-2xl md:text-4xl text-black font-bold">
               JSON Mock Data API
             </h1>
-            <h5 className="text-2xl mt-4 text-gray-600">
+            <h5 className="text-lg md:text-2xl mt-4 text-gray-600">
               Easing development for free with placeholder data.
             </h5>
 
-            <div className="flex items-center gap-6 mt-6">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-6">
               <Link
                 to="/docs"
                 className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 rounded-md font-medium text-white px-4 py-2"
@@ -226,6 +226,7 @@ const Home = () => {
                 <span>Get started</span>
                 <ChevronRightIcon className="w-4 h-4" />
               </Link>
+
               <a
                 href="https://github.com/PrVille/json-mock-data-api"
                 target="_blank"
@@ -324,8 +325,8 @@ const Home = () => {
         <Page.Divider />
 
         <Page.Section>
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-col gap-y-4 md:flex-row items-center justify-between">
+            <div className="hidden md:block">
               <p className="text-sm font-medium text-gray-500">
                 © {new Date().getFullYear() + " "}
                 <a
@@ -383,6 +384,20 @@ const Home = () => {
                   ></path>
                 </svg>
               </a>
+            </div>
+
+            <div className="block md:hidden">
+              <p className="text-sm font-medium text-gray-500">
+                © {new Date().getFullYear() + " "}
+                <a
+                  href="https://villeprami.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-all bg-inherit hover:text-gray-800"
+                >
+                  Ville Prami
+                </a>
+              </p>
             </div>
           </div>
         </Page.Section>

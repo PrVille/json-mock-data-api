@@ -77,14 +77,14 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full text-gray-800">
-      <div className="max-w-lg w-full">
+      <div className="sm:max-w-lg w-full">
         <div className="mb-10 ml-6">
           <Logo />
         </div>
-        <div className="bg-white shadow-2xl rounded-2xl px-12 py-14">
+        <div className="bg-white sm:shadow-2xl rounded-2xl px-0 sm:px-12 py-14">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="px-5 flex flex-col"
+            className="px-6 flex flex-col"
           >
             <h2 className="text-2xl font-medium">Create your account</h2>
 

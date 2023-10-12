@@ -29,13 +29,13 @@ const Account = () => {
   return (
     <>
       <Page>
-        <div className="px-16 pt-16">
+        <div className="px-8 md:px-16 pt-8 md:pt-16">
           <h1 className="font-medium text-3xl">Your account</h1>
           <p className="text-sm mt-1 text-gray-600">{user.email}</p>
         </div>
 
         <Page.Section>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-row justify-between items-center gap-x-16 flex-wrap">
             <Page.Section.Title>API token</Page.Section.Title>
             <Link
               to="/docs/authentication"
@@ -58,9 +58,9 @@ const Account = () => {
             </p>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 break-words">
             <div className="border rounded-lg">
-              <div className="grid grid-cols-5 gap-x-10 text-gray-800 font-medium px-4 py-2 bg-gray-100 border-b rounded-t-lg">
+              <div className="grid grid-cols-5 items-center gap-x-10 text-gray-800 font-medium px-4 py-2 bg-gray-100 border-b rounded-t-lg">
                 <h6>Name</h6>
                 <h6 className="col-span-3">
                   Token{" "}
@@ -70,7 +70,7 @@ const Account = () => {
                 </h6>
                 <h6>Created</h6>
               </div>
-              <div className="grid grid-cols-5 gap-x-10 text-gray-600 text-sm px-4 py-2 rounded-lg">
+              <div className="grid grid-cols-5 items-center gap-x-10 text-gray-600 text-sm px-4 py-2 rounded-lg">
                 <span className="font-medium">DEFAULT_TOKEN</span>
 
                 <div className="break-words col-span-3 relative">

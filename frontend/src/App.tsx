@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Route, Routes, useLocation } from "react-router-dom"
 import routes from "./routes"
 import Sidebar from "./components/Sidebar"
@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound"
 
 const App = () => {
   const { setUser } = useUser()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
   const onHomePage = location.pathname === "/"
   const onSignInPage = location.pathname === "/signin"
@@ -37,13 +38,18 @@ const App = () => {
 
       <div className="min-h-screen flex">
         {!(onHomePage || onSignInPage || onSignUpPage || onAccountPage) && (
-          <Sidebar />
+          <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         )}
 
         <main className="relative flex-1 overflow-y-auto h-screen">
           {/* Content */}
           {!(onSignInPage || onSignUpPage) && (
-            <Topbar showLogo={onHomePage} onAccountPage={onAccountPage} />
+            <Topbar
+              showLogo={onHomePage || onAccountPage}
+              onAccountPage={onAccountPage}
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
           )}
 
           <Routes>

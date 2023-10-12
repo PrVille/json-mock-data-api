@@ -68,7 +68,7 @@ const ResetDatabase = ({ user, notify }: ResetDatabaseProps) => {
 
   return (
     <>
-      <div className="mt-6 flex justify-between items-center">
+      <div className="mt-6 flex flex-col sm:flex-row justify-between sm:items-center">
         <div>
           <h1 className="font-medium">Reset your database</h1>
           <p className="text-sm mt-1 mb-4 text-gray-600">
