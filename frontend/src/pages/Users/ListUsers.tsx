@@ -13,40 +13,55 @@ const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users?tak
 const exampleResponse = {
   data: [
     {
-      id: "513e1ed3-43cd-4f86-a0a8-3a61dfc35bc2",
-      username: "Martin.Bogisich",
-      email: "Martin.Bogisich@gmail.com",
-      firstName: "Martin",
-      lastName: "Bogisich",
-      age: 63,
-      imageUrl: "https://avatars.githubusercontent.com/u/8046384",
-      createdAt: "2023-09-05T06:10:33.112Z",
-      updatedAt: "2023-09-05T06:10:33.112Z",
+      id: "3d1d85a0-fd9d-4e18-9071-811523d984c5",
+      username: "Chelsie.Armstrong81",
+      email: "Chelsie18@gmail.com",
+      firstName: "Chelsie",
+      lastName: "Armstrong",
+      age: 49,
+      imageUrl: "https://avatars.githubusercontent.com/u/17875247",
+      jobTitle: "International Operations Executive",
+      bio: "designer, author, foodie ♌",
+      country: "New Zealand",
+      height: 203.5,
+      weight: 84.6,
+      createdAt: "2023-06-18T09:13:18.290Z",
+      updatedAt: "2023-06-18T09:13:18.290Z",
     },
     {
-      id: "d13c00be-3675-4b5a-aa47-72620f8c0a6c",
-      username: "Jaquelin93",
-      email: "Jaquelin73@gmail.com",
-      firstName: "Jaquelin",
-      lastName: "Gleichner",
-      age: 63,
-      imageUrl: "https://avatars.githubusercontent.com/u/92661990",
-      createdAt: "2023-09-05T06:10:34.146Z",
-      updatedAt: "2023-09-05T06:10:34.146Z",
+      id: "b99364f8-8c72-4369-b33e-b8fc5f86fd0f",
+      username: "Arvid_Balistreri22",
+      email: "Arvid.Balistreri2@hotmail.com",
+      firstName: "Arvid",
+      lastName: "Balistreri",
+      age: 84,
+      imageUrl: "https://avatars.githubusercontent.com/u/22288753",
+      jobTitle: "Chief Accountability Manager",
+      bio: "carter supporter",
+      country: "Zimbabwe",
+      height: 204.8,
+      weight: 71.5,
+      createdAt: "2023-08-13T07:19:32.331Z",
+      updatedAt: "2023-08-13T07:19:32.331Z",
     },
     {
-      id: "17a2830f-e54b-476a-bdfa-bedbc3f28c79",
-      username: "Rodolfo14",
-      email: "Rodolfo86@yahoo.com",
-      firstName: "Rodolfo",
-      lastName: "Hoeger",
-      age: 52,
-      imageUrl: "https://avatars.githubusercontent.com/u/26474031",
-      createdAt: "2023-09-05T06:10:37.247Z",
-      updatedAt: "2023-09-05T06:10:37.247Z",
+      id: "30727614-3d9c-4be2-ad4e-eed747ab4e4a",
+      username: "Karelle85",
+      email: "Karelle61@hotmail.com",
+      firstName: "Karelle",
+      lastName: "Batz",
+      age: 85,
+      imageUrl: "https://avatars.githubusercontent.com/u/17377460",
+      jobTitle: "Direct Markets Coordinator",
+      bio: "article fan, philosopher",
+      country: "Georgia",
+      height: 113.6,
+      weight: 181.5,
+      createdAt: "2023-08-25T16:45:59.347Z",
+      updatedAt: "2023-08-25T16:45:59.347Z",
     },
   ],
-  total: 10,
+  total: 100,
   skip: 0,
   take: 3,
 }
@@ -114,7 +129,10 @@ const ListUsers = () => {
                     <Highlight>email</Highlight>,{" "}
                     <Highlight>firstName</Highlight>,{" "}
                     <Highlight>lastName</Highlight>, <Highlight>age</Highlight>,{" "}
-                    <Highlight>updatedAt</Highlight>,{" "}
+                    <Highlight>jobTitle</Highlight>, <Highlight>bio</Highlight>,{" "}
+                    <Highlight>country</Highlight>,{" "}
+                    <Highlight>height</Highlight>, <Highlight>weight</Highlight>
+                    , <Highlight>updatedAt</Highlight>,{" "}
                     <Highlight>createdAt</Highlight>
                   </Content.Parameters.ListItemDescription>
                 </Content.Parameters.ListItem>

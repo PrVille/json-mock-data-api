@@ -2,16 +2,20 @@ import { Prisma } from "@prisma/client"
 import { faker } from "@faker-js/faker"
 
 export const generateFakeUser = (): Omit<Prisma.UserCreateInput, "apiUser"> => {
-  const includeAge = Math.floor(Math.random() * 10) > 1
-  const includeImageUrl = Math.floor(Math.random() * 10) > 1
   const randomDate = faker.date.recent({ days: 365 })
 
   const firstName = faker.person.firstName()
   const lastName = faker.person.lastName()
   const username = faker.internet.userName({ firstName, lastName })
   const email = faker.internet.email({ firstName, lastName })
-  const age = includeAge ? faker.number.int({ min: 12, max: 100 }) : null
-  const imageUrl = includeImageUrl ? faker.image.avatarGitHub() : null
+  const age = faker.number.int({ min: 12, max: 100 })
+  const imageUrl = faker.image.avatarGitHub()
+  const jobTitle = faker.person.jobTitle()
+  const bio = faker.person.bio()
+  const country = faker.location.country()
+  const height = faker.number.float({ min: 100, max: 220, precision: 0.1 })
+  const weight = faker.number.float({ min: 30, max: 200, precision: 0.1 })
+
   const createdAt = randomDate
   const updatedAt = randomDate
 
@@ -22,6 +26,11 @@ export const generateFakeUser = (): Omit<Prisma.UserCreateInput, "apiUser"> => {
     email,
     age,
     imageUrl,
+    jobTitle,
+    bio,
+    country,
+    height,
+    weight,
     createdAt,
     updatedAt,
   }

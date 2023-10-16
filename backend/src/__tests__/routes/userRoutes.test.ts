@@ -127,7 +127,7 @@ describe("GET /api/users", function () {
         {
           type: "field",
           value: "invalidSortBy",
-          msg: "The 'sortBy' field must be one of 'id', 'username', 'email', 'firstName', 'lastName', 'age', 'updatedAt' or 'createdAt'.",
+          msg: "The 'sortBy' field must be one of 'id', 'username', 'email', 'firstName', 'lastName', 'age', 'jobTitle', 'bio', 'country', 'height', 'weight', 'updatedAt' or 'createdAt'.",
           path: "sortBy",
           location: "query",
         },
@@ -578,6 +578,11 @@ describe("POST /api/users", function () {
     expect(response.body).toHaveProperty("lastName")
     expect(response.body).toHaveProperty("age")
     expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("jobTitle")
+    expect(response.body).toHaveProperty("bio")
+    expect(response.body).toHaveProperty("country")
+    expect(response.body).toHaveProperty("height")
+    expect(response.body).toHaveProperty("weight")
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 
@@ -837,6 +842,11 @@ describe("PUT /api/users/:id", function () {
     expect(response.body).toHaveProperty("lastName")
     expect(response.body).toHaveProperty("age")
     expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("jobTitle")
+    expect(response.body).toHaveProperty("bio")
+    expect(response.body).toHaveProperty("country")
+    expect(response.body).toHaveProperty("height")
+    expect(response.body).toHaveProperty("weight")
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 
@@ -872,7 +882,12 @@ describe("PUT /api/users/:id", function () {
     expect(response.body).toHaveProperty("lastName")
     expect(response.body).toHaveProperty("age")
     expect(response.body).toHaveProperty("imageUrl")
-    
+    expect(response.body).toHaveProperty("jobTitle")
+    expect(response.body).toHaveProperty("bio")
+    expect(response.body).toHaveProperty("country")
+    expect(response.body).toHaveProperty("height")
+    expect(response.body).toHaveProperty("weight")
+
     expect(response.body.id).toBe(user.id)
     expect(response.body.username).toBe(user.username)
     expect(response.body.email).toBe(user.email)
@@ -880,7 +895,12 @@ describe("PUT /api/users/:id", function () {
     expect(response.body.lastName).toBe(user.lastName)
     expect(response.body.age).toBe(user.age)
     expect(response.body.imageUrl).toBe(user.imageUrl)
-    
+    expect(response.body.jobTitle).toBe(user.jobTitle)
+    expect(response.body.bio).toBe(user.bio)
+    expect(response.body.country).toBe(user.country)
+    expect(response.body.height).toBe(user.height)
+    expect(response.body.weight).toBe(user.weight)
+
     await removeTestDb()
   })
 
@@ -909,6 +929,11 @@ describe("PUT /api/users/:id", function () {
     expect(response.body).toHaveProperty("lastName")
     expect(response.body).toHaveProperty("age")
     expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("jobTitle")
+    expect(response.body).toHaveProperty("bio")
+    expect(response.body).toHaveProperty("country")
+    expect(response.body).toHaveProperty("height")
+    expect(response.body).toHaveProperty("weight")
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 
@@ -1105,6 +1130,11 @@ describe("DELETE /api/users/:id", function () {
     expect(response.body).toHaveProperty("lastName")
     expect(response.body).toHaveProperty("age")
     expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("jobTitle")
+    expect(response.body).toHaveProperty("bio")
+    expect(response.body).toHaveProperty("country")
+    expect(response.body).toHaveProperty("height")
+    expect(response.body).toHaveProperty("weight")
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 
@@ -1143,6 +1173,11 @@ describe("DELETE /api/users/:id", function () {
     expect(response.body).toHaveProperty("lastName")
     expect(response.body).toHaveProperty("age")
     expect(response.body).toHaveProperty("imageUrl")
+    expect(response.body).toHaveProperty("jobTitle")
+    expect(response.body).toHaveProperty("bio")
+    expect(response.body).toHaveProperty("country")
+    expect(response.body).toHaveProperty("height")
+    expect(response.body).toHaveProperty("weight")
     expect(response.body).toHaveProperty("createdAt")
     expect(response.body).toHaveProperty("updatedAt")
 

@@ -14,20 +14,30 @@ const schema = `User {
   lastName  string
   age       integer | null
   imageUrl  string  | null
+  jobTitle  string  | null
+  bio       string  | null
+  country   string  | null
+  height    float   | null
+  weight    float   | null
   createdAt string
   updatedAt string
 }`
 
 const example = {
-  id: "2fb46dc7-17db-4102-af8e-421d9d892efe",
-  username: "Anabel_Huels-Ebert",
-  email: "Anabel.Huels-Ebert@yahoo.com",
-  firstName: "Anabel",
-  lastName: "Huels-Ebert",
-  age: null,
-  imageUrl: "https://avatars.githubusercontent.com/u/61087508",
-  createdAt: "2023-09-04T11:01:34.521Z",
-  updatedAt: "2023-09-04T11:01:34.521Z",
+  id: "22d62b6b-9734-45fb-9a5f-cd9c71110aa4",
+  username: "Keenan86",
+  email: "Keenan30@hotmail.com",
+  firstName: "Keenan",
+  lastName: "Kiehn",
+  age: 68,
+  imageUrl: "https://avatars.githubusercontent.com/u/25900947",
+  jobTitle: "Human Infrastructure Assistant",
+  bio: "restructuring devotee",
+  country: "Western Sahara",
+  height: 157.3,
+  weight: 77.9,
+  createdAt: "2022-12-01T00:37:24.059Z",
+  updatedAt: "2022-12-01T00:37:24.059Z",
 }
 
 const endpoints = [
@@ -103,6 +113,31 @@ const attributes = [
     name: "imageUrl",
     type: "string | null",
     description: "URL to the user's profile image.",
+  },
+  {
+    name: "jobTitle",
+    type: "string | null",
+    description: "Job title of the user.",
+  },
+  {
+    name: "bio",
+    type: "string | null",
+    description: "Bio of the user.",
+  },
+  {
+    name: "country",
+    type: "string | null",
+    description: "Country of the user.",
+  },
+  {
+    name: "height",
+    type: "float | null",
+    description: "Height of the user in centimeters.",
+  },
+  {
+    name: "weight",
+    type: "float | null",
+    description: "Weight of the user in kilograms.",
   },
 ]
 

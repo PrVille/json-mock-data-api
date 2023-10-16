@@ -11,7 +11,7 @@ const getAll = async (req: Request, res: Response) => {
   const {
     skip = 0,
     take = 10,
-    sortBy = SortUsersBy.USERNAME,
+    sortBy = SortUsersBy.CREATED_AT,
     sortOrder = SortOrder.ASC,
   } = matchedData(req) as GetAllUsersQuery
 

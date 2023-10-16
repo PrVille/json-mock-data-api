@@ -39,6 +39,35 @@ const Changelog = () => {
           API, in chronological order.
         </p>
 
+        <Heading>October 16, 2023</Heading>
+        <ChangeList>
+          <ChangeListItem>
+            Added the following new atrributes for{" "}
+            <Link
+              to="/docs/users"
+              className="font-medium text-indigo-600 hover:text-gray-800 transition-all"
+            >
+              Users:
+            </Link>
+          </ChangeListItem>
+
+          <ChangeListSubItem>
+            <Highlight>jobTitle</Highlight>
+          </ChangeListSubItem>
+          <ChangeListSubItem>
+            <Highlight>bio</Highlight>
+          </ChangeListSubItem>
+          <ChangeListSubItem>
+            <Highlight>country</Highlight>
+          </ChangeListSubItem>
+          <ChangeListSubItem>
+            <Highlight>height</Highlight>
+          </ChangeListSubItem>
+          <ChangeListSubItem>
+            <Highlight>weight</Highlight>
+          </ChangeListSubItem>
+        </ChangeList>
+
         <Heading>September 24, 2023</Heading>
         <ChangeList>
           <ChangeListItem>

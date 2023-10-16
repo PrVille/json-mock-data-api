@@ -10,6 +10,11 @@ export enum SortUsersBy {
   FIRST_NAME = "firstName",
   LAST_NAME = "lastName",
   AGE = "age",
+  JOB_TITLE = "jobTitle",
+  BIO = "bio",
+  COUNTRY = "country",
+  HEIGHT = "height",
+  WEIGHT = "weight",
   UPDATED_AT = "updatedAt",
   CREATED_AT = "createdAt",
 }

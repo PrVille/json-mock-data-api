@@ -1,6 +1,10 @@
 import prisma from "../client"
 import { CreateUserBody, UpdateUserBody } from "../typings/bodies"
-import { GetAllCommentsProps, GetAllPostsProps, GetAllUsersProps } from "../typings/props"
+import {
+  GetAllCommentsProps,
+  GetAllPostsProps,
+  GetAllUsersProps,
+} from "../typings/props"
 import { DEFAULT_API_USER_ID } from "../utils/config"
 import { faker } from "@faker-js/faker"
 
@@ -121,6 +125,11 @@ const create = async (userToCreate: CreateUserBody, apiUserId: string) => {
       lastName: userToCreate.lastName,
       age: userToCreate.age || null,
       imageUrl: userToCreate.imageUrl || null,
+      jobTitle: userToCreate.jobTitle || null,
+      bio: userToCreate.bio || null,
+      country: userToCreate.country || null,
+      height: userToCreate.height || null,
+      weight: userToCreate.weight || null,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -159,6 +168,11 @@ const updateById = async (
       lastName: userToUpdate.lastName || existingUser.lastName,
       age: userToUpdate.age || existingUser.age,
       imageUrl: userToUpdate.imageUrl || existingUser.imageUrl,
+      jobTitle: userToUpdate.jobTitle || existingUser.jobTitle,
+      bio: userToUpdate.bio || existingUser.bio,
+      country: userToUpdate.country || existingUser.country,
+      height: userToUpdate.height || existingUser.height,
+      weight: userToUpdate.weight || existingUser.weight,
       createdAt: existingUser.createdAt,
       updatedAt: new Date(),
     }

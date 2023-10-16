@@ -5,20 +5,25 @@ import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard"
 
-const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users/513e1ed3-43cd-4f86-a0a8-3a61dfc35bc2')
+const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users/43297cad-a9e4-4d95-93d1-9c9d8a2b68a6')
   .then(response => response.json())
   .then(json => console.log(json))`
 
 const exampleResponse = {
-  id: "513e1ed3-43cd-4f86-a0a8-3a61dfc35bc2",
-  username: "Martin.Bogisich",
-  email: "Martin.Bogisich@gmail.com",
-  firstName: "Martin",
-  lastName: "Bogisich",
-  age: 63,
-  imageUrl: "https://avatars.githubusercontent.com/u/8046384",
-  createdAt: "2023-09-05T06:10:33.112Z",
-  updatedAt: "2023-09-05T06:10:33.112Z",
+  id: "43297cad-a9e4-4d95-93d1-9c9d8a2b68a6",
+  username: "Odell.Bernier",
+  email: "Odell.Bernier@hotmail.com",
+  firstName: "Odell",
+  lastName: "Bernier",
+  age: 21,
+  imageUrl: "https://avatars.githubusercontent.com/u/72280135",
+  jobTitle: "Global Communications Assistant",
+  bio: "designer, entrepreneur, entrepreneur",
+  country: "Jordan",
+  height: 141.4,
+  weight: 187.7,
+  createdAt: "2022-11-03T21:34:19.685Z",
+  updatedAt: "2022-11-03T21:34:19.685Z",
 }
 
 const RetrieveUser = () => {

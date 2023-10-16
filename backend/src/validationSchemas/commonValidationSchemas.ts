@@ -62,4 +62,80 @@ const imageUrlSchema: Schema = {
   },
 }
 
-export default { skipSchema, takeSchema, ageSchema, imageUrlSchema }
+const jobTitleSchema: Schema = {
+  jobTitle: {
+    optional: true,
+    isString: {
+      errorMessage: "The 'jobTitle' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'jobTitle' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+}
+
+const bioSchema: Schema = {
+  bio: {
+    optional: true,
+    isString: {
+      errorMessage: "The 'bio' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'bio' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+}
+
+const countrySchema: Schema = {
+  country: {
+    optional: true,
+    isString: {
+      errorMessage: "The 'country' field must be a string.",
+      bail: true,
+    },
+    notEmpty: {
+      errorMessage: "The 'country' field must be a non-empty string.",
+      bail: true,
+    },
+  },
+}
+
+const heightSchema: Schema = {
+  height: {
+    optional: true,
+    isFloat: {
+      options: { min: 0 },
+      errorMessage:
+        "The 'height' field must be a float greater than or equal to 0.0.",
+    },
+    toFloat: true,
+  },
+}
+
+const weightSchema: Schema = {
+  weight: {
+    optional: true,
+    isFloat: {
+      options: { min: 0 },
+      errorMessage:
+        "The 'weight' field must be a float greater than or equal to 0.0.",
+    },
+    toFloat: true,
+  },
+}
+
+export default {
+  skipSchema,
+  takeSchema,
+  ageSchema,
+  imageUrlSchema,
+  jobTitleSchema,
+  bioSchema,
+  countrySchema,
+  heightSchema,
+  weightSchema,
+}

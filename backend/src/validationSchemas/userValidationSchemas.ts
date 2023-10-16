@@ -18,7 +18,7 @@ const getAllSchema: Schema = {
     isIn: {
       options: [Object.values(SortUsersBy).map((v) => v.toString())],
       errorMessage:
-        "The 'sortBy' field must be one of 'id', 'username', 'email', 'firstName', 'lastName', 'age', 'updatedAt' or 'createdAt'.",
+        "The 'sortBy' field must be one of 'id', 'username', 'email', 'firstName', 'lastName', 'age', 'jobTitle', 'bio', 'country', 'height', 'weight', 'updatedAt' or 'createdAt'.",
     },
   },
   sortOrder: {
@@ -74,6 +74,11 @@ const updateByIdSchema: Schema = {
   },
   ...commonValidationSchemas.ageSchema,
   ...commonValidationSchemas.imageUrlSchema,
+  ...commonValidationSchemas.jobTitleSchema,
+  ...commonValidationSchemas.bioSchema,
+  ...commonValidationSchemas.countrySchema,
+  ...commonValidationSchemas.heightSchema,
+  ...commonValidationSchemas.weightSchema
 }
 
 const createSchema: Schema = {
@@ -107,6 +112,11 @@ const createSchema: Schema = {
   },
   ...commonValidationSchemas.ageSchema,
   ...commonValidationSchemas.imageUrlSchema,
+  ...commonValidationSchemas.jobTitleSchema,
+  ...commonValidationSchemas.bioSchema,
+  ...commonValidationSchemas.countrySchema,
+  ...commonValidationSchemas.heightSchema,
+  ...commonValidationSchemas.weightSchema
 }
 
 export default {

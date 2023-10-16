@@ -7,7 +7,17 @@ export type AuthBody = {
 
 export type CreateUserBody = Pick<
   Prisma.UserCreateInput,
-  "email" | "username" | "firstName" | "lastName" | "age" | "imageUrl"
+  | "email"
+  | "username"
+  | "firstName"
+  | "lastName"
+  | "age"
+  | "imageUrl"
+  | "jobTitle"
+  | "bio"
+  | "country"
+  | "height"
+  | "weight"
 >
 
 export type UpdateUserBody = Partial<CreateUserBody>

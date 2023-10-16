@@ -109,11 +109,16 @@ const createUserCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users'
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    email: "ville.prami@email.com",
-    username: "PrVille",
-    firstName: "Ville",
-    lastName: "Prami",
-    age: 27
+    email: "concerned.ape@example.com",
+    username: "ConcernedApe",
+    firstName: "Eric",
+    lastName: "Barone",
+    age: 35,
+    jobTitle: "Video Game Developer",
+    bio: "Harvesting smiles since 2016. 🌻",
+    country: "United States of America",
+    height: "177.8",
+    weight: "72.6",
   })
 })
   .then(response => response.json())
@@ -129,11 +134,16 @@ const tabs: Tab[] = [
     learnMoreName: "Learn more about users",
     runRequest: () =>
       userService.create({
-        email: "ville.prami@email.com",
-        username: "PrVille",
-        firstName: "Ville",
-        lastName: "Prami",
-        age: 27,
+        email: "concerned.ape@example.com",
+        username: "ConcernedApe",
+        firstName: "Eric",
+        lastName: "Barone",
+        age: 35,
+        jobTitle: "Video Game Developer",
+        bio: "Harvesting smiles since 2016. 🌻",
+        country: "United States of America",
+        height: 177.8,
+        weight: 72.6,
       }),
   },
   {

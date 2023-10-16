@@ -9,26 +9,33 @@ const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    username: "username",
-    email: "example@email.com",
-    firstName: "first",
-    lastName: "last",
-    age: 24,
+    username: 'jkrowling',
+    email: 'jk@example.com',
+    firstName: 'J.K.',
+    lastName: 'Rowling',
+    age: 57,
+    jobTitle: 'Author',
+    country: 'UK'
   })
 })
   .then(response => response.json())
   .then(json => console.log(json))`
 
 const exampleResponse = {
-  id: "c790f9a1-5160-478a-8508-3877964a5721",
-  username: "username",
-  email: "example@email.com",
-  firstName: "first",
-  lastName: "last",
-  age: 24,
+  id: "1acc386c-0381-456c-bb6e-849dea1b9555",
+  username: "jkrowling",
+  email: "jk@example.com",
+  firstName: "J.K.",
+  lastName: "Rowling",
+  age: 57,
   imageUrl: null,
-  createdAt: "2023-09-05T06:11:26.919Z",
-  updatedAt: "2023-09-05T06:11:26.919Z",
+  jobTitle: "Author",
+  bio: null,
+  country: "UK",
+  height: null,
+  weight: null,
+  createdAt: "2023-10-16T18:13:08.672Z",
+  updatedAt: "2023-10-16T18:13:08.672Z",
 }
 
 const bodyParameters = [
@@ -66,6 +73,36 @@ const bodyParameters = [
     name: "imageUrl",
     type: "string",
     description: "URL to the user's profile image.",
+    required: false,
+  },
+  {
+    name: "jobTitle",
+    type: "string",
+    description: "Job title of the user.",
+    required: false,
+  },
+  {
+    name: "bio",
+    type: "string",
+    description: "Bio of the user.",
+    required: false,
+  },
+  {
+    name: "country",
+    type: "string",
+    description: "Country of the user.",
+    required: false,
+  },
+  {
+    name: "height",
+    type: "float",
+    description: "Height of the user in centimeters.",
+    required: false,
+  },
+  {
+    name: "weight",
+    type: "float",
+    description: "Weight of the user in kilograms.",
     required: false,
   },
 ]

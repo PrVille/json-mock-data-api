@@ -5,26 +5,32 @@ import Page from "../../components/Page"
 import { Method } from "../../typings/enums"
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard"
 
-const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users/c790f9a1-5160-478a-8508-3877964a5721', {
+const exampleCodeBlock = `fetch('https://json-mock-data.vercel.app/api/users/43297cad-a9e4-4d95-93d1-9c9d8a2b68a6', {
   method: 'PUT',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    username: "updatedUsername",
+    firstName: "updatedFirstName",
+    lastName: "updatedLastName",
   })
 })
   .then(response => response.json())
   .then(json => console.log(json))`
 
 const exampleResponse = {
-  id: "c790f9a1-5160-478a-8508-3877964a5721",
-  username: "updatedUsername",
-  email: "example@email.com",
-  firstName: "first",
-  lastName: "last",
-  age: 24,
-  imageUrl: null,
-  createdAt: "2023-09-05T06:11:26.919Z",
-  updatedAt: "2023-09-05T06:14:55.691Z",
+  id: "43297cad-a9e4-4d95-93d1-9c9d8a2b68a6",
+  username: "Odell.Bernier",
+  email: "Odell.Bernier@hotmail.com",
+  firstName: "updatedFirstName",
+  lastName: "updatedLastName",
+  age: 21,
+  imageUrl: "https://avatars.githubusercontent.com/u/72280135",
+  jobTitle: "Global Communications Assistant",
+  bio: "designer, entrepreneur, entrepreneur",
+  country: "Jordan",
+  height: 141.4,
+  weight: 187.7,
+  createdAt: "2022-11-03T21:34:19.685Z",
+  updatedAt: "2023-10-16T18:18:47.595Z",
 }
 
 const bodyParameters = [
@@ -57,6 +63,31 @@ const bodyParameters = [
     name: "imageUrl",
     type: "string",
     description: "URL to the user's profile image.",
+  },
+  {
+    name: "jobTitle",
+    type: "string",
+    description: "Job title of the user.",
+  },
+  {
+    name: "bio",
+    type: "string",
+    description: "Bio of the user.",
+  },
+  {
+    name: "country",
+    type: "string",
+    description: "Country of the user.",
+  },
+  {
+    name: "height",
+    type: "float",
+    description: "Height of the user in centimeters.",
+  },
+  {
+    name: "weight",
+    type: "float",
+    description: "Weight of the user in kilograms.",
   },
 ]
 

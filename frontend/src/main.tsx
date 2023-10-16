@@ -7,7 +7,7 @@ import { inject } from "@vercel/analytics"
 import { UserProvider } from "./context/UserContext"
 import { NotificationProvider } from "./context/NotificationContext"
 
-inject()
+//inject() 
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
